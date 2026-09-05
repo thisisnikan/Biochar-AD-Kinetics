@@ -5,6 +5,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 from .fit import predict_frame
@@ -26,8 +27,12 @@ def save_report(
 
     plotting = frame.reset_index(drop=True).copy()
     plotting["prediction"] = predict_frame(plotting, parameters)
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharey=True)
-    for axis, (temperature, group) in zip(axes, plotting.groupby("temperature_c"), strict=False):
+    temperature_groups = list(plotting.groupby("temperature_c"))
+    fig, axes = plt.subplots(
+        1, len(temperature_groups), figsize=(6 * len(temperature_groups), 5), sharey=True
+    )
+    axes = np.atleast_1d(axes)
+    for axis, (temperature, group) in zip(axes, temperature_groups, strict=True):
         for dose, batch in group.sort_values("dose_g_l").groupby("dose_g_l", sort=True):
             axis.scatter(batch["time_days"], batch["methane_ml_g_vs"], s=10, alpha=0.55)
             axis.plot(batch["time_days"], batch["prediction"], label=f"{dose:g} g/L")

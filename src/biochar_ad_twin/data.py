@@ -24,6 +24,8 @@ def validate_dataset(frame: pd.DataFrame) -> None:
         raise ValueError(f"Missing columns: {', '.join(sorted(missing))}")
     if frame[list(REQUIRED_COLUMNS - {"batch_id"})].isna().any().any():
         raise ValueError("Numeric input columns cannot contain missing values")
+    if frame["batch_id"].isna().any():
+        raise ValueError("batch_id cannot contain missing values")
     if (frame["time_days"] < 0).any() or (frame["dose_g_l"] < 0).any():
         raise ValueError("Time and biochar dose must be non-negative")
     if frame["batch_id"].nunique() < 2:
