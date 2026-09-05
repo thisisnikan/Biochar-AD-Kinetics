@@ -16,6 +16,8 @@ Last reviewed: 5 September 2026
 | Global dose–temperature hypothesis | Not independently validated | Requires multi-dose, multi-temperature reactor trajectories; the dose-response *form* is now externally challenged (see above) |
 | Parameter identifiability | Checked, and currently failing on the demo | `fit_global` reports parameter correlation and condition number; the 8-parameter model is already confounded (correlation ≈ 0.96) on the bundled synthetic demo |
 | Effect-size uncertainty | Partially reported | Reactor-level percent-change effects now carry a 95% CI and a `low_replication` flag; published-table effects still carry no uncertainty at all |
+| Pyrolysis-temperature descriptor confounding | Checked and confounded | CDU / Wang (2026) six-biochar summary table: temperature, BET, conductivity and pH correlate above the checked threshold, so `benchmark-pyrolysis-temperature` refuses to attribute a trend to any one of them |
+| Mechanism-evidence grading | Documented | `docs/MECHANISM_EVIDENCE.md` grades every dataset Weak/Moderate/Strong (Pilarska 2026); no dataset in this repository currently reaches Strong |
 
 ## What can be claimed now
 
@@ -38,6 +40,14 @@ Last reviewed: 5 September 2026
 - Reactor-level percent-change effect sizes carry a 95% confidence interval (delta method
   on the log response ratio) and a `low_replication` flag for any arm with fewer than
   3 reactors.
+- Every dataset in this repository is graded Weak/Moderate/Strong for what kind of
+  mechanism evidence it actually contains (`docs/MECHANISM_EVIDENCE.md`), so a good
+  process-level fit is never described using stronger mechanistic language than the
+  underlying data supports.
+- The CDU / Wang (2026) pyrolysis-temperature summary table is checked for a smooth
+  temperature-response trend *and* for collinearity among its own descriptors
+  (temperature, BET, conductivity, pH), which the CLI reports as confounded rather
+  than picking one as the "driver."
 
 ## What cannot be claimed now
 
@@ -62,6 +72,18 @@ Last reviewed: 5 September 2026
   table) are statistically distinguishable from no effect — that table has no per-replicate
   standard deviation at all, so no confidence interval can be computed for it, and every row
   from it is flagged `low_replication` for that reason.
+- That any dataset in this repository, including CDU / Wang (2026), demonstrates direct
+  interspecies electron transfer (DIET) — every dataset here is graded Moderate or Weak in
+  `docs/MECHANISM_EVIDENCE.md`; none has the electrochemical or molecular evidence a Strong
+  grade requires.
+- That the CDU / Wang (2026) pyrolysis-temperature trend is attributable to conductivity
+  specifically — pyrolysis temperature, BET surface area, electrical conductivity and pH all
+  increase together across the six biochars in that table, and `benchmark-pyrolysis-temperature`
+  reports that collinearity rather than picking a "best" descriptor.
+- That the CDU / Wang (2026) thesis's own access/distribution terms are confirmed — this
+  repository could not independently verify them from its network environment; only the
+  specific published numeric values already summarised in issue #10 are transcribed, with
+  full citation, pending that confirmation.
 
 ## Next validation gate
 

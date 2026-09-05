@@ -108,3 +108,43 @@ python scripts/build_zhang_2022_dataset.py --source /path/to/Data.xlsx
 
 No pseudo-replicates are generated. Any model fitted to these summary curves must
 identify its uncertainty and validation limits explicitly.
+
+## CDU / Wang (2026)
+
+`experimental/cdu_wang_2026_pyrolysis_temperature.csv` transcribes the published
+summary values (final methane yield mean/SD, BET surface area, electrical
+conductivity, pH) for six green-waste biochars and one activated-carbon
+comparator from:
+
+> Wang, C. *Anaerobic Digestion of Mixed Green Waste to Produce Methane-rich
+> Biogas*. PhD thesis, Charles Darwin University (2026).
+> https://doi.org/10.25913/xgzk-zs88
+
+- **Access/licence status: not independently verified.** This project could not
+  confirm the thesis's open-access terms from this environment (the DOI resolver
+  and institutional-repository domains were unreachable). Only the specific
+  numeric values already summarised in the project's own outreach tracking
+  (issue #10) are transcribed here, with full citation; treat this as a
+  published-summary transcription pending explicit confirmation of the
+  thesis's distribution terms, not as a redistribution of the thesis itself.
+- Experiment: triplicate 37 °C mixed-green-waste batch digestion, biochar dose
+  10 g/L (1% w/v), biochars pyrolyzed at 400-900 °C, compared against activated
+  carbon and a no-conductive-material control. Reported over a 50-day
+  conductive-material experiment.
+- Scope: six-point pyrolysis-temperature summary series (methane yield only for
+  the six biochars; descriptors only, no yield, for activated carbon). No
+  reactor-level trajectories, no control's own methane yield, and no raw
+  microbial or electrochemical data are included — the thesis reports
+  microbial-community analysis, but it is not transcribed here since ingesting
+  it would need its own reviewed data contract.
+- Deliberately **not** transcribed: the thesis's ~128% "methane-potential
+  enhancement" claim. The three published kinetic models yield different
+  P900/control ratios for that figure, and the control's own absolute methane
+  yield is not given in the material this repository has access to — see
+  `docs/MECHANISM_EVIDENCE.md` and issue #10 for the open request to the author
+  for clarification and raw reactor-level data.
+- `biochar-ad benchmark-pyrolysis-temperature` reports leave-one-biochar-out
+  RMSE for temperature-response forms *and* the pairwise correlation among
+  temperature, BET, conductivity and pH — the four descriptors move together
+  by construction in this six-point series, so the CLI flags them as confounded
+  rather than attributing any trend to one specific property.

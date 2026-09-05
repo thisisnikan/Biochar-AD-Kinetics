@@ -67,3 +67,24 @@ standard deviation.
 ```bash
 biochar-ad summarize-effects --output results/effects
 ```
+
+## Pyrolysis-temperature descriptor confounding
+
+`pyrolysis-temperature/temperature_response_comparison.csv` and
+`pyrolysis-temperature/descriptor_collinearity.csv` are generated with:
+
+```bash
+biochar-ad benchmark-pyrolysis-temperature --output results/pyrolysis-temperature
+```
+
+CDU / Wang (2026) reports six green-waste biochars pyrolyzed at 400-900 °C, one
+temperature series with a triplicate final methane yield each. A linear
+temperature response has the lowest leave-one-biochar-out RMSE (87 mL, vs. 128 mL
+for a quadratic and 445 mL for a temperature-invariant baseline) — but pyrolysis
+temperature, BET surface area, electrical conductivity and pH all correlate above
+0.95 with each other across these six points, so this result says the yield trend
+is smooth, not which material property (if any) drives it. See
+[`docs/MECHANISM_EVIDENCE.md`](../docs/MECHANISM_EVIDENCE.md) for why this table
+cannot support a DIET claim, and `data/README.md` for why the control's own
+methane yield and the thesis's ~128% enhancement figure are deliberately not
+transcribed here.

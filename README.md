@@ -15,6 +15,7 @@ explains the idea, the repository layout and the code path in plain language.
 
 **Then:** [Scientific status](docs/PROJECT_STATUS.md) ·
 [Data contract](docs/DATA_CONTRACT.md) · [Data provenance](data/README.md) ·
+[Mechanism-evidence grading](docs/MECHANISM_EVIDENCE.md) ·
 [Reproducible results](results/README.md) ·
 [Presentation](presentation/README.md) · [Contributing](CONTRIBUTING.md)
 
@@ -46,6 +47,7 @@ outcome) are kept in separate tables so the two are not read as equally strong.
 | Reactor-level benchmark | Kozłowski et al. (2025), 12 trajectories | Reproducible kinetic-family comparison | A universal biochar mechanism |
 | Author-shared summary analysis | Zhang et al. (2022), treatment means and SDs | Kinetic/VFA analysis with explicit limitations | Replicate-held-out validation or new significance tests |
 | Independent dose challenge | Valentin & Białowiec (2024), five fitted-dose endpoints | Falsifies the log-quadratic form as tested | Full reactor-trajectory validation |
+| Published pyrolysis-temperature summary | CDU / Wang (2026) thesis, six biochars (400–900 °C) | Descriptive temperature-response check, with pyrolysis temperature/BET/conductivity/pH collinearity reported explicitly | Attributing any trend to one material property, a causal claim, or DIET evidence (see `docs/MECHANISM_EVIDENCE.md`) |
 
 **Metadata-only resources (no methane outcome data):**
 

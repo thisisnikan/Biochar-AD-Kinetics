@@ -15,6 +15,12 @@ from .effects import build_within_study_effect_table
 from .external_validation import compare_external_dose_responses
 from .fit import IDENTIFIABILITY_CORRELATION_THRESHOLD, bootstrap_parameters, fit_global
 from .intake import validate_reactor_observations
+from .pyrolysis_response import (
+    DESCRIPTOR_COLLINEARITY_THRESHOLD,
+    compare_pyrolysis_temperature_responses,
+    descriptor_collinearity,
+    max_descriptor_collinearity,
+)
 from .report import save_report
 
 
@@ -76,6 +82,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate a reactor-level contribution before modelling or publication",
     )
     intake.add_argument("csv", type=Path)
+    pyrolysis = commands.add_parser(
+        "benchmark-pyrolysis-temperature",
+        help="Descriptive temperature-response check on a published pyrolysis summary table",
+    )
+    pyrolysis.add_argument(
+        "csv",
+        type=Path,
+        nargs="?",
+        default=Path("data/experimental/cdu_wang_2026_pyrolysis_temperature.csv"),
+    )
+    pyrolysis.add_argument("--output", type=Path, default=Path("outputs/pyrolysis-temperature"))
     return parser
 
 
@@ -159,6 +176,38 @@ def main() -> None:
                     "dataset": str(args.csv),
                     "selection_metric": "leave-one-dose-out RMSE",
                     "best_model_by_response": dict(zip(best["response"], best["model"])),
+                },
+                indent=2,
+            )
+        )
+        return
+    if args.command == "benchmark-pyrolysis-temperature":
+        frame = pd.read_csv(args.csv)
+        comparison = compare_pyrolysis_temperature_responses(frame)
+        correlation = descriptor_collinearity(frame)
+        args.output.mkdir(parents=True, exist_ok=True)
+        comparison.to_csv(args.output / "temperature_response_comparison.csv", index=False)
+        correlation.to_csv(args.output / "descriptor_collinearity.csv")
+        max_collinearity = max_descriptor_collinearity(correlation)
+        collinearity_warning = None
+        if math.isnan(max_collinearity) or max_collinearity >= DESCRIPTOR_COLLINEARITY_THRESHOLD:
+            collinearity_warning = (
+                "Pyrolysis temperature, BET surface area, electrical conductivity and pH "
+                "are practically confounded in this single-series table "
+                f"(|correlation| >= {DESCRIPTOR_COLLINEARITY_THRESHOLD}): a good temperature "
+                "trend cannot be attributed to any one material property, and this is a "
+                "descriptive summary-data check, not evidence of a causal or DIET mechanism "
+                "(see docs/MECHANISM_EVIDENCE.md)."
+            )
+        best = comparison.loc[comparison["rank_by_held_out_rmse"] == 1].iloc[0]
+        print(
+            json.dumps(
+                {
+                    "dataset": str(args.csv),
+                    "selection_metric": "leave-one-biochar-out RMSE",
+                    "best_model": best["model"],
+                    "max_descriptor_collinearity": max_collinearity,
+                    "collinearity_warning": collinearity_warning,
                 },
                 indent=2,
             )

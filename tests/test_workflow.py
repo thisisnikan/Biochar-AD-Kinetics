@@ -161,3 +161,18 @@ def test_cli_summarize_effects_reports_uncertainty_gaps(tmp_path, monkeypatch, c
         study_effects = pd.read_csv(path)
         assert (study_effects["study_id"] == study_id).all()
 
+
+def test_cli_benchmark_pyrolysis_temperature_flags_collinearity(tmp_path, monkeypatch, capsys) -> None:
+    output_dir = tmp_path / "pyrolysis_out"
+    monkeypatch.setattr(
+        "sys.argv",
+        ["biochar-ad", "benchmark-pyrolysis-temperature", "--output", str(output_dir)],
+    )
+    cli.main()
+
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["collinearity_warning"] is not None
+    assert "confounded" in payload["collinearity_warning"]
+    assert (output_dir / "temperature_response_comparison.csv").exists()
+    assert (output_dir / "descriptor_collinearity.csv").exists()
+

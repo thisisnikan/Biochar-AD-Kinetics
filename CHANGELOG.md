@@ -11,6 +11,15 @@ release model while the public API remains experimental.
 
 ## Unreleased
 
+- Added `docs/MECHANISM_EVIDENCE.md`, a Weak/Moderate/Strong evidence-grading rubric
+  (Pilarska 2026) applied to every dataset in the repository, so a good process-level
+  fit is never described using stronger mechanistic (e.g. DIET) language than the
+  underlying data supports.
+- Added the CDU / Wang (2026) pyrolysis-temperature summary table (six biochars,
+  400-900 °C) and `biochar-ad benchmark-pyrolysis-temperature`, which reports
+  leave-one-biochar-out RMSE for candidate temperature-response forms alongside the
+  pairwise collinearity among temperature, BET, conductivity and pH — the CLI flags
+  these as confounded rather than attributing a trend to one descriptor.
 - Fixed silent data-validation and analysis gaps: a missing `dose_unit` no longer passes
   intake validation, `batch_id` nulls no longer bypass `validate_dataset`, unreplicated
   treatments and non-positive response means are rejected instead of producing NaN/Inf,

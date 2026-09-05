@@ -1,0 +1,4 @@
+model,parameters,n_biochars,leave_one_biochar_out_rmse,leave_one_biochar_out_mae,rank_by_held_out_rmse
+linear_temperature,2,6,86.98235799623976,71.58656128221249,1.0
+quadratic_temperature,3,6,127.78955170870131,102.77258247422667,2.0
+temperature_invariant,1,6,445.3790576172169,394.16600000000017,3.0
