@@ -367,8 +367,10 @@ def build_dataset(source: Path, output_directory: Path) -> dict[str, object]:
             "unpublished extended abstract; full paper under revision and not public",
             "author-shared directly by email, not redistributed",
             "abstract only, not the full paper's methods or complete results",
-            "chart-only values without a stated number are flagged "
-            "not_machine_extractable and left unset, never estimated from the chart",
+            (
+                "chart-only values without a stated number are flagged "
+                "not_machine_extractable and left unset, never estimated from the chart"
+            ),
             "single extended abstract; no independent replication of its own findings",
         ],
     }
