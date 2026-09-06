@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from biochar_ad_twin.analysis import compare_models, information_criteria, leave_one_batch_out
-from biochar_ad_twin.data import generate_demo_dataset
-from biochar_ad_twin.model import BatchCondition, KineticParameters, cumulative_methane
+from biochar_ad_kinetics.analysis import compare_models, information_criteria, leave_one_batch_out
+from biochar_ad_kinetics.data import generate_demo_dataset
+from biochar_ad_kinetics.model import BatchCondition, KineticParameters, cumulative_methane
 
 
 def test_information_criteria_reward_better_fit():
@@ -29,8 +29,8 @@ def test_comparison_and_batch_validation(tmp_path):
 
 
 def test_holdout_fits_never_see_test_batch(monkeypatch, tmp_path):
-    from biochar_ad_twin import analysis
-    from biochar_ad_twin.model import KineticParameters
+    from biochar_ad_kinetics import analysis
+    from biochar_ad_kinetics.model import KineticParameters
 
     frame = generate_demo_dataset(tmp_path / "demo.csv")
     calls = []
@@ -47,7 +47,7 @@ def test_holdout_fits_never_see_test_batch(monkeypatch, tmp_path):
 
 
 def test_nested_models_and_single_temperature(tmp_path):
-    from biochar_ad_twin.fit import fit_global
+    from biochar_ad_kinetics.fit import fit_global
 
     frame = generate_demo_dataset(tmp_path / "demo.csv")
     frame = frame.loc[frame.temperature_c.eq(37)].reset_index(drop=True)
@@ -68,7 +68,7 @@ def test_holdout_rejects_unidentifiable_temperature(tmp_path):
 
 
 def test_holdout_summary_weights_batches_equally():
-    from biochar_ad_twin.analysis import summarize_holdouts
+    from biochar_ad_kinetics.analysis import summarize_holdouts
 
     frame = pd.DataFrame({
         "model": ["a", "a", "b", "b"], "held_out_batch": [1, 2, 1, 2],

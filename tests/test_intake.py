@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from biochar_ad_twin.intake import NUMERIC_COLUMNS, validate_reactor_observations
+from biochar_ad_kinetics.intake import NUMERIC_COLUMNS, validate_reactor_observations
 
 TEMPLATE = Path("data/templates/reactor_observations.csv")
 

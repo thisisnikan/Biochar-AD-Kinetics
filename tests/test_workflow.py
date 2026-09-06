@@ -4,10 +4,10 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from biochar_ad_twin import cli
-from biochar_ad_twin.cli import _identifiability_warning
-from biochar_ad_twin.data import generate_demo_dataset, validate_dataset
-from biochar_ad_twin.fit import _numerical_jacobian, fit_global
+from biochar_ad_kinetics import cli
+from biochar_ad_kinetics.cli import _identifiability_warning
+from biochar_ad_kinetics.data import generate_demo_dataset, validate_dataset
+from biochar_ad_kinetics.fit import _numerical_jacobian, fit_global
 
 
 def test_demo_global_fit(tmp_path) -> None:

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Biochar&ndash;AD Digital Twin: evidence overview</title>
+<title>Biochar&ndash;AD Kinetics: evidence overview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -223,11 +223,11 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
     <path d="M0,292 C160,290 220,240 300,200 C400,152 520,128 700,118"/>
   </svg>
   <div class="eyebrow" data-r style="--d:0">Project overview &middot; evidence edition</div>
-  <h1 data-r style="--d:1">The Biochar&ndash;AD Digital Twin</h1>
+  <h1 data-r style="--d:1">Biochar&ndash;AD Kinetics</h1>
   <p class="sub" data-r style="--d:2">A reproducible, falsifiable modelling framework &mdash; walked through using the actual reproducible results committed in the repository, not illustrations. Prepared for the CYPRUS2025 collaboration discussion.</p>
   <div class="title-meta" data-r style="--d:3">
     <div>Presented by<b>Nikan Haghighatjue</b></div>
-    <div>Repository<b>github.com/thisisnikan/biochar-ad-digital-twin</b></div>
+    <div>Repository<b>github.com/thisisnikan/biochar-ad-kinetics</b></div>
     <div>Format<b>Data-driven overview &middot; 2026</b></div>
   </div>
 </section>
@@ -327,7 +327,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
 <!-- 6 ................................................. -->
 <section class="slide">
   <div class="eyebrow" data-r style="--d:0">Real data &middot; Kozłowski et al. (2025)</div>
-  <h2 data-r style="--d:1">The twin's own curve family wins independently</h2>
+  <h2 data-r style="--d:1">This project's own curve family wins independently</h2>
   <div class="chart-wrap" data-r style="grid-template-columns:1.35fr .9fr;--d:2">
     <svg class="chart" viewBox="0 0 620 320" role="img" aria-label="Leave-one-reactor-out RMSE by kinetic model and treatment, Kozlowski 2025 benchmark, mL methane per gram VS">
       <line class="grid" x1="70" y1="185" x2="590" y2="185"/>
@@ -404,12 +404,10 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
         <text class="barval" x="70" y="56">27.3</text>
         <text class="barval" x="130" y="134">14.6</text>
         <text class="barval" x="190" y="21">33.1</text>
-        <text class="lbl" x="70" y="246" text-anchor="middle">No dose</text>
+        <text class="lbl" x="70" y="246" text-anchor="middle">None</text>
         <text class="lbl" x="70" y="258" text-anchor="middle">effect</text>
-        <text class="lbl" x="130" y="246" text-anchor="middle">Log-linear</text>
-        <text class="lbl" x="130" y="258" text-anchor="middle">(best fit)</text>
-        <text class="lbl" x="190" y="246" text-anchor="middle">Log-quadratic</text>
-        <text class="lbl" x="190" y="258" text-anchor="middle">(twin's model)</text>
+        <text class="lbl" x="130" y="246" text-anchor="middle">Linear</text>
+        <text class="lbl" x="190" y="246" text-anchor="middle">Quadratic</text>
       </svg>
     </div>
     <div>
@@ -423,16 +421,14 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
         <text class="barval" x="70" y="19">138.4</text>
         <text class="barval" x="130" y="155">46.6</text>
         <text class="barval" x="190" y="112">75.8</text>
-        <text class="lbl" x="70" y="246" text-anchor="middle">No dose</text>
+        <text class="lbl" x="70" y="246" text-anchor="middle">None</text>
         <text class="lbl" x="70" y="258" text-anchor="middle">effect</text>
-        <text class="lbl" x="130" y="246" text-anchor="middle">Log-linear</text>
-        <text class="lbl" x="130" y="258" text-anchor="middle">(best fit)</text>
-        <text class="lbl" x="190" y="246" text-anchor="middle">Log-quadratic</text>
-        <text class="lbl" x="190" y="258" text-anchor="middle">(twin's model)</text>
+        <text class="lbl" x="130" y="246" text-anchor="middle">Linear</text>
+        <text class="lbl" x="190" y="246" text-anchor="middle">Quadratic</text>
       </svg>
     </div>
   </div>
-  <p class="lead" data-r style="--d:3;margin-top:8px">Five independent wheat-straw-biochar doses (0&ndash;8 g/L), published kinetic parameters, strict leave-one-dose-out testing. Bars are held-out RMSE &mdash; <strong>lower is better</strong>. The digital twin's flexible log-quadratic dose response loses to a simpler log-linear form on both targets.</p>
+  <p class="lead" data-r style="--d:3;margin-top:8px">Five independent wheat-straw-biochar doses (0&ndash;8 g/L), published kinetic parameters, strict leave-one-dose-out testing. Bars are held-out RMSE &mdash; <strong>lower is better</strong>. This project's flexible log-quadratic dose response loses to a simpler log-linear form on both targets.</p>
   <div class="note" data-r style="--d:4;margin-top:10px">This is the falsification the project is designed to surface, not hide: the current dose-response <em>shape</em> is not supported over this external range. It is a parameter-level challenge only &mdash; the paper's raw reactor trajectories were not obtained.</div>
 </section>
 
@@ -565,7 +561,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
     <li data-r style="--d:6">Dose-cost regression argues against doses above &#8776;0.45&ndash;0.76 g biochar/g VS on economic grounds alone.</li>
     <li data-r style="--d:7">The meta-analysis's own aggregated dose-response is <strong>non-monotonic</strong>: moderate doses help, excessive doses (&gt;15&ndash;20 g/L) trend toward inhibition.</li>
   </ul>
-  <div class="note" data-r style="--d:8">Closed-access, standard-copyright source &mdash; no table or figure is reproduced, only these cited summary statistics. This <em>motivates</em> the twin's own non-monotonic, log-based dose term. It does not validate this project's specific fitted parameters.</div>
+  <div class="note" data-r style="--d:8">Closed-access, standard-copyright source &mdash; no table or figure is reproduced, only these cited summary statistics. This <em>motivates</em> the project's own non-monotonic, log-based dose term. It does not validate this project's specific fitted parameters.</div>
 </section>
 
 <!-- 14 ............................................... -->
@@ -664,7 +660,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
     <li data-r style="--d:5"><div><p>The CYPRUS2025 collaboration is treated with the same rigor as every other dataset: private data stays private, and every cited number is checked against the source.</p></div></li>
   </ol>
   <p class="sub" data-r style="--d:6">Thank you. The repository, including this deck and every underlying number, is public and open to review.<br>
-  <span style="font-family:var(--mono);font-size:13px">github.com/thisisnikan/biochar-ad-digital-twin &middot; nikan.haghighatjoo@gmail.com</span></p>
+  <span style="font-family:var(--mono);font-size:13px">github.com/thisisnikan/biochar-ad-kinetics &middot; nikan.haghighatjoo@gmail.com</span></p>
 </section>
 
 </div>

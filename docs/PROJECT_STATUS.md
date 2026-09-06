@@ -13,7 +13,7 @@ Last reviewed: 5 September 2026
 | Synthetic workflow | Reproducible | Labelled synthetic input and deterministic reporting pipeline |
 | Open experimental benchmark | Reproducible | Kozłowski et al. (2025) reactor-level trajectories and reference output |
 | Zhang integration | Limited by source | Hash-verified private ingestion and summary analysis; original triplicates were lost |
-| Independent dose-response challenge | Falsified as tested | Valentin & Białowiec (2024) external table: log-linear beats the twin's log-quadratic form on leave-one-dose-out RMSE |
+| Independent dose-response challenge | Falsified as tested | Valentin & Białowiec (2024) external table: log-linear beats the project's log-quadratic form on leave-one-dose-out RMSE |
 | Global dose–temperature hypothesis | Not independently validated | Requires multi-dose, multi-temperature reactor trajectories; the dose-response *form* is now externally challenged (see above) |
 | Parameter identifiability | Checked, and currently failing on the demo | `fit_global` reports parameter correlation and condition number; the 8-parameter model is already confounded (correlation ≈ 0.96) on the bundled synthetic demo |
 | Effect-size uncertainty | Partially reported | Reactor-level percent-change effects now carry a 95% CI and a `low_replication` flag; published-table effects still carry no uncertainty at all |
@@ -30,7 +30,7 @@ Last reviewed: 5 September 2026
 - Author-shared Zhang et al. (2022) summaries can be analysed without inventing
   pseudo-replicates or publishing the private workbook.
 - An independent 2024 glucose BMP dataset (Valentin & Białowiec) was used to stress-test the
-  digital twin's log-quadratic dose-response form against simpler alternatives, and the
+  project's log-quadratic dose-response form against simpler alternatives, and the
   repository reports the negative result rather than hiding it.
 - Every global fit reports whether its own 8 parameters are practically identifiable
   (`max_parameter_correlation`, `parameter_gram_condition_number`), instead of only
@@ -49,7 +49,7 @@ Last reviewed: 5 September 2026
   temperature-response trend *and* for collinearity among its own descriptors
   (temperature, BET, conductivity, pH), which the CLI reports as confounded rather
   than picking one as the "driver."
-- The twin's log-based, non-monotonic dose term has literature precedent: Chiappero
+- The project's log-based, non-monotonic dose term has literature precedent: Chiappero
   et al. (2022, https://doi.org/10.1016/j.jece.2022.108870) report a non-monotonic
   aggregated dose-response across their meta-analysis (moderate doses helping,
   excessive doses trending toward inhibition) and a dose-cost regression that argues
@@ -60,7 +60,7 @@ Last reviewed: 5 September 2026
 
 - That biochar causally improves anaerobic digestion across studies.
 - That the exploratory dose–temperature response generalises beyond the demonstration.
-- That the digital twin's log-quadratic dose-response form is supported by independent data —
+- That the project's log-quadratic dose-response form is supported by independent data —
   on the Valentin & Białowiec (2024) table, held-out prediction favours a simpler log-linear
   form instead, for both methane potential and maximum rate.
 - That an external kinetic-parameter table validates full reactor trajectories — it is a

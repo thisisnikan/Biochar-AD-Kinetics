@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from biochar_ad_twin.fit import fit_global, predict_frame
+from biochar_ad_kinetics.fit import fit_global, predict_frame
 
 CANDIDATES = {
     "constant_gompertz": "constant",

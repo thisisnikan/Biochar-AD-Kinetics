@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from biochar_ad_twin.effects import (
+from biochar_ad_kinetics.effects import (
     build_within_study_effect_table,
     parameter_table_within_study_effects,
     reactor_within_study_effects,

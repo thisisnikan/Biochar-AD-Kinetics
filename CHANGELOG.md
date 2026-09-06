@@ -29,6 +29,10 @@ release model while the public API remains experimental.
 
 ## Unreleased
 
+- Renamed the project from "Biochar–AD Digital Twin" to **Biochar–AD Kinetics**
+  (GitHub repository, Python distribution and import package, README, presentation
+  deck, `CITATION.cff`) because "digital twin" overstated the software's scope —
+  see the README's "Scope and terminology" section.
 - Added `docs/MECHANISM_EVIDENCE.md`, a Weak/Moderate/Strong evidence-grading rubric
   (Pilarska 2026) applied to every dataset in the repository, so a good process-level
   fit is never described using stronger mechanistic (e.g. DIET) language than the
@@ -57,7 +61,7 @@ release model while the public API remains experimental.
   kinetic-baseline comparison and the Valentin & Białowiec 2024 dose-response challenge)
   instead of illustrative figures, so the deck argues from data.
 - Added an independent dose-response challenge against Valentin & Białowiec (2024): the
-  digital twin's log-quadratic dose response is not supported over this external dose range,
+  project's log-quadratic dose response is not supported over this external dose range,
   where a simpler log-linear form has lower held-out error.
 - Improved repository navigation, contribution guidance and scientific-status reporting.
 - Added `docs/ARCHITECTURE.md`, a plain-language map and glossary for readers new to

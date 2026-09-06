@@ -34,7 +34,7 @@ the current answer to "how validated is this, exactly?".
 | Biochar | A porous, carbon-rich material made by pyrolyzing (heating without much oxygen) biomass; sometimes added to AD reactors as an amendment. |
 | S/I ratio | Substrate-to-inoculum ratio — how much waste versus how much microbial seed material is loaded into a batch test. |
 | Batch / reactor / replicate | One sealed test vessel (batch/reactor) run under one condition; a replicate is a repeat of the same condition to estimate variability. |
-| Modified Gompertz equation | A three-parameter S-shaped curve (`P`, `Rₘ`, `λ`) commonly used to fit cumulative methane production over time. See `src/biochar_ad_twin/model.py`. |
+| Modified Gompertz equation | A three-parameter S-shaped curve (`P`, `Rₘ`, `λ`) commonly used to fit cumulative methane production over time. See `src/biochar_ad_kinetics/model.py`. |
 | Lag phase (λ) | The time before methane production visibly ramps up. |
 | Maximum rate (Rₘ) | The steepest point of the production curve — how fast methane accumulates at peak. |
 | Ultimate yield (P) | The plateau value — total methane produced once the reaction is essentially finished. |
@@ -50,7 +50,7 @@ the current answer to "how validated is this, exactly?".
 ## Repository map
 
 ```text
-src/biochar_ad_twin/     the installable Python package (the actual model and workflow)
+src/biochar_ad_kinetics/     the installable Python package (the actual model and workflow)
 tests/                   automated tests, one file per module below
 data/experimental/       small, redistributable, provenance-documented input datasets
 data/private/            NOT in this repository — author-shared inputs stay off GitHub
@@ -75,7 +75,7 @@ public" means in practice here.
 ## How a run actually flows
 
 Everything is reached through one console command, `biochar-ad`, defined in
-`src/biochar_ad_twin/cli.py`. There are three subcommands:
+`src/biochar_ad_kinetics/cli.py`. There are three subcommands:
 
 ```mermaid
 flowchart LR
