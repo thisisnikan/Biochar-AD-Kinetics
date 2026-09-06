@@ -163,3 +163,50 @@ comparator from:
   temperature, BET, conductivity and pH — the four descriptors move together
   by construction in this six-point series, so the CLI flags them as confounded
   rather than attributing any trend to one specific property.
+
+## Chiappero et al. (2022)
+
+> Chiappero, M., Fiore, S. & Berruti, F. *Impact of biochar on anaerobic
+> digestion: Meta-analysis and economic evaluation*. Journal of Environmental
+> Chemical Engineering 10, 108870 (2022).
+> https://doi.org/10.1016/j.jece.2022.108870
+
+- **Closed-access, standard-copyright source.** Unlike every other article cited
+  in this file, this is a standard Elsevier copyright publication, not CC BY. No
+  table, figure or figure-derived number from the paper is reproduced here.
+- **Literature synthesis, not primary data.** This is a meta-analysis aggregating
+  408 batch conditions from 76 published studies and 83 semi-continuous conditions
+  from 18 published studies. It reports pooled statistics across other authors'
+  experiments, not a single reactor trajectory of its own.
+- **No file is added to `data/experimental/` for this source**, and none should
+  be: a meta-analysis has no reactor-level or condition-level rows of its own to
+  transcribe into this project's per-observation schema, and its closed-copyright
+  status would forbid transcribing its summary tables even if it did. Its only
+  role in this project is as literature context that motivates the *shape* of the
+  dose-response term in `src/biochar_ad_twin/model.py` — it is not evidence for or
+  against this project's specific fitted parameters, and it is not used by any
+  script or benchmark.
+- Cited findings (the paper's own stated summary statistics and formulas; verify
+  against the source before citing further):
+  - Overall meta-analytic effect of biochar addition: Hedges' g = 2.43 (95% CI
+    2.02–2.84) on cumulative methane yield; g = 2.54 (95% CI 1.86–3.22) on maximum
+    production rate (Rmax); g = -1.74 (95% CI -2.60 to -0.88) on lag-phase duration
+    (a negative g here means a shorter lag).
+  - Suggested optimal biochar physico-chemical property ranges for enhancing
+    methane yield: high ash content (≥20%), low total carbon (<50%), high O/C
+    molar ratio (≥0.3), high oxygen content (≥20%), high nitrogen content (≥0.6%),
+    acidic pH (<7.0), and low surface area (<10 m²/g). The paper notes sludge- and
+    manure-derived biochars tend to meet this profile, while wood-derived biochars
+    tend not to.
+  - Economic model relating maximum sustainable biochar unit cost to dose:
+    log(y) = 1.545 − 1.313·log(x), where y is the maximum sustainable biochar cost
+    in USD per tonne and x is the biochar dose in g biochar/g VS (R² = 0.8076). The
+    paper reads this as an argument against doses above roughly 0.45–0.76 g
+    biochar/g VS on economic grounds alone, independent of any biochar-property
+    effect.
+  - The paper's own aggregated dose-response was non-monotonic: moderate doses
+    were associated with enhancement, while excessive doses (particularly above
+    15-20 g/L in the studies it aggregates) trended toward inhibition. This is
+    literature support for — not independent validation of — this project's choice
+    of a non-monotonic, log-based dose term (see
+    [`docs/PROJECT_STATUS.md`](../docs/PROJECT_STATUS.md) for the exact framing).
