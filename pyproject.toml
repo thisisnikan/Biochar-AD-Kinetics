@@ -3,7 +3,7 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "biochar-ad-digital-twin"
+name = "biochar-ad-kinetics"
 version = "0.1.0"
 description = "Reproducible kinetic modelling of biochar-amended anaerobic digestion batch tests"
 readme = "README.md"
@@ -21,7 +21,7 @@ dependencies = [
 dev = ["pytest>=8", "ruff>=0.6"]
 
 [project.scripts]
-biochar-ad = "biochar_ad_twin.cli:main"
+biochar-ad = "biochar_ad_kinetics.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

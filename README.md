@@ -1,6 +1,6 @@
-# Biochar–AD Digital Twin
+# Biochar–AD Kinetics
 
-[![CI](https://github.com/thisisnikan/biochar-ad-digital-twin/actions/workflows/ci.yml/badge.svg)](https://github.com/thisisnikan/biochar-ad-digital-twin/actions)
+[![CI](https://github.com/thisisnikan/biochar-ad-kinetics/actions/workflows/ci.yml/badge.svg)](https://github.com/thisisnikan/biochar-ad-kinetics/actions)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-1B3FC4)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-1B3FC4)](LICENSE)
 [![Scientific status: research prototype](https://img.shields.io/badge/status-research%20prototype-B06A22)](docs/PROJECT_STATUS.md)
@@ -21,10 +21,11 @@ explains the idea, the repository layout and the code path in plain language.
 
 ## Scope and terminology
 
-This repository names itself a "digital twin" for continuity with the author's
-earlier research, but the software is narrower than that term usually implies:
-it is a **batch kinetic-modelling and statistical-benchmarking framework**, not
-a live, sensor-connected process twin. There is no mass/energy balance (e.g.
+This project was originally named "Biochar–AD Digital Twin," for continuity
+with the author's earlier research. It has been renamed to **Biochar–AD
+Kinetics** because "digital twin" overstated its scope: the software is a
+**batch kinetic-modelling and statistical-benchmarking framework**, not a
+live, sensor-connected process twin. There is no mass/energy balance (e.g.
 ADM1), no reactor hydrodynamics, and no data-assimilation loop against a
 running digester. The dose-response term in `model.py` is also **phenomenological,
 not mechanistic**: it is a flexible curve shape chosen to be testable against
@@ -139,7 +140,7 @@ M(t) = P · exp{-exp[(e·R/P)(λ - t) + 1]}
 
 `P` and `R` vary with `log(1 + dose)`, allowing both enhancement at moderate
 dose and inhibition at excessive dose. Temperature changes `R` through a Q10
-factor referenced to 37 °C. See `src/biochar_ad_twin/model.py` for the exact,
+factor referenced to 37 °C. See `src/biochar_ad_kinetics/model.py` for the exact,
 auditable implementation.
 
 ## Quick start
@@ -197,14 +198,14 @@ biochar-ad benchmark-external-dose --output outputs/external-dose
 ```
 
 The command compares a dose-invariant baseline, a log-linear response, and the
-digital twin's log-quadratic response by strict leave-one-dose-out prediction.
+project's log-quadratic response by strict leave-one-dose-out prediction.
 On this small external table, log-linear dose response has lower held-out error
 for both methane potential and maximum rate. The flexible quadratic hypothesis
 is therefore **not supported over this dose range**. This is a parameter-level
 challenge, not full trajectory validation: the paper's raw triplicate reactor
 time series are available only on request. The published lag estimate also
 changes from 0.76 to 0.10 days across doses, exposing a second limitation: the
-current digital twin assumes one dose-invariant lag parameter.
+current model assumes one dose-invariant lag parameter.
 
 ## Author-shared summary-data integration
 
@@ -279,7 +280,7 @@ GitHub Actions runs both checks on Python 3.10 and 3.12.
 ## Repository map
 
 ```text
-src/biochar_ad_twin/   installable modelling and reporting package
+src/biochar_ad_kinetics/   installable modelling and reporting package
 tests/                 unit and end-to-end workflow tests
 data/experimental/     redistributable, provenance-documented inputs
 data/templates/        reusable reactor-level contribution contract

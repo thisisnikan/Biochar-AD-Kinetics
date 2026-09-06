@@ -213,7 +213,7 @@ def build_intake_dataset(source: Path, destination: Path, report_path: Path) -> 
     """
     import pandas as pd
 
-    from biochar_ad_twin.intake import (
+    from biochar_ad_kinetics.intake import (
         REQUIRED_OBSERVATION_COLUMNS,
         validate_reactor_observations,
     )

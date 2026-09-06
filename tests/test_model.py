@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from biochar_ad_twin.model import BatchCondition, KineticParameters, cumulative_methane
+from biochar_ad_kinetics.model import BatchCondition, KineticParameters, cumulative_methane
 
 
 def test_curve_is_bounded_and_monotonic() -> None:

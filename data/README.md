@@ -183,7 +183,7 @@ comparator from:
   transcribe into this project's per-observation schema, and its closed-copyright
   status would forbid transcribing its summary tables even if it did. Its only
   role in this project is as literature context that motivates the *shape* of the
-  dose-response term in `src/biochar_ad_twin/model.py` — it is not evidence for or
+  dose-response term in `src/biochar_ad_kinetics/model.py` — it is not evidence for or
   against this project's specific fitted parameters, and it is not used by any
   script or benchmark.
 - Cited findings (the paper's own stated summary statistics and formulas; verify

@@ -1,9 +1,9 @@
 import matplotlib.image as mpimg
 import pandas as pd
 
-from biochar_ad_twin.fit import fit_global
-from biochar_ad_twin.model import BatchCondition, KineticParameters, cumulative_methane
-from biochar_ad_twin.report import save_report
+from biochar_ad_kinetics.fit import fit_global
+from biochar_ad_kinetics.model import BatchCondition, KineticParameters, cumulative_methane
+from biochar_ad_kinetics.report import save_report
 
 
 def _dataset(temperatures: tuple[float, ...]) -> pd.DataFrame:

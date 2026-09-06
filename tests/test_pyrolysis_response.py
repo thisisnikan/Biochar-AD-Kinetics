@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from biochar_ad_twin.pyrolysis_response import (
+from biochar_ad_kinetics.pyrolysis_response import (
     DESCRIPTOR_COLLINEARITY_THRESHOLD,
     MODEL_DEGREES,
     compare_pyrolysis_temperature_responses,

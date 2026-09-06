@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from biochar_ad_twin.baselines import BASELINES, compare_experimental_baselines
+from biochar_ad_kinetics.baselines import BASELINES, compare_experimental_baselines
 
 DATASET = "data/experimental/kozlowski_2025_bmp.csv"
 

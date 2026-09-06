@@ -8,8 +8,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from biochar_ad_twin.baselines import compare_experimental_baselines
-from biochar_ad_twin.intake import validate_reactor_observations
+from biochar_ad_kinetics.baselines import compare_experimental_baselines
+from biochar_ad_kinetics.intake import validate_reactor_observations
 
 INTAKE = Path("data/experimental/kozlowski_2025_reactor_observations.csv.gz")
 LEGACY = Path("data/experimental/kozlowski_2025_bmp.csv")

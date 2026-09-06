@@ -35,8 +35,8 @@ def compare_external_dose_responses(frame: pd.DataFrame) -> pd.DataFrame:
     """Compare dose-response forms by leave-one-dose-out prediction.
 
     Models are fitted to log kinetic parameters against ``log1p(dose)``. The
-    quadratic candidate is the response form used by the exploratory digital
-    twin. With only five independent dose conditions, held-out error is the
+    quadratic candidate is the exploratory response form used by this
+    project. With only five independent dose conditions, held-out error is the
     primary criterion and no mechanistic or causal inference is attempted.
     """
 

@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from biochar_ad_twin.external_validation import (
+from biochar_ad_kinetics.external_validation import (
     MODEL_DEGREES,
     TARGETS,
     compare_external_dose_responses,

@@ -1,7 +1,7 @@
 # Presentation
 
 This folder contains `index.html`, an animated, single-file, 20-slide HTML deck
-explaining the whole idea of the Biochar–AD Digital Twin: the confounding problem it
+explaining the whole idea of Biochar–AD Kinetics: the confounding problem it
 addresses, the falsifiable research question, what the software pipeline actually does,
 parameter identifiability and effect-size uncertainty, the evidence-tiering and
 mechanism-evidence grading systems, the Chiappero et al. (2022) literature context, the
