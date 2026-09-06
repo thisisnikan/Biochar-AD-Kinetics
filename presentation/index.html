@@ -172,18 +172,39 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
   margin-top:clamp(16px,2.6vh,28px);border-left:2px solid var(--ochre);padding:10px 0 10px 16px;
   font-size:clamp(12.5px,1.15vw,15px);color:var(--muted);max-width:64ch;line-height:1.55;
 }
+.slide.dark .note{color:#A8BCB1}
 .fill{background:rgba(176,106,34,.14);border-bottom:1px dashed var(--ochre);padding:1px 5px;font-family:var(--mono);font-size:.9em}
 .kpi{display:flex;gap:clamp(20px,3.4vw,56px);margin-top:clamp(16px,2.8vh,30px);flex-wrap:wrap}
 .kpi div span{font-family:var(--display);font-weight:800;font-size:clamp(26px,3.6vw,46px);display:block;line-height:1;letter-spacing:-.02em}
 .kpi div small{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-top:8px}
+.slide.dark .kpi div small{color:#8FA79A}
 .hint{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);z-index:40;transition:opacity .5s ease}
 .hint.gone{opacity:0}
+
+/* ---------- confidence-interval rows ---------- */
+.ci-viz{display:flex;flex-direction:column;gap:clamp(10px,1.6vh,14px);margin-top:clamp(14px,2.2vh,22px)}
+.ci-scale{display:block;width:100%;max-width:640px;height:20px;overflow:visible}
+.ci-row{display:grid;grid-template-columns:minmax(150px,1fr) minmax(180px,2.2fr) minmax(140px,1fr);align-items:center;gap:clamp(10px,1.6vw,20px);max-width:900px}
+.ci-row svg{display:block;width:100%;height:22px;overflow:visible}
+.ci-label{font-size:clamp(12px,1.05vw,14.5px);line-height:1.35}
+.ci-line{stroke:var(--flame);stroke-width:3;stroke-linecap:round}
+.ci-line.sig{stroke:var(--ochre)}
+.ci-dot{fill:var(--flame)}
+.ci-dot.sig{fill:var(--ochre)}
+.ci-zero{stroke:var(--line);stroke-width:1.3;stroke-dasharray:2 4}
+.ci-value{font-family:var(--mono);font-size:clamp(11px,1vw,13px);color:var(--muted);text-align:right}
+.ci-value b{color:var(--ink);font-weight:600}
+
+/* ---------- collaboration / person meta ---------- */
+.person{display:flex;flex-wrap:wrap;gap:clamp(16px,2.6vw,36px);margin-top:clamp(18px,2.8vh,28px);font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:#A8BCB1}
+.person b{display:block;color:#E8EDE6;font-weight:500;margin-top:4px;letter-spacing:0;font-family:var(--body);font-size:13.5px}
 
 @media (max-width:820px){
   .chart-wrap,.two{grid-template-columns:1fr;gap:18px}
   .pipe{grid-template-columns:1fr 1fr}
   .slide{padding:26px 20px 74px 34px;justify-content:flex-start;padding-top:12vh;overflow-y:auto}
   svg.chart{max-height:34vh}
+  .ci-row{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){
   [data-r],.curve,.dot,.brace,.bar{opacity:1!important;transform:none!important;filter:none!important;stroke-dashoffset:0!important;animation:none!important}
@@ -203,7 +224,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
   </svg>
   <div class="eyebrow" data-r style="--d:0">Project overview &middot; evidence edition</div>
   <h1 data-r style="--d:1">The Biochar&ndash;AD Digital Twin</h1>
-  <p class="sub" data-r style="--d:2">A reproducible, falsifiable modelling framework &mdash; walked through using the actual reproducible results committed in the repository, not illustrations.</p>
+  <p class="sub" data-r style="--d:2">A reproducible, falsifiable modelling framework &mdash; walked through using the actual reproducible results committed in the repository, not illustrations. Prepared for the CYPRUS2025 collaboration discussion.</p>
   <div class="title-meta" data-r style="--d:3">
     <div>Presented by<b>Nikan Haghighatjue</b></div>
     <div>Repository<b>github.com/thisisnikan/biochar-ad-digital-twin</b></div>
@@ -271,13 +292,13 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
 <section class="slide dark">
   <div class="eyebrow" data-r style="--d:0">The question</div>
   <h1 data-r style="--d:1;font-size:clamp(26px,3.9vw,50px);max-width:24ch">Does explicitly modelling biochar dose and temperature explain and predict methane production better than a simpler baseline?</h1>
-  <p class="sub" data-r style="--d:2">Written to fail: the hypothesis is rejected the moment held-out error stops favouring the extra complexity. The next slides show that test actually being run, twice, on real data.</p>
+  <p class="sub" data-r style="--d:2">Written to fail: the hypothesis is rejected the moment held-out error stops favouring the extra complexity. The next slides show that test actually being run, on real data, more than once &mdash; including the times it lost.</p>
 </section>
 
 <!-- 5 ................................................. -->
 <section class="slide">
   <div class="eyebrow" data-r style="--d:0">What is built</div>
-  <h2 data-r style="--d:1">One CLI, four reproducible checks</h2>
+  <h2 data-r style="--d:1">One CLI, seven reproducible checks</h2>
   <div class="pipe">
     <div class="node" data-r style="--d:2">
       <div class="n">DEMO</div>
@@ -287,20 +308,20 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
     <div class="node" data-r style="--d:3">
       <div class="n">FIT</div>
       <h3>Any BMP dataset</h3>
-      <p>Global least-squares fit of dose, temperature and Q10 kinetics to a user-supplied CSV.</p>
+      <p>Global least-squares fit of dose, temperature and Q10 kinetics to a user-supplied CSV, with identifiability diagnostics attached.</p>
     </div>
     <div class="node" data-r style="--d:4">
       <div class="n">BENCHMARK-EXPERIMENTAL</div>
       <h3>Real reactor data</h3>
-      <p>Compares curve families on Kozłowski et al. (2025) by leave-one-reactor-out RMSE. Real result on the next slide.</p>
+      <p>Compares curve families on Kozłowski et al. (2025) by leave-one-reactor-out RMSE. Real result two slides from now.</p>
     </div>
     <div class="node" data-r style="--d:5">
       <div class="n">BENCHMARK-EXTERNAL-DOSE</div>
       <h3>Independent challenge</h3>
-      <p>Tests this project's own dose-response shape against an external published dataset. Real result two slides from now.</p>
+      <p>Tests this project's own dose-response shape against an external published dataset. Real result on the slide after that.</p>
     </div>
   </div>
-  <div class="note" data-r style="--d:6">45 automated tests and <span class="fill">ruff check .</span> run on every change, on Python 3.10 and 3.12.</div>
+  <div class="note" data-r style="--d:6">Plus <span class="fill">summarize-effects</span>, <span class="fill">validate-intake</span> and <span class="fill">benchmark-pyrolysis-temperature</span> &mdash; seven commands in total. 96 automated tests and <span class="fill">ruff check .</span> run on every change, on Python 3.10 and 3.12.</div>
 </section>
 
 <!-- 6 ................................................. -->
@@ -374,7 +395,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
   <div class="two" data-r style="--d:2">
     <div>
       <div class="panel-title">Maximum rate (R<sub>m</sub>)</div>
-      <svg class="chart" viewBox="0 0 260 300" role="img" aria-label="Leave-one-dose-out RMSE for maximum rate by dose-response model">
+      <svg class="chart" style="max-height:32vh" viewBox="0 0 260 300" role="img" aria-label="Leave-one-dose-out RMSE for maximum rate by dose-response model">
         <line class="ax" x1="50" y1="15" x2="50" y2="230"/>
         <line class="ax" x1="50" y1="230" x2="210" y2="230"/>
         <rect class="bar bar-inv" x="50" y="62.0" width="40" height="168.0"/>
@@ -393,7 +414,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
     </div>
     <div>
       <div class="panel-title">Ultimate yield (P)</div>
-      <svg class="chart" viewBox="0 0 260 300" role="img" aria-label="Leave-one-dose-out RMSE for methane potential by dose-response model">
+      <svg class="chart" style="max-height:32vh" viewBox="0 0 260 300" role="img" aria-label="Leave-one-dose-out RMSE for methane potential by dose-response model">
         <line class="ax" x1="50" y1="15" x2="50" y2="230"/>
         <line class="ax" x1="50" y1="230" x2="210" y2="230"/>
         <rect class="bar bar-inv" x="50" y="24.7" width="40" height="205.3"/>
@@ -411,35 +432,143 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
       </svg>
     </div>
   </div>
-  <p class="lead" data-r style="--d:3;margin-top:14px">Five independent wheat-straw-biochar doses (0&ndash;8 g/L), published kinetic parameters, strict leave-one-dose-out testing. Bars are held-out RMSE &mdash; <strong>lower is better</strong>. The digital twin's flexible log-quadratic dose response loses to a simpler log-linear form on both targets.</p>
-  <div class="note" data-r style="--d:4">This is the falsification the project is designed to surface, not hide: the current dose-response <em>shape</em> is not supported over this external range. It is a parameter-level challenge only &mdash; the paper's raw reactor trajectories were not obtained.</div>
+  <p class="lead" data-r style="--d:3;margin-top:8px">Five independent wheat-straw-biochar doses (0&ndash;8 g/L), published kinetic parameters, strict leave-one-dose-out testing. Bars are held-out RMSE &mdash; <strong>lower is better</strong>. The digital twin's flexible log-quadratic dose response loses to a simpler log-linear form on both targets.</p>
+  <div class="note" data-r style="--d:4;margin-top:10px">This is the falsification the project is designed to surface, not hide: the current dose-response <em>shape</em> is not supported over this external range. It is a parameter-level challenge only &mdash; the paper's raw reactor trajectories were not obtained.</div>
 </section>
 
 <!-- 8 ................................................. -->
-<section class="slide dark">
-  <div class="eyebrow" data-r style="--d:0">Evidence at a glance</div>
-  <h2 data-r style="--d:1">Four layers of evidence, kept explicitly separate</h2>
-  <div class="evrow">
-    <div class="evcard" data-r style="--d:2">
-      <div class="k">Software demonstration</div>
-      <p><strong>Labelled synthetic BMP curves.</strong> Proves the fitting, uncertainty and held-out-batch workflow runs correctly. Not evidence of scientific validity &mdash; the data is synthetic by design.</p>
-    </div>
-    <div class="evcard" data-r style="--d:3">
-      <div class="k">Reactor-level benchmark</div>
-      <p><strong>Kozłowski et al. (2025),</strong> 12 food-waste reactor trajectories, CC BY 4.0. Modified Gompertz wins held-out RMSE in all 4 treatments (previous chart). One temperature, one dose per treatment &mdash; not a universal mechanism.</p>
-    </div>
-    <div class="evcard" data-r style="--d:4">
-      <div class="k">Independent dose-response challenge</div>
-      <p><strong>Valentin &amp; Białowiec (2024),</strong> 5 independent doses, CC BY 4.0. Log-linear beats the twin's log-quadratic form on held-out RMSE for both targets (previous slide) &mdash; a genuine, reported falsification.</p>
-    </div>
-    <div class="evcard" data-r style="--d:5">
-      <div class="k">Author-shared summary analysis</div>
-      <p><strong>Zhang et al. (2022),</strong> treatment means and SDs, ingested with a hash-verified private script. Kinetic/VFA analysis with explicit limitations; original triplicates were lost, so no replicate-held-out check.</p>
+<section class="slide">
+  <div class="eyebrow" data-r style="--d:0">Real data &middot; CDU / Wang (2026) thesis</div>
+  <h2 data-r style="--d:1">A clean pyrolysis-temperature trend &mdash; that cannot be attributed to temperature alone</h2>
+  <div class="chart-wrap" data-r style="grid-template-columns:.85fr 1.15fr;--d:2">
+    <svg class="chart" viewBox="0 0 260 300" role="img" aria-label="Leave-one-biochar-out RMSE for final methane yield by temperature-response model">
+      <line class="ax" x1="50" y1="15" x2="50" y2="230"/>
+      <line class="ax" x1="50" y1="230" x2="210" y2="230"/>
+      <rect class="bar bar-linear" x="50" y="188.0" width="40" height="42.0"/>
+      <rect class="bar bar-quad" x="110" y="168.3" width="40" height="61.7"/>
+      <rect class="bar bar-inv" x="170" y="15" width="40" height="215.0"/>
+      <text class="barval" x="70" y="182">87.0</text>
+      <text class="barval" x="130" y="162">127.8</text>
+      <text class="barval" x="190" y="11">445.4</text>
+      <text class="lbl" x="70" y="246" text-anchor="middle">Linear</text>
+      <text class="lbl" x="70" y="258" text-anchor="middle">(best fit)</text>
+      <text class="lbl" x="130" y="246" text-anchor="middle">Quadratic</text>
+      <text class="lbl" x="130" y="258" text-anchor="middle">temp</text>
+      <text class="lbl" x="190" y="246" text-anchor="middle">No temp</text>
+      <text class="lbl" x="190" y="258" text-anchor="middle">effect</text>
+    </svg>
+    <div>
+      <p class="lead">Six green-waste biochars (400&ndash;900&#176;C), leave-one-biochar-out RMSE on final methane yield (Nml). A linear temperature response is <strong>five times better</strong> than assuming no temperature effect at all.</p>
+      <div class="note">But in this six-point series, pyrolysis temperature correlates with BET surface area (r&#8202;=&#8202;0.98), electrical conductivity (r&#8202;=&#8202;0.99) and pH (r&#8202;=&#8202;0.98). <span class="fill">benchmark-pyrolysis-temperature</span> reports this collinearity explicitly rather than crediting any one property &mdash; the CLI cannot and does not attribute the trend to conductivity, surface area or pH individually.</div>
     </div>
   </div>
 </section>
 
 <!-- 9 ................................................. -->
+<section class="slide dark">
+  <div class="eyebrow" data-r style="--d:0">Checked, not hidden &middot; parameter identifiability</div>
+  <h2 data-r style="--d:1">A good fit is not the same as well-separated parameters</h2>
+  <div class="kpi">
+    <div data-r style="--d:2"><span>0.956</span><small>max pairwise parameter correlation</small></div>
+    <div data-r style="--d:3"><span>0.95</span><small>confounding flag threshold</small></div>
+    <div data-r style="--d:4"><span>8</span><small>parameters in the global model</small></div>
+  </div>
+  <p class="lead" data-r style="--d:5;margin-top:clamp(18px,2.8vh,28px)">Every <span class="fill">fit_global</span> call reports <span class="fill">max_parameter_correlation</span> and <span class="fill">parameter_gram_condition_number</span>, computed from the fit's own Jacobian (Bates &amp; Watts, 1988) &mdash; not from goodness of fit.</p>
+  <div class="note" data-r style="--d:6">On the bundled <strong>synthetic</strong> demo dataset &mdash; the easiest, noise-controlled case this project has &mdash; two of the eight parameters are already confounded above the flag threshold. No real dataset here yet varies both dose and temperature with replicates, so full identifiability from real data has never even been attempted, let alone shown.</div>
+</section>
+
+<!-- 10 ................................................ -->
+<section class="slide">
+  <div class="eyebrow" data-r style="--d:0">Checked, not hidden &middot; effect-size uncertainty</div>
+  <h2 data-r style="--d:1">Some reported effects survive a confidence interval. Others don't.</h2>
+  <div class="ci-viz" data-r style="--d:2">
+    <svg class="ci-scale" viewBox="0 0 460 20" aria-hidden="true">
+      <line class="ax" x1="30" y1="10" x2="430" y2="10"/>
+      <line class="ci-zero" x1="201" y1="2" x2="201" y2="18"/>
+      <text class="lbl" x="30" y="19" text-anchor="start">&minus;15%</text>
+      <text class="lbl" x="201" y="19" text-anchor="middle">0%</text>
+      <text class="lbl" x="430" y="19" text-anchor="end">+20%</text>
+    </svg>
+    <div class="ci-row" data-r style="--d:3">
+      <div class="ci-label">Hydrochar 240&#176;C &middot; max rate</div>
+      <svg viewBox="0 0 460 20"><line class="ci-line" x1="125" y1="10" x2="225" y2="10"/><circle class="ci-dot" cx="174" cy="10" r="4.5"/></svg>
+      <div class="ci-value"><b>&minus;2.4%</b> &middot; CI crosses zero</div>
+    </div>
+    <div class="ci-row" data-r style="--d:4">
+      <div class="ci-label">Pyrolysis biochar 600&#176;C &middot; max rate</div>
+      <svg viewBox="0 0 460 20"><line class="ci-line sig" x1="73" y1="10" x2="161" y2="10"/><circle class="ci-dot sig" cx="117" cy="10" r="4.5"/></svg>
+      <div class="ci-value"><b>&minus;7.4%</b> &middot; CI excludes zero</div>
+    </div>
+    <div class="ci-row" data-r style="--d:5">
+      <div class="ci-label">Torrefaction 240&#176;C &middot; potential yield</div>
+      <svg viewBox="0 0 460 20"><line class="ci-line sig" x1="282" y1="10" x2="393" y2="10"/><circle class="ci-dot sig" cx="337" cy="10" r="4.5"/></svg>
+      <div class="ci-value"><b>+11.9%</b> &middot; CI excludes zero</div>
+    </div>
+  </div>
+  <div class="note" data-r style="--d:6">95% CIs use the delta method on the log response ratio, and every arm below 3 reactors is flagged <span class="fill">low_replication</span>. The Valentin &amp; Białowiec dose-response table has no reported replicate spread at all, so none of its larger percent changes can be given a CI &mdash; a limitation stated, not smoothed over.</div>
+</section>
+
+<!-- 11 ............................................... -->
+<section class="slide dark">
+  <div class="eyebrow" data-r style="--d:0">How the evidence is organised</div>
+  <h2 data-r style="--d:1">Three tiers, kept explicitly apart</h2>
+  <div class="evrow">
+    <div class="evcard" data-r style="--d:2">
+      <div class="k">Outcome evidence &middot; 6 entries</div>
+      <p><strong>Real methane data</strong> that can support or challenge the model: synthetic demo, Kozłowski (2025), Zhang (2022), Valentin &amp; Białowiec (2024), CDU/Wang (2026), and the private García-Prats CYPRUS2025 abstract.</p>
+    </div>
+    <div class="evcard" data-r style="--d:3">
+      <div class="k">Metadata-only resources</div>
+      <p><strong>Material or design data with no methane outcome</strong> &mdash; e.g. García-Prats et al. (2024)'s public design/material tables. Useful for structure, never cited as evidence for or against the model.</p>
+    </div>
+    <div class="evcard" data-r style="--d:4">
+      <div class="k">Literature context</div>
+      <p><strong>Published synthesis that motivates a modelling choice</strong> without being fitted data itself &mdash; currently Chiappero et al. (2022)'s meta-analysis of the dose-response literature.</p>
+    </div>
+  </div>
+  <div class="note" data-r style="--d:5">This split exists so a reader never mistakes a design table, a literature summary, or a synthetic demo for outcome evidence. It is enforced in <span class="fill">README.md</span> and <span class="fill">data/README.md</span>, not just in this deck.</div>
+</section>
+
+<!-- 12 ............................................... -->
+<section class="slide">
+  <div class="eyebrow" data-r style="--d:0">How mechanism claims are graded</div>
+  <h2 data-r style="--d:1">A good fit says "predictable," not "why"</h2>
+  <p class="lead" data-r style="--d:2">Following Pilarska (2026), every dataset is graded on what kind of evidence it actually contains for a specific mechanism (e.g. direct interspecies electron transfer) &mdash; not just whether methane went up.</p>
+  <div class="evrow" style="margin-top:clamp(14px,2.2vh,22px)">
+    <div class="evcard" data-r style="--d:3">
+      <div class="k">Weak &middot; Kozłowski (2025), Valentin &amp; Białowiec (2024)</div>
+      <p>Process response only (yield, rate, lag). Consistent with a mechanism, but equally consistent with adsorption, buffering, or biodegradation of the additive.</p>
+    </div>
+    <div class="evcard" data-r style="--d:4">
+      <div class="k">Moderate at most &middot; Zhang (2022), CDU / Wang (2026)</div>
+      <p>Process response <strong>plus</strong> a compatible microbial-community shift. Still not direct proof: a community shift can follow from a changed substrate too.</p>
+    </div>
+    <div class="evcard" data-r style="--d:5">
+      <div class="k">Strong &middot; no dataset here yet</div>
+      <p>Would require process <strong>and</strong> microbial <strong>and</strong> direct electrochemical or molecular evidence. Nothing in this repository reaches it.</p>
+    </div>
+  </div>
+  <div class="note" data-r style="--d:6">Rule enforced across the codebase: never describe a Weak- or Moderate-grade result with Strong-grade language ("proves", "confirms"). Use outcome-level language instead ("predicts", "is associated with").</div>
+</section>
+
+<!-- 13 ............................................... -->
+<section class="slide dark">
+  <div class="eyebrow" data-r style="--d:0">Literature context &middot; Chiappero et al. (2022)</div>
+  <h2 data-r style="--d:1">A meta-analysis that motivates the model's shape &mdash; not its parameters</h2>
+  <div class="kpi">
+    <div data-r style="--d:2"><span>g=2.43</span><small>effect on methane yield</small></div>
+    <div data-r style="--d:3"><span>g=2.54</span><small>effect on max rate</small></div>
+    <div data-r style="--d:4"><span>408</span><small>batch conditions, 76 studies</small></div>
+  </div>
+  <ul class="clean" style="margin-top:clamp(18px,2.8vh,28px)">
+    <li data-r style="--d:5">Optimal biochar profile: high ash, low carbon, high O/C, acidic pH, low surface area &mdash; sludge/manure-derived biochars tend to fit; wood-derived tend not to.</li>
+    <li data-r style="--d:6">Dose-cost regression argues against doses above &#8776;0.45&ndash;0.76 g biochar/g VS on economic grounds alone.</li>
+    <li data-r style="--d:7">The meta-analysis's own aggregated dose-response is <strong>non-monotonic</strong>: moderate doses help, excessive doses (&gt;15&ndash;20 g/L) trend toward inhibition.</li>
+  </ul>
+  <div class="note" data-r style="--d:8">Closed-access, standard-copyright source &mdash; no table or figure is reproduced, only these cited summary statistics. This <em>motivates</em> the twin's own non-monotonic, log-based dose term. It does not validate this project's specific fitted parameters.</div>
+</section>
+
+<!-- 14 ............................................... -->
 <section class="slide">
   <div class="eyebrow" data-r style="--d:0">Honest status</div>
   <h2 data-r style="--d:1">What can and cannot be claimed right now</h2>
@@ -447,35 +576,58 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
     <ul class="clean">
       <li data-r style="--d:2"><strong>Can claim:</strong> the software executes an auditable, reproducible end-to-end BMP workflow.</li>
       <li data-r style="--d:3"><strong>Can claim:</strong> modified Gompertz has the lowest held-out RMSE on the open reactor-level benchmark, in every treatment.</li>
-      <li data-r style="--d:4"><strong>Can claim:</strong> an independent dataset was used to stress-test the dose-response hypothesis, and the negative result is reported, not hidden.</li>
+      <li data-r style="--d:4"><strong>Can claim:</strong> an independent dataset stress-tested the dose-response hypothesis, and the negative result is reported, not hidden.</li>
+      <li data-r style="--d:5"><strong>Can claim:</strong> every dataset here is graded for mechanism-evidence strength, and none reaches "Strong."</li>
     </ul>
     <ul class="clean">
-      <li data-r style="--d:5"><strong>Cannot claim:</strong> that the log-quadratic dose-response form is supported by independent data &mdash; it currently is not.</li>
-      <li data-r style="--d:6"><strong>Cannot claim:</strong> that biochar causally improves anaerobic digestion across studies.</li>
-      <li data-r style="--d:7"><strong>Cannot claim:</strong> that this research prototype is already an operational plant digital twin.</li>
-      <li data-r style="--d:8"><strong>Cannot claim:</strong> that the 8-parameter global model's individual parameters are identifiable &mdash; even on the project's own synthetic demo, two are already confounded above the checked threshold.</li>
+      <li data-r style="--d:6"><strong>Cannot claim:</strong> that the log-quadratic dose-response form is supported by independent data &mdash; it currently is not.</li>
+      <li data-r style="--d:7"><strong>Cannot claim:</strong> that biochar causally improves anaerobic digestion across studies.</li>
+      <li data-r style="--d:8"><strong>Cannot claim:</strong> that the CDU pyrolysis-temperature trend is attributable to conductivity specifically &mdash; it is confounded with BET and pH by construction.</li>
+      <li data-r style="--d:9"><strong>Cannot claim:</strong> that the 8-parameter global model's individual parameters are identifiable &mdash; even on synthetic data, two are already confounded.</li>
     </ul>
   </div>
-  <div class="note" data-r style="--d:9">A <strong>reproducible research prototype for falsifiable kinetic modelling</strong> &mdash; that description, and every number above, is maintained in <span class="fill">docs/PROJECT_STATUS.md</span>.</div>
+  <div class="note" data-r style="--d:10">A <strong>reproducible research prototype for falsifiable kinetic modelling</strong> &mdash; that description, and every number above, is maintained in <span class="fill">docs/PROJECT_STATUS.md</span>.</div>
 </section>
 
-<!-- 10 ................................................ -->
+<!-- 15 ............................................... -->
+<section class="slide">
+  <div class="eyebrow" data-r style="--d:0">Public collaboration &middot; García-Prats et al. (2024)</div>
+  <h2 data-r style="--d:1">Already integrated: a public design/material dataset</h2>
+  <p class="lead" data-r style="--d:2">García-Prats et al. (2024)'s public design and material tables are already used to test this project's metadata- and material-aware data structures.</p>
+  <div class="note" data-r style="--d:3">No methane-outcome data is claimed from it &mdash; it sits in the "metadata-only" tier precisely so it is never read as evidence for or against the model itself. It is the reason the project's schemas already know how to carry feedstock and pyrolysis-temperature metadata cleanly.</div>
+</section>
+
+<!-- 16 ............................................... -->
+<section class="slide dark">
+  <div class="eyebrow" data-r style="--d:0">Private collaboration &middot; CYPRUS2025 extended abstract</div>
+  <h2 data-r style="--d:1">Handled with the same rigor as any private dataset &mdash; because it is one</h2>
+  <ul class="clean" style="--d:2">
+    <li data-r style="--d:2">Shared directly by Marta Garc&iacute;a-Prats, 2 September 2026, as part of an active research collaboration.</li>
+    <li data-r style="--d:3">Nine biochars &mdash; three feedstocks (PP, PH, Q) &times; three pyrolysis temperatures (300/400/500&#176;C) &mdash; the multi-material, multi-temperature design this project's roadmap has been asking for.</li>
+    <li data-r style="--d:4">Full paper under revision, not yet public &mdash; same rule as Zhang et al. (2022): no source file, text, figure, or numeric value committed without explicit permission.</li>
+    <li data-r style="--d:5"><span class="fill">scripts/build_garcia_prats_cyprus2025_dataset.py</span> hardcodes <strong>zero</strong> real measurements &mdash; only schema and transformation logic, hash-verified, tested against synthetic fixtures.</li>
+  </ul>
+  <div class="note" data-r style="--d:6">Private model testing under the collaboration only &mdash; not a substitute for public reproduction or peer review. Thank you for trusting the project with it.</div>
+</section>
+
+<!-- 17 ............................................... -->
 <section class="slide dark">
   <div class="eyebrow" data-r style="--d:0">Reproducibility</div>
   <h2 data-r style="--d:1">Every chart in this deck is one command away</h2>
   <div class="kpi">
-    <div data-r style="--d:2"><span>45</span><small>automated tests</small></div>
-    <div data-r style="--d:3"><span>6</span><small>CLI commands</small></div>
+    <div data-r style="--d:2"><span>96</span><small>automated tests</small></div>
+    <div data-r style="--d:3"><span>7</span><small>CLI commands</small></div>
     <div data-r style="--d:4"><span>0</span><small>lint errors tolerated</small></div>
   </div>
   <ul class="clean" style="margin-top:clamp(20px,3.4vh,36px)">
     <li data-r style="--d:5"><span class="fill">biochar-ad benchmark-experimental</span> regenerates the Kozłowski chart's numbers.</li>
     <li data-r style="--d:6"><span class="fill">biochar-ad benchmark-external-dose</span> regenerates the falsification chart's numbers.</li>
-    <li data-r style="--d:7">GitHub Actions runs <span class="fill">ruff check</span> and <span class="fill">pytest</span> on Python 3.10 and 3.12 on every change; <span class="fill">docs/ARCHITECTURE.md</span> maps every module for a reader new to the project.</li>
+    <li data-r style="--d:7"><span class="fill">biochar-ad benchmark-pyrolysis-temperature</span> regenerates the CDU chart and its collinearity warning.</li>
+    <li data-r style="--d:8">GitHub Actions runs <span class="fill">ruff check</span> and <span class="fill">pytest</span> on Python 3.10 and 3.12 on every change; <span class="fill">docs/ARCHITECTURE.md</span> maps every module for a reader new to the project.</li>
   </ul>
 </section>
 
-<!-- 11 ................................................ -->
+<!-- 18 ............................................... -->
 <section class="slide">
   <div class="eyebrow" data-r style="--d:0">Roadmap</div>
   <h2 data-r style="--d:1">The next validation gate</h2>
@@ -488,16 +640,30 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
   </ol>
 </section>
 
-<!-- 12 ................................................ -->
+<!-- 19 ............................................... -->
+<section class="slide">
+  <div class="eyebrow" data-r style="--d:0">The ask</div>
+  <h2 data-r style="--d:1">What would move this from summary tables to Stage 1</h2>
+  <p class="lead" data-r style="--d:2">The CYPRUS2025 nine-biochar design already varies feedstock and pyrolysis temperature the way the roadmap calls for. What is missing to close the gap is at the reactor level, not the design level:</p>
+  <ul class="clean" style="margin-top:clamp(14px,2.2vh,22px)">
+    <li data-r style="--d:3">Reactor-level cumulative-methane trajectories (not just endpoint CMY), if and when they can be shared.</li>
+    <li data-r style="--d:4">Per-reactor replicate structure, so held-out-reactor validation &mdash; the same test already run on Kozłowski (2025) &mdash; can be run here too.</li>
+    <li data-r style="--d:5">Any microbial or electrochemical measurements already collected, even partial, to move the mechanism-evidence grade beyond Weak.</li>
+  </ul>
+  <div class="note" data-r style="--d:6">None of this changes how the existing abstract is handled: private, hash-verified, never redistributed, exactly as agreed. This is a proposal for what a next, larger data-sharing step could look like &mdash; entirely on your terms.</div>
+</section>
+
+<!-- 20 ............................................... -->
 <section class="slide dark">
   <div class="eyebrow" data-r style="--d:0">Take-aways</div>
-  <h2 data-r style="--d:1">Three things worth remembering</h2>
+  <h2 data-r style="--d:1">Four things worth remembering</h2>
   <ol class="numlist">
     <li data-r style="--d:2"><div><p>The kinetic curve family this project uses already wins independently, on real reactor data.</p></div></li>
     <li data-r style="--d:3"><div><p>The dose-response <em>shape</em> does not, yet &mdash; and that result is published in the repository, not buried.</p></div></li>
-    <li data-r style="--d:4"><div><p>What it needs next is independent, multi-dose, multi-temperature reactor data with intact replicates.</p></div></li>
+    <li data-r style="--d:4"><div><p>Every claim here is tiered, graded and, where possible, given a confidence interval &mdash; on purpose.</p></div></li>
+    <li data-r style="--d:5"><div><p>The CYPRUS2025 collaboration is treated with the same rigor as every other dataset: private data stays private, and every cited number is checked against the source.</p></div></li>
   </ol>
-  <p class="sub" data-r style="--d:5">Thank you. The repository, including this deck and every underlying number, is public and open to review.<br>
+  <p class="sub" data-r style="--d:6">Thank you. The repository, including this deck and every underlying number, is public and open to review.<br>
   <span style="font-family:var(--mono);font-size:13px">github.com/thisisnikan/biochar-ad-digital-twin &middot; nikan.haghighatjoo@gmail.com</span></p>
 </section>
 
@@ -505,7 +671,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:11px;hei
 
 <div class="rail"><span id="railfill"></span></div>
 <div class="nav">
-  <span class="count" id="count">01 / 12</span>
+  <span class="count" id="count">01 / 20</span>
   <button id="prev" aria-label="Previous slide">&#8592;</button>
   <button id="next" aria-label="Next slide">&#8594;</button>
 </div>
