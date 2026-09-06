@@ -55,6 +55,12 @@ outcome) are kept in separate tables so the two are not read as equally strong.
 | --- | --- | --- | --- |
 | Public design/material tables | García-Prats et al. (2024) | Tests metadata and material-aware structure | Any methane-outcome claim; not usable as evidence for or against the model |
 
+**Literature context (not usable as data):**
+
+| Evidence layer | Dataset | What it supports | What it does not support |
+| --- | --- | --- | --- |
+| Literature synthesis | Chiappero et al. (2022) meta-analysis | Motivates the non-monotonic dose-response functional form and gives a literature-derived optimal property range and dose-cost heuristic | Any reactor-level validation; it is aggregated meta-analysis output, not primary data |
+
 The exact readiness assessment, limitations and next validation gate are maintained in
 [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md).
 

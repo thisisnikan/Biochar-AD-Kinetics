@@ -49,6 +49,12 @@ Last reviewed: 5 September 2026
   temperature-response trend *and* for collinearity among its own descriptors
   (temperature, BET, conductivity, pH), which the CLI reports as confounded rather
   than picking one as the "driver."
+- The twin's log-based, non-monotonic dose term has literature precedent: Chiappero
+  et al. (2022, https://doi.org/10.1016/j.jece.2022.108870) report a non-monotonic
+  aggregated dose-response across their meta-analysis (moderate doses helping,
+  excessive doses trending toward inhibition) and a dose-cost regression that argues
+  against very high doses on economic grounds alone. This *motivates* the functional
+  form chosen here — it does not validate this project's specific fitted parameters.
 
 ## What cannot be claimed now
 
