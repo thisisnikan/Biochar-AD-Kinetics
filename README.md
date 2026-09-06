@@ -15,10 +15,31 @@ explains the idea, the repository layout and the code path in plain language.
 
 **Then:** [Scientific status](docs/PROJECT_STATUS.md) ·
 [Data contract](docs/DATA_CONTRACT.md) · [Data provenance](data/README.md) ·
+[Mechanism-evidence grading](docs/MECHANISM_EVIDENCE.md) ·
 [Reproducible results](results/README.md) ·
 [Presentation](presentation/README.md) · [Contributing](CONTRIBUTING.md)
 
+## Scope and terminology
+
+This repository names itself a "digital twin" for continuity with the author's
+earlier research, but the software is narrower than that term usually implies:
+it is a **batch kinetic-modelling and statistical-benchmarking framework**, not
+a live, sensor-connected process twin. There is no mass/energy balance (e.g.
+ADM1), no reactor hydrodynamics, and no data-assimilation loop against a
+running digester. The dose-response term in `model.py` is also **phenomenological,
+not mechanistic**: it is a flexible curve shape chosen to be testable against
+data, not derived from a specific biological mechanism (e.g. direct
+interspecies electron transfer or VFA/ammonia adsorption). Both simplifications
+are deliberate for a research prototype, but should not be assumed away when
+reading the results.
+
 ## Current evidence at a glance
+
+Outcome evidence (methane data that can support or challenge the model) and
+metadata-only resources (data about materials or designs, with no methane
+outcome) are kept in separate tables so the two are not read as equally strong.
+
+**Outcome evidence:**
 
 | Evidence layer | Dataset | What it supports | What it does not support |
 | --- | --- | --- | --- |
@@ -26,10 +47,45 @@ explains the idea, the repository layout and the code path in plain language.
 | Reactor-level benchmark | Kozłowski et al. (2025), 12 trajectories | Reproducible kinetic-family comparison | A universal biochar mechanism |
 | Author-shared summary analysis | Zhang et al. (2022), treatment means and SDs | Kinetic/VFA analysis with explicit limitations | Replicate-held-out validation or new significance tests |
 | Independent dose challenge | Valentin & Białowiec (2024), five fitted-dose endpoints | Falsifies the log-quadratic form as tested | Full reactor-trajectory validation |
-| Public design/material tables | García-Prats et al. (2024) | Tests metadata and material-aware structure | Methane outcomes not present in the public tables |
+| Published pyrolysis-temperature summary | CDU / Wang (2026) thesis, six biochars (400–900 °C) | Descriptive temperature-response check, with pyrolysis temperature/BET/conductivity/pH collinearity reported explicitly | Attributing any trend to one material property, a causal claim, or DIET evidence (see `docs/MECHANISM_EVIDENCE.md`) |
+| Author-shared unpublished summary (private) | García-Prats et al., CYPRUS2025 extended abstract | Nine-biochar feedstock × pyrolysis-temperature dose-response dataset for private model testing | Public reproduction, peer review status, independent validation |
+
+**Metadata-only resources (no methane outcome data):**
+
+| Resource | Dataset | What it supports | What it does not support |
+| --- | --- | --- | --- |
+| Public design/material tables | García-Prats et al. (2024) | Tests metadata and material-aware structure | Any methane-outcome claim; not usable as evidence for or against the model |
+
+**Literature context (not usable as data):**
+
+| Evidence layer | Dataset | What it supports | What it does not support |
+| --- | --- | --- | --- |
+| Literature synthesis | Chiappero et al. (2022) meta-analysis | Motivates the non-monotonic dose-response functional form and gives a literature-derived optimal property range and dose-cost heuristic | Any reactor-level validation; it is aggregated meta-analysis output, not primary data |
 
 The exact readiness assessment, limitations and next validation gate are maintained in
 [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md).
+
+### Known statistical limitations (checked automatically, not hidden)
+
+- **Parameter identifiability.** `fit_global` reports `max_parameter_correlation`
+  and `parameter_gram_condition_number` for the 8-parameter global model. On
+  the bundled synthetic demo dataset itself, two parameters are already
+  confounded (correlation ≈ 0.96, above the 0.95 flag threshold) — no real
+  dataset in this repository varies both dose and temperature with replicates,
+  so the full parameter set has never been shown to be identifiable from real
+  data. The CLI prints `identifiability_warning` whenever this threshold is
+  crossed.
+- **Interpolation vs. extrapolation.** `leave_one_batch_out` tags each held-out
+  batch `is_boundary_condition`; only boundary rows say anything about
+  extrapolation to untested conditions. `biochar-ad fit`/`demo` report
+  interior and boundary held-out RMSE separately rather than one pooled mean.
+- **Small-n effect sizes.** `summarize-effects` reports a 95% CI on every
+  percent-change effect size (delta method on the log response ratio) and
+  flags `low_replication` whenever a treatment or control arm has fewer than
+  3 reactors, or whenever the underlying source is a published point estimate
+  with no reported replicate spread at all (the Valentin & Białowiec table).
+  Several of the larger reported percent changes have confidence intervals
+  that cross zero.
 
 ## Research question and falsifiable hypothesis
 
@@ -61,10 +117,15 @@ represents biochar dose and temperature explicitly:
 - smooth, non-monotonic biochar dose response;
 - Q10 temperature correction for production rate;
 - robust global least-squares estimation;
-- residual-bootstrap uncertainty that preserves batch structure;
-- comparison with constant-Gompertz and log-linear dose baselines;
-- identical leave-one-batch-out folds for all three models, ranked by mean RMSE;
-- descriptive training AIC, AICc and BIC;
+- parameter-identifiability diagnostics (correlation and condition number) reported
+  alongside every fit, so a good RMSE is never mistaken for well-separated parameters;
+- residual-bootstrap uncertainty that preserves batch structure, available for both
+  the demo and real fits (`--bootstrap`);
+- comparison of constant-Gompertz, log-linear and log-quadratic dose/temperature
+  baselines on identical leave-one-batch-out folds, ranked by mean held-out RMSE
+  (with descriptive training AIC, AICc and BIC);
+- that held-out comparison also separates interior (interpolation) from boundary
+  (extrapolation) error instead of pooling them;
 - reproducible CSV, JSON and publication-ready PNG outputs.
 - a minimum reactor-time-point data contract with automated intake validation.
 
@@ -93,11 +154,14 @@ biochar-ad demo --output outputs --bootstrap 100
 The command creates:
 
 - `synthetic_bmp_data.csv` — explicitly labelled demonstration data;
-- `fit_summary.json` — fitted parameters and diagnostic metrics;
+- `fit_summary.json` — fitted parameters and diagnostic metrics, including
+  `max_parameter_correlation` and `parameter_gram_condition_number`;
 - `bootstrap_summary.csv` — uncertainty summary;
 - `model_comparison.csv` — baseline comparison and ΔAICc;
-- `leave_one_batch_out.csv` — prediction error for every model and held-out batch;
-- `held_out_model_comparison.csv` — three models ranked by mean held-out RMSE;
+- `leave_one_batch_out.csv` — prediction error for every model and held-out batch,
+  tagged `is_boundary_condition` to separate interpolation from extrapolation;
+- `held_out_model_comparison.csv` — the three candidate models ranked by mean
+  held-out RMSE;
 - `fitted_curves.png` — observed and fitted profiles.
 
 ## Real experimental benchmark
@@ -160,11 +224,13 @@ provenance. See `data/README.md` for the access boundary and rebuild command.
 To fit an experimental dataset:
 
 ```bash
-biochar-ad fit path/to/bmp_data.csv --output outputs
+biochar-ad fit path/to/bmp_data.csv --output outputs --bootstrap 100
 ```
 
 Required columns are `batch_id`, `time_days`, `dose_g_l`, `temperature_c`, and
-`methane_ml_g_vs`.
+`methane_ml_g_vs`. `--bootstrap` defaults to `0` (skipped) for `fit`, unlike
+`demo`, because resampling a large real dataset can be slow; pass a positive
+iteration count to get the same residual-bootstrap uncertainty on real data.
 
 The full comparison requires at least three batches. At one training temperature,
 Q10 is fixed rather than estimated; extrapolation to an unseen temperature from

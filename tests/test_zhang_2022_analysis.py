@@ -82,6 +82,24 @@ def test_process_metrics_sums_analytes_without_pseudo_replicates() -> None:
     assert biochar["min_ph"] == 7.2
 
 
+def test_day10_lookup_is_nan_instead_of_crashing_without_an_exact_sample() -> None:
+    time = np.array([0, 2, 4, 6, 8, 9.5, 12, 16, 20, 24, 28], dtype=float)
+    rows = []
+    for treatment, rate, lag in (("control", 20.0, 6.0), ("biochar_750c_60min", 24.3, 2.3)):
+        values = MODULE.modified_gompertz(time, 280.0, rate, lag)
+        rows.extend(
+            {
+                "experiment_axis": "pyrolysis_temperature",
+                "treatment": treatment,
+                "time_days": day,
+                "cumulative_methane_ml": value,
+            }
+            for day, value in zip(time, values, strict=True)
+        )
+    metrics, _ = MODULE.kinetic_metrics(pd.DataFrame(rows))
+    assert metrics["day10_methane_ml"].isna().all()
+
+
 def test_information_criteria_penalizes_extra_parameters() -> None:
     observed = np.array([0.0, 1.0, 2.0, 3.0, 4.0])
     predicted = observed.copy()

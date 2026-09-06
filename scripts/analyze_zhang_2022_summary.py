@@ -65,7 +65,7 @@ def _fit(time: np.ndarray, observed: np.ndarray, model: str) -> dict[str, object
     )
     predicted = function(time, *solution.x)
     residual = observed - predicted
-    rss = float(np.sum(residual**2))
+    rss = max(float(np.sum(residual**2)), np.finfo(float).tiny)
     return {
         "parameters": solution.x,
         "predicted": predicted,
@@ -74,6 +74,13 @@ def _fit(time: np.ndarray, observed: np.ndarray, model: str) -> dict[str, object
         "durbin_watson": float(np.sum(np.diff(residual) ** 2) / rss),
         **_information_criteria(observed, predicted, len(initial)),
     }
+
+
+def _value_at_time(time: np.ndarray, values: np.ndarray, target_day: float) -> float:
+    index = np.flatnonzero(np.isclose(time, target_day, atol=1e-6))
+    if not len(index):
+        return float("nan")
+    return float(values[index[0]])
 
 
 def _crossing_time(time: np.ndarray, values: np.ndarray, target: float) -> float:
@@ -124,7 +131,7 @@ def kinetic_metrics(methane: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
                 }
             )
         gompertz = fits["modified_gompertz"]["parameters"]
-        day10 = float(observed[np.flatnonzero(time == 10.0)[0]])
+        day10 = _value_at_time(time, observed, 10.0)
         treatment_metrics.append(
             {
                 "experiment_axis": axis,

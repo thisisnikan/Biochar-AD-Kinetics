@@ -48,6 +48,16 @@ def test_missing_blank_is_reported_without_inventing_one() -> None:
     assert "missing_inoculum_blank" in {issue.code for issue in report.issues}
 
 
+def test_missing_dose_unit_is_rejected() -> None:
+    frame = pd.read_csv(TEMPLATE)
+    frame.loc[frame["reactor_id"].eq("biochar_r1"), "dose_unit"] = pd.NA
+
+    report = validate_reactor_observations(frame)
+
+    assert not report.valid
+    assert "invalid_dose_unit" in {issue.code for issue in report.issues}
+
+
 def test_reactor_identifiers_are_scoped_to_their_experiment() -> None:
     frame = pd.read_csv(TEMPLATE)
     second = frame.copy()

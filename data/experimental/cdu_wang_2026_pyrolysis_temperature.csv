@@ -1,0 +1,8 @@
+material_id,pyrolysis_temperature_c,bet_surface_area_m2_g,electrical_conductivity_us_cm,ph,final_methane_yield_nml,final_methane_yield_sd_nml,n_replicates,data_origin,source_doi
+p400,400,4.1786,426,8.13,4511.68,21.42,3,published_thesis_table,10.25913/xgzk-zs88
+p500,500,6.8766,455,8.14,4581.44,3.25,3,published_thesis_table,10.25913/xgzk-zs88
+p600,600,31.5221,482,8.16,4842.61,31.66,3,published_thesis_table,10.25913/xgzk-zs88
+p700,700,68.1037,526,8.21,5037.49,48.52,3,published_thesis_table,10.25913/xgzk-zs88
+p800,800,102.2167,571,8.23,5353.33,51.14,3,published_thesis_table,10.25913/xgzk-zs88
+p900,900,115.1391,612,8.25,5515.74,54.58,3,published_thesis_table,10.25913/xgzk-zs88
+activated_carbon,,680.0024,622,9.56,,,3,published_thesis_table,10.25913/xgzk-zs88

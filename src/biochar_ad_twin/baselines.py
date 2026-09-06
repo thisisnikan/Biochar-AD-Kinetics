@@ -64,6 +64,14 @@ BASELINES = {
 }
 
 
+def include_mask(frame: pd.DataFrame, column: str = "included_in_benchmark") -> pd.Series:
+    """Coerce a benchmark-inclusion column to boolean, tolerating string encodings."""
+    inclusion = frame[column]
+    if inclusion.dtype == bool:
+        return inclusion
+    return inclusion.astype(str).str.lower().isin({"true", "1", "yes"})
+
+
 def fit_baseline(frame: pd.DataFrame, spec: BaselineSpec) -> tuple[np.ndarray, np.ndarray]:
     """Fit one baseline specification and return parameters and predictions."""
     time = frame["time_days"].to_numpy(float)
@@ -95,12 +103,7 @@ def compare_experimental_baselines(frame: pd.DataFrame) -> pd.DataFrame:
     missing = required.difference(frame.columns)
     if missing:
         raise ValueError(f"Missing experimental columns: {', '.join(sorted(missing))}")
-    inclusion = frame["included_in_benchmark"]
-    if inclusion.dtype == bool:
-        include_mask = inclusion
-    else:
-        include_mask = inclusion.astype(str).str.lower().isin({"true", "1", "yes"})
-    valid = frame.loc[include_mask].copy()
+    valid = frame.loc[include_mask(frame)].copy()
     if valid.empty:
         raise ValueError("No reactor trajectories are marked for benchmark inclusion")
 

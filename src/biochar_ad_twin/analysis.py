@@ -60,9 +60,26 @@ def leave_one_batch_out(frame: pd.DataFrame) -> pd.DataFrame:
     Fit parameters, bounds and robust loss are shared across nested candidates.
     A single training temperature cannot support extrapolation to a new one.
     This is within-dataset validation, not held-out-study validation.
+
+    Most held-out batches also sit inside the observed dose/temperature
+    range, so their error mainly measures interpolation, not extrapolation.
+    Each row is tagged ``is_boundary_condition`` when the held-out batch is
+    at the min or max of the observed dose or temperature range; only those
+    rows say anything about extrapolation to untested conditions, and the
+    two groups should be reported separately rather than pooled into one
+    mean.
     """
     if frame["batch_id"].nunique() < 3:
-        raise ValueError("Batch holdout requires at least three batches")
+        raise ValueError(
+            "At least three batch conditions are required for leave-one-batch-out "
+            "validation (two must remain after holding one out)"
+        )
+    batch_conditions = frame.drop_duplicates("batch_id").set_index("batch_id")
+    dose_bounds = (batch_conditions["dose_g_l"].min(), batch_conditions["dose_g_l"].max())
+    temperature_bounds = (
+        batch_conditions["temperature_c"].min(),
+        batch_conditions["temperature_c"].max(),
+    )
     rows = []
     for batch_id in frame["batch_id"].drop_duplicates():
         train = frame.loc[frame["batch_id"] != batch_id].reset_index(drop=True)
@@ -71,6 +88,10 @@ def leave_one_batch_out(frame: pd.DataFrame) -> pd.DataFrame:
             train["temperature_c"].unique()
         ).all():
             raise ValueError("Cannot estimate temperature extrapolation from one training temperature")
+        condition = batch_conditions.loc[batch_id]
+        is_boundary_condition = bool(
+            condition["dose_g_l"] in dose_bounds or condition["temperature_c"] in temperature_bounds
+        )
         for name, response in CANDIDATES.items():
             parameters, metrics = fit_global(train, response=response)
             residual = test["methane_ml_g_vs"].to_numpy(float) - predict_frame(test, parameters)
@@ -81,6 +102,7 @@ def leave_one_batch_out(frame: pd.DataFrame) -> pd.DataFrame:
                     "n_train": len(train),
                     "n_test": len(test),
                     "parameters": int(metrics["n_parameters"]),
+                    "is_boundary_condition": is_boundary_condition,
                     "rmse_ml_g_vs": float(np.sqrt(np.mean(residual**2))),
                     "mae_ml_g_vs": float(np.mean(np.abs(residual))),
                 }

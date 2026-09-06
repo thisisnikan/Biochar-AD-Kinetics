@@ -15,6 +15,10 @@ Last reviewed: 5 September 2026
 | Zhang integration | Limited by source | Hash-verified private ingestion and summary analysis; original triplicates were lost |
 | Independent dose-response challenge | Falsified as tested | Valentin & Białowiec (2024) external table: log-linear beats the twin's log-quadratic form on leave-one-dose-out RMSE |
 | Global dose–temperature hypothesis | Not independently validated | Requires multi-dose, multi-temperature reactor trajectories; the dose-response *form* is now externally challenged (see above) |
+| Parameter identifiability | Checked, and currently failing on the demo | `fit_global` reports parameter correlation and condition number; the 8-parameter model is already confounded (correlation ≈ 0.96) on the bundled synthetic demo |
+| Effect-size uncertainty | Partially reported | Reactor-level percent-change effects now carry a 95% CI and a `low_replication` flag; published-table effects still carry no uncertainty at all |
+| Pyrolysis-temperature descriptor confounding | Checked and confounded | CDU / Wang (2026) six-biochar summary table: temperature, BET, conductivity and pH correlate above the checked threshold, so `benchmark-pyrolysis-temperature` refuses to attribute a trend to any one of them |
+| Mechanism-evidence grading | Documented | `docs/MECHANISM_EVIDENCE.md` grades every dataset Weak/Moderate/Strong (Pilarska 2026); no dataset in this repository currently reaches Strong |
 
 ## What can be claimed now
 
@@ -28,6 +32,29 @@ Last reviewed: 5 September 2026
 - An independent 2024 glucose BMP dataset (Valentin & Białowiec) was used to stress-test the
   digital twin's log-quadratic dose-response form against simpler alternatives, and the
   repository reports the negative result rather than hiding it.
+- Every global fit reports whether its own 8 parameters are practically identifiable
+  (`max_parameter_correlation`, `parameter_gram_condition_number`), instead of only
+  reporting goodness of fit.
+- `leave_one_batch_out` distinguishes held-out batches at the edge of the observed
+  dose/temperature range (`is_boundary_condition`) from interior ones, so interpolation
+  and extrapolation error are never silently averaged together.
+- Reactor-level percent-change effect sizes carry a 95% confidence interval (delta method
+  on the log response ratio) and a `low_replication` flag for any arm with fewer than
+  3 reactors.
+- Every dataset in this repository is graded Weak/Moderate/Strong for what kind of
+  mechanism evidence it actually contains (`docs/MECHANISM_EVIDENCE.md`), so a good
+  process-level fit is never described using stronger mechanistic language than the
+  underlying data supports.
+- The CDU / Wang (2026) pyrolysis-temperature summary table is checked for a smooth
+  temperature-response trend *and* for collinearity among its own descriptors
+  (temperature, BET, conductivity, pH), which the CLI reports as confounded rather
+  than picking one as the "driver."
+- The twin's log-based, non-monotonic dose term has literature precedent: Chiappero
+  et al. (2022, https://doi.org/10.1016/j.jece.2022.108870) report a non-monotonic
+  aggregated dose-response across their meta-analysis (moderate doses helping,
+  excessive doses trending toward inhibition) and a dose-cost regression that argues
+  against very high doses on economic grounds alone. This *motivates* the functional
+  form chosen here — it does not validate this project's specific fitted parameters.
 
 ## What cannot be claimed now
 
@@ -39,7 +66,31 @@ Last reviewed: 5 September 2026
 - That an external kinetic-parameter table validates full reactor trajectories — it is a
   parameter-level challenge only; the paper's raw reactor time series were not obtained.
 - That summary-curve residuals replace biological replicate uncertainty.
-- That this research prototype is already an operational plant digital twin.
+- That this research prototype is already an operational plant digital twin (see
+  [README § Scope and terminology](../README.md#scope-and-terminology)): there is no
+  mass/energy balance, reactor hydrodynamics, or live data-assimilation loop here.
+- That the 8-parameter global model's individual parameter values are meaningful on their
+  own — on the bundled synthetic demo dataset itself, the identifiability diagnostic already
+  finds two parameters confounded at correlation ≈ 0.96, above the 0.95 warning threshold.
+  No real dataset in this repository varies both dose and temperature with replicates, so
+  this has never been checked on real data, only ruled out as achievable on the easiest
+  possible (synthetic, noise-controlled) case.
+- That the larger reported percent-change effects (e.g. the Valentin & Białowiec dose-response
+  table) are statistically distinguishable from no effect — that table has no per-replicate
+  standard deviation at all, so no confidence interval can be computed for it, and every row
+  from it is flagged `low_replication` for that reason.
+- That any dataset in this repository, including CDU / Wang (2026), demonstrates direct
+  interspecies electron transfer (DIET) — every dataset here is graded Moderate or Weak in
+  `docs/MECHANISM_EVIDENCE.md`; none has the electrochemical or molecular evidence a Strong
+  grade requires.
+- That the CDU / Wang (2026) pyrolysis-temperature trend is attributable to conductivity
+  specifically — pyrolysis temperature, BET surface area, electrical conductivity and pH all
+  increase together across the six biochars in that table, and `benchmark-pyrolysis-temperature`
+  reports that collinearity rather than picking a "best" descriptor.
+- That the CDU / Wang (2026) thesis's own access/distribution terms are confirmed — this
+  repository could not independently verify them from its network environment; only the
+  specific published numeric values already summarised in issue #10 are transcribed, with
+  full citation, pending that confirmation.
 
 ## Next validation gate
 
@@ -51,7 +102,10 @@ criteria and the remaining acquisition work.
    with a zero-dose substrate control, at least three amended doses of the same
    material, intact replicates, blanks and traceable metadata.
 2. **Temperature second:** replicated dose-by-digestion-temperature designs,
-   followed by temperature prediction and parameter-identifiability checks.
+   followed by temperature prediction and parameter-identifiability checks —
+   concretely, `max_parameter_correlation` below `IDENTIFIABILITY_CORRELATION_THRESHOLD`
+   when the 8-parameter model is fitted to that dataset. A low-RMSE fit with
+   confounded parameters does not satisfy this stage.
 3. Freeze QC, model candidates and held-out criteria before evaluating new raw
    outcomes. Within-study refitting is not held-out-study transfer.
 
