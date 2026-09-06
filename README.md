@@ -48,6 +48,7 @@ outcome) are kept in separate tables so the two are not read as equally strong.
 | Author-shared summary analysis | Zhang et al. (2022), treatment means and SDs | Kinetic/VFA analysis with explicit limitations | Replicate-held-out validation or new significance tests |
 | Independent dose challenge | Valentin & Białowiec (2024), five fitted-dose endpoints | Falsifies the log-quadratic form as tested | Full reactor-trajectory validation |
 | Published pyrolysis-temperature summary | CDU / Wang (2026) thesis, six biochars (400–900 °C) | Descriptive temperature-response check, with pyrolysis temperature/BET/conductivity/pH collinearity reported explicitly | Attributing any trend to one material property, a causal claim, or DIET evidence (see `docs/MECHANISM_EVIDENCE.md`) |
+| Author-shared unpublished summary (private) | García-Prats et al., CYPRUS2025 extended abstract | Nine-biochar feedstock × pyrolysis-temperature dose-response dataset for private model testing | Public reproduction, peer review status, independent validation |
 
 **Metadata-only resources (no methane outcome data):**
 

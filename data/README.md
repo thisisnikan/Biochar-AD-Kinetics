@@ -210,3 +210,49 @@ comparator from:
     literature support for — not independent validation of — this project's choice
     of a non-monotonic, log-based dose term (see
     [`docs/PROJECT_STATUS.md`](../docs/PROJECT_STATUS.md) for the exact framing).
+
+## García-Prats CYPRUS2025 extended abstract (author-shared, unpublished)
+
+> García-Prats, M., González, D. & Sánchez, A. *Unveiling the relationships
+> between biochar characteristics and its beneficial effects in the anaerobic
+> digestion of the organic fraction of municipal solid waste (OFMSW)*.
+> Extended abstract presented at CYPRUS2025.
+
+- **Unpublished, author-shared, not redistributed.** Marta García-Prats shared
+  this extended abstract directly with this project by email on 2026-09-02, as
+  part of an active research collaboration. She has stated explicitly that the
+  full paper is under revision and not yet public. Following the same
+  restriction already applied to the Zhang et al. (2022) private workbook, no
+  part of it — not the source file, not its full text, not its figures, and
+  not its numeric values — is committed to this public repository without her
+  explicit redistribution permission.
+- **No data file is added to `data/experimental/` for this source.** The
+  abstract contains structured tables (biochar characteristics, kinetic
+  parameters and a property/outcome correlation analysis for nine biochars:
+  ``PP300``/``PP400``/``PP500``/``PH300``/``PH400``/``PH500``/``Q300``/
+  ``Q400``/``Q500``), but every value in them is unpublished author-shared
+  data, not this project's own.
+- `scripts/build_garcia_prats_cyprus2025_dataset.py` mirrors the Zhang
+  ingestion pattern: a maintainer transcribes the abstract's tables into a
+  private local workbook (schema documented in the script's own docstring),
+  the script verifies the source file's SHA-256 hash, and it writes ignored,
+  gitignored long-form CSVs under `data/private/garcia_prats_cyprus2025/` —
+  never into a tracked path:
+
+  ```bash
+  python scripts/build_garcia_prats_cyprus2025_dataset.py --source /path/to/garcia_prats_cyprus2025.xlsx
+  ```
+
+  Unlike the Zhang script, this project has never had access to the real
+  source file, so no hash could be pre-recorded; the script computes and
+  prints the source hash on first use so a maintainer can confirm it with the
+  author out of band and record it for future, verified runs.
+- Any value in the abstract that is only visible as a bar-chart height, with
+  no number stated in the text, is transcribed into the private workbook as
+  `not_machine_extractable = TRUE` with no value, rather than estimated from
+  the chart. No pseudo-replicates are generated, and no chart-derived number
+  is invented.
+- This dataset is for private model testing under the existing research
+  collaboration only. It is not a substitute for public reproduction,
+  independent validation, or peer review, and none of those claims should be
+  made from it.
