@@ -29,6 +29,11 @@ release model while the public API remains experimental.
 
 ## Unreleased
 
+- Connected the reactor-level intake contract to the kinetic model with
+  `biochar-ad fit-stage-a`, preserving physical-reactor identity and source hashes.
+- Split Stage A validation into explicit whole-reactor and whole-dose holdouts; the
+  latter removes every replicate at the held-out dose together to prevent leakage.
+- Refuse silent conversion of non-g/L dose bases in the current kinetic model.
 - Renamed the project from "Biochar–AD Digital Twin" to **Biochar–AD Kinetics**
   (GitHub repository, Python distribution and import package, README, presentation
   deck, `CITATION.cff`) because "digital twin" overstated the software's scope —

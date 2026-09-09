@@ -8,6 +8,8 @@ from biochar_ad_kinetics import cli
 from biochar_ad_kinetics.cli import _identifiability_warning
 from biochar_ad_kinetics.data import generate_demo_dataset, validate_dataset
 from biochar_ad_kinetics.fit import _numerical_jacobian, fit_global
+from biochar_ad_kinetics.intake import REQUIRED_OBSERVATION_COLUMNS
+from biochar_ad_kinetics.model import BatchCondition, KineticParameters, cumulative_methane
 
 
 def test_demo_global_fit(tmp_path) -> None:
@@ -172,6 +174,85 @@ def test_cli_validate_intake_reports_stage_a_gate(monkeypatch, capsys) -> None:
     assert payload["valid"]
     assert payload["stage_a"]["ready_series"] == 0
     assert len(payload["stage_a"]["candidate_series"]) == 1
+
+
+def test_cli_fit_stage_a_writes_leakage_safe_holdouts(tmp_path, monkeypatch, capsys) -> None:
+    truth = KineticParameters()
+    time = np.array([0.0, 5.0, 10.0, 20.0, 30.0])
+    rows = []
+    for dose in (0.0, 2.0, 5.0, 10.0):
+        for replicate in (1, 2):
+            reactor_id = f"dose_{dose:g}_r{replicate}"
+            response = cumulative_methane(time, BatchCondition(dose, 37.0), truth)
+            for day, methane in zip(time, response, strict=True):
+                rows.append(
+                    {
+                        "study_id": "stage_a_study",
+                        "experiment_id": "run_01",
+                        "reactor_id": reactor_id,
+                        "treatment_id": f"dose_{dose:g}",
+                        "replicate_id": replicate,
+                        "time_days": day,
+                        "temperature_c": 37.0,
+                        "is_control": dose == 0,
+                        "is_inoculum_blank": False,
+                        "substrate_id": "substrate_a",
+                        "inoculum_id": "inoculum_a",
+                        "material_id": "none" if dose == 0 else "biochar_a",
+                        "dose_value": dose,
+                        "dose_unit": "g_l",
+                        "raw_cumulative_methane_ml": methane,
+                        "blank_corrected_methane_ml_g_vs": methane,
+                        "qc_include": True,
+                        "qc_flags": "",
+                        "data_origin": "test_fixture",
+                        "source_record_id": f"{reactor_id}:{day:g}",
+                    }
+                )
+    for replicate in (1, 2):
+        for day in time:
+            rows.append(
+                {
+                    "study_id": "stage_a_study",
+                    "experiment_id": "run_01",
+                    "reactor_id": f"blank_r{replicate}",
+                    "treatment_id": "inoculum_blank",
+                    "replicate_id": replicate,
+                    "time_days": day,
+                    "temperature_c": 37.0,
+                    "is_control": True,
+                    "is_inoculum_blank": True,
+                    "substrate_id": "none",
+                    "inoculum_id": "inoculum_a",
+                    "material_id": "none",
+                    "dose_value": 0.0,
+                    "dose_unit": "none",
+                    "raw_cumulative_methane_ml": day,
+                    "blank_corrected_methane_ml_g_vs": np.nan,
+                    "qc_include": True,
+                    "qc_flags": "",
+                    "data_origin": "test_fixture",
+                    "source_record_id": f"blank_r{replicate}:{day:g}",
+                }
+            )
+    csv_path = tmp_path / "stage_a.csv"
+    pd.DataFrame(rows, columns=REQUIRED_OBSERVATION_COLUMNS).to_csv(csv_path, index=False)
+    output_dir = tmp_path / "stage_a_output"
+
+    monkeypatch.setattr(
+        "sys.argv", ["biochar-ad", "fit-stage-a", str(csv_path), "--output", str(output_dir)]
+    )
+    cli.main()
+
+    payload = json.loads(capsys.readouterr().out)
+    dose_holdouts = pd.read_csv(output_dir / "leave_one_dose_out.csv")
+    reactor_holdouts = pd.read_csv(output_dir / "leave_one_reactor_out.csv")
+    assert payload["primary_stage_a_metric"] == "mean whole-dose-held-out RMSE"
+    assert not payload["held_out_study_transfer_performed"]
+    assert dose_holdouts["held_out_group"].nunique() == 4
+    assert dose_holdouts["held_out_reactors"].eq(2).all()
+    assert reactor_holdouts["held_out_group"].nunique() == 8
+    assert (output_dir / "stage_a_manifest.json").exists()
 
 
 def test_cli_benchmark_pyrolysis_temperature_flags_collinearity(tmp_path, monkeypatch, capsys) -> None:

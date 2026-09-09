@@ -110,11 +110,85 @@ def leave_one_batch_out(frame: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def _leave_one_explicit_group_out(
+    frame: pd.DataFrame, group_column: str, split: str, minimum_groups: int
+) -> pd.DataFrame:
+    """Evaluate candidates while holding out every row in an explicit group."""
+
+    if group_column not in frame:
+        raise ValueError(f"Missing validation group column: {group_column}")
+    if frame[group_column].isna().any():
+        raise ValueError(f"{group_column} cannot contain missing values")
+    groups = frame[group_column].drop_duplicates().tolist()
+    if len(groups) < minimum_groups:
+        raise ValueError(f"{split} validation requires at least {minimum_groups} groups")
+
+    dose_bounds = (frame["dose_g_l"].min(), frame["dose_g_l"].max())
+    rows = []
+    for held_out_group in groups:
+        test_mask = frame[group_column].eq(held_out_group)
+        train = frame.loc[~test_mask].reset_index(drop=True)
+        test = frame.loc[test_mask].reset_index(drop=True)
+        held_out_doses = tuple(sorted(float(value) for value in test["dose_g_l"].unique()))
+        held_out_reactors = int(test["batch_id"].nunique())
+        is_boundary = bool(
+            split == "dose"
+            and len(held_out_doses) == 1
+            and held_out_doses[0] in dose_bounds
+        )
+        for name, response in CANDIDATES.items():
+            parameters, metrics = fit_global(train, response=response)
+            residual = test["methane_ml_g_vs"].to_numpy(float) - predict_frame(test, parameters)
+            rows.append(
+                {
+                    "split": split,
+                    "model": name,
+                    "held_out_group": held_out_group,
+                    "held_out_doses_g_l": ";".join(f"{value:g}" for value in held_out_doses),
+                    "held_out_reactors": held_out_reactors,
+                    "n_train_reactors": int(train["batch_id"].nunique()),
+                    "n_test_observations": len(test),
+                    "parameters": int(metrics["n_parameters"]),
+                    "is_boundary_condition": is_boundary,
+                    "rmse_ml_g_vs": float(np.sqrt(np.mean(residual**2))),
+                    "mae_ml_g_vs": float(np.mean(np.abs(residual))),
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def leave_one_reactor_out(frame: pd.DataFrame) -> pd.DataFrame:
+    """Test replicate reproducibility while sibling dose replicates remain in training."""
+
+    if frame.groupby("validation_reactor_id")["batch_id"].nunique().ne(1).any():
+        raise ValueError("Each reactor validation group must identify exactly one physical reactor")
+    if frame.groupby("batch_id")["validation_reactor_id"].nunique().ne(1).any():
+        raise ValueError("Every row from one physical reactor must share one validation group")
+    return _leave_one_explicit_group_out(
+        frame, "validation_reactor_id", split="reactor", minimum_groups=3
+    )
+
+
+def leave_one_dose_out(frame: pd.DataFrame) -> pd.DataFrame:
+    """Test dose generalization with every replicate at the held-out dose removed."""
+
+    dose_groups = frame.groupby("validation_dose_id")["dose_g_l"].nunique()
+    if dose_groups.ne(1).any():
+        raise ValueError("Each dose validation group must contain exactly one dose")
+    groups_per_dose = frame.groupby("dose_g_l")["validation_dose_id"].nunique()
+    if groups_per_dose.ne(1).any():
+        raise ValueError("Every replicate at one dose must share the same validation group")
+    return _leave_one_explicit_group_out(
+        frame, "validation_dose_id", split="dose", minimum_groups=4
+    )
+
+
 def summarize_holdouts(validation: pd.DataFrame) -> pd.DataFrame:
     """Weight each held-out batch equally; keep training criteria secondary."""
+    fold_column = "held_out_group" if "held_out_group" in validation else "held_out_batch"
     summary = validation.groupby("model", as_index=False).agg(
         mean_held_out_rmse_ml_g_vs=("rmse_ml_g_vs", "mean"),
         mean_held_out_mae_ml_g_vs=("mae_ml_g_vs", "mean"),
-        n_folds=("held_out_batch", "nunique"),
+        n_folds=(fold_column, "nunique"),
     )
     return summary.sort_values("mean_held_out_rmse_ml_g_vs").reset_index(drop=True)

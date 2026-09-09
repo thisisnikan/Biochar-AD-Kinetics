@@ -33,7 +33,9 @@ the current answer to "how validated is this, exactly?".
 | BMP | Biomethane potential — a standardized batch test measuring cumulative methane from a sample over time. |
 | Biochar | A porous, carbon-rich material made by pyrolyzing (heating without much oxygen) biomass; sometimes added to AD reactors as an amendment. |
 | S/I ratio | Substrate-to-inoculum ratio — how much waste versus how much microbial seed material is loaded into a batch test. |
-| Batch / reactor / replicate | One sealed test vessel (batch/reactor) run under one condition; a replicate is a repeat of the same condition to estimate variability. |
+| Reactor | One physical sealed test vessel with its own time trajectory. |
+| Treatment condition | A shared design such as one biochar dose and temperature; multiple reactors may replicate it. |
+| Replicate | An independent reactor repeated under the same treatment condition to estimate variability. |
 | Modified Gompertz equation | A three-parameter S-shaped curve (`P`, `Rₘ`, `λ`) commonly used to fit cumulative methane production over time. See `src/biochar_ad_kinetics/model.py`. |
 | Lag phase (λ) | The time before methane production visibly ramps up. |
 | Maximum rate (Rₘ) | The steepest point of the production curve — how fast methane accumulates at peak. |
@@ -42,7 +44,8 @@ the current answer to "how validated is this, exactly?".
 | Dose response | How an outcome (here, `P` and `Rₘ`) changes as a function of biochar dose. |
 | Least squares fitting | Finding the model parameters that minimize the squared difference between predicted and observed data. |
 | Residual bootstrap | An uncertainty-estimation technique: resample the model's own errors many times, refit, and see how much the parameters move. |
-| Leave-one-batch-out (LOBO) validation | Hide one experimental batch, fit on the rest, then check how well the fitted model predicts the hidden batch. This tests genuine prediction, not just curve fitting. |
+| Leave-one-reactor-out validation | Hide one physical reactor while sibling treatment replicates may remain in training; tests replicate reproducibility. |
+| Leave-one-dose-out validation | Hide every reactor at one dose together; tests prediction at an unseen dose without replicate leakage. |
 | AIC / AICc / BIC | Information criteria that penalize a model for using more parameters, used to compare candidate models fairly. Lower is better. |
 | RMSE / MAE | Root-mean-square error / mean absolute error — how far predictions are from observations, in the same units as the data. |
 | Held-out error | Error measured on data the model did not see while fitting — the honest test of predictive skill. |
@@ -75,13 +78,15 @@ public" means in practice here.
 ## How a run actually flows
 
 Everything is reached through one console command, `biochar-ad`, defined in
-`src/biochar_ad_kinetics/cli.py`. There are three subcommands:
+`src/biochar_ad_kinetics/cli.py`. The two core paths are the legacy/demo path and the
+reactor-level Stage A path:
 
 ```mermaid
 flowchart LR
     subgraph CLI["biochar-ad <command>"]
         demo["demo"]
         fit["fit &lt;csv&gt;"]
+        stage["fit-stage-a &lt;csv&gt;"]
         bench["benchmark-experimental"]
     end
 
@@ -89,10 +94,14 @@ flowchart LR
     gen --> pipeline
     fit --> validate["data.py<br/>validate_dataset()"]
     validate --> pipeline
+    stage --> intake["intake.py<br/>validate + preserve IDs"]
+    intake --> pipeline
 
     pipeline["fit.py<br/>fit_global()<br/>(global least squares)"] --> report["report.py<br/>save_report()<br/>JSON + PNG"]
     pipeline --> compare["analysis.py<br/>compare_models()<br/>AIC / AICc / BIC"]
     pipeline --> lobo["analysis.py<br/>leave_one_batch_out()<br/>held-out RMSE"]
+    stage --> reactor["leave_one_reactor_out()<br/>replicate reproducibility"]
+    stage --> dose["leave_one_dose_out()<br/>dose generalization"]
     demo --> boot["fit.py<br/>bootstrap_parameters()<br/>uncertainty"]
 
     bench --> baselines["baselines.py<br/>compare_experimental_baselines()<br/>per-treatment curve family comparison"]
@@ -132,6 +141,12 @@ Step by step, for `biochar-ad demo`:
 information criteria are only descriptive when points within one reactor's trajectory are
 autocorrelated.
 
+`fit-stage-a` bridges the intake and modelling schemas. It creates one unique internal
+`batch_id` per physical reactor while retaining a separate `validation_dose_id` shared by
+all replicates at the same dose. Consequently, reactor holdouts and dose holdouts cannot
+be silently confused. The command accepts only `g_l`; other reported dose bases remain in
+their source units until a documented measured conversion is available.
+
 ## Module-to-test map
 
 | Module | Responsibility | Tested by |
@@ -139,7 +154,7 @@ autocorrelated.
 | `model.py` | The Gompertz + dose + Q10 kinetic equation itself | `tests/test_model.py` |
 | `data.py` | Input validation and synthetic demo-data generation | `tests/test_model.py`, `tests/test_workflow.py` |
 | `fit.py` | Global least-squares fitting and residual bootstrap | `tests/test_workflow.py` |
-| `analysis.py` | Model comparison (AIC/AICc/BIC) and leave-one-batch-out validation | `tests/test_analysis.py` |
+| `analysis.py` | Model comparison plus explicit batch, reactor and dose holdouts | `tests/test_analysis.py` |
 | `baselines.py` | Per-treatment curve-family comparison for real replicate data | `tests/test_experimental_baselines.py` |
 | `report.py` | Writing JSON/PNG output artifacts | `tests/test_workflow.py` |
 | `cli.py` | Argument parsing and wiring the pieces above together | `tests/test_workflow.py` |

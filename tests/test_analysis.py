@@ -2,7 +2,13 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from biochar_ad_kinetics.analysis import compare_models, information_criteria, leave_one_batch_out
+from biochar_ad_kinetics.analysis import (
+    compare_models,
+    information_criteria,
+    leave_one_batch_out,
+    leave_one_dose_out,
+    leave_one_reactor_out,
+)
 from biochar_ad_kinetics.data import generate_demo_dataset
 from biochar_ad_kinetics.model import BatchCondition, KineticParameters, cumulative_methane
 
@@ -120,3 +126,68 @@ def test_leave_one_batch_out_flags_only_true_boundary_conditions():
     assert per_batch.loc[boundary_batch, "is_boundary_condition"]
     assert validation["is_boundary_condition"].any()
     assert not validation["is_boundary_condition"].all()
+
+
+def _replicated_dose_frame() -> pd.DataFrame:
+    truth = KineticParameters()
+    rows = []
+    for dose in (0.0, 2.0, 5.0, 10.0):
+        for replicate in (1, 2):
+            reactor = f"dose_{dose:g}_r{replicate}"
+            time = np.array([0.0, 5.0, 10.0, 20.0, 30.0])
+            methane = cumulative_methane(time, BatchCondition(dose, 37.0), truth)
+            rows.extend(
+                {
+                    "batch_id": reactor,
+                    "validation_reactor_id": reactor,
+                    "validation_dose_id": f"dose={dose:g}",
+                    "time_days": day,
+                    "dose_g_l": dose,
+                    "temperature_c": 37.0,
+                    "methane_ml_g_vs": value + replicate * 0.1,
+                }
+                for day, value in zip(time, methane, strict=True)
+            )
+    return pd.DataFrame(rows)
+
+
+def test_explicit_reactor_and_dose_splits_have_different_fold_semantics() -> None:
+    frame = _replicated_dose_frame()
+
+    reactor_validation = leave_one_reactor_out(frame)
+    dose_validation = leave_one_dose_out(frame)
+
+    assert reactor_validation["held_out_group"].nunique() == 8
+    assert reactor_validation["held_out_reactors"].eq(1).all()
+    assert dose_validation["held_out_group"].nunique() == 4
+    assert dose_validation["held_out_reactors"].eq(2).all()
+    assert dose_validation.groupby("held_out_group")["held_out_doses_g_l"].nunique().eq(1).all()
+
+
+def test_dose_holdout_removes_all_replicates_at_that_dose(monkeypatch) -> None:
+    from biochar_ad_kinetics import analysis
+
+    frame = _replicated_dose_frame()
+    training_doses = []
+
+    def spy(train, response):
+        training_doses.append(set(train["dose_g_l"]))
+        return KineticParameters(), {"n_parameters": 3}
+
+    monkeypatch.setattr(analysis, "fit_global", spy)
+    validation = leave_one_dose_out(frame)
+
+    for row, seen_doses in zip(validation.itertuples(), training_doses, strict=True):
+        held_out_dose = float(row.held_out_doses_g_l)
+        assert held_out_dose not in seen_doses
+        assert seen_doses == set(frame["dose_g_l"]) - {held_out_dose}
+
+
+def test_reactor_holdout_rejects_split_physical_reactor() -> None:
+    frame = _replicated_dose_frame()
+    reactor = frame["batch_id"].iloc[0]
+    reactor_rows = frame.index[frame["batch_id"].eq(reactor)]
+    frame.loc[reactor_rows[-1], "validation_reactor_id"] = "partial_reactor_group"
+
+    with pytest.raises(ValueError, match="one physical reactor must share"):
+        leave_one_reactor_out(frame)
