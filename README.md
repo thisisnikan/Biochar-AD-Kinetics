@@ -1,6 +1,6 @@
 # Biochar–AD Kinetics
 
-[![CI](https://github.com/thisisnikan/biochar-ad-digital-twin/actions/workflows/ci.yml/badge.svg)](https://github.com/thisisnikan/biochar-ad-digital-twin/actions)
+[![CI](https://github.com/thisisnikan/Biochar-AD-Kinetics/actions/workflows/ci.yml/badge.svg)](https://github.com/thisisnikan/Biochar-AD-Kinetics/actions)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-1B3FC4)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-1B3FC4)](LICENSE)
 [![Scientific status: research prototype](https://img.shields.io/badge/status-research%20prototype-B06A22)](docs/PROJECT_STATUS.md)
