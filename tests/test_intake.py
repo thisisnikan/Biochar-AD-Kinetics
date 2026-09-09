@@ -3,7 +3,11 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from biochar_ad_kinetics.intake import NUMERIC_COLUMNS, validate_reactor_observations
+from biochar_ad_kinetics.intake import (
+    NUMERIC_COLUMNS,
+    assess_stage_a_readiness,
+    validate_reactor_observations,
+)
 
 TEMPLATE = Path("data/templates/reactor_observations.csv")
 
@@ -197,3 +201,74 @@ def test_fully_excluded_experiment_is_preserved_with_warning() -> None:
     assert report.valid
     assert report.row_count == 12
     assert "no_included_observations" in {issue.code for issue in report.issues}
+
+
+def _stage_a_frame() -> pd.DataFrame:
+    frame = pd.read_csv(TEMPLATE)
+    control_and_blank = frame.loc[
+        frame["treatment_id"].isin(["substrate_control", "inoculum_blank"])
+    ]
+    amended = []
+    for dose in (2, 5, 10):
+        dose_rows = frame.loc[frame["treatment_id"].eq("biochar_5_g_l")].copy()
+        dose_rows["dose_value"] = dose
+        dose_rows["treatment_id"] = f"biochar_{dose}_g_l"
+        dose_rows["reactor_id"] = dose_rows["reactor_id"].str.replace(
+            "biochar_", f"biochar_{dose}_"
+        )
+        amended.append(dose_rows)
+    result = pd.concat([control_and_blank, *amended], ignore_index=True)
+    day_two = result.loc[result["time_days"].eq(1)].copy()
+    day_two["time_days"] = 2
+    day_two["raw_cumulative_methane_ml"] += 10
+    day_two["blank_corrected_methane_ml_g_vs"] += 10
+    return pd.concat([result, day_two], ignore_index=True)
+
+
+def test_stage_a_assessment_identifies_ready_series_for_manual_review() -> None:
+    assessments = assess_stage_a_readiness(_stage_a_frame())
+
+    assert len(assessments) == 1
+    assessment = assessments[0]
+    assert assessment.amended_doses == (2.0, 5.0, 10.0)
+    assert assessment.has_matched_zero_dose_control
+    assert assessment.minimum_reactors_per_required_arm == 2
+    assert assessment.all_required_rows_have_processed_methane
+    assert assessment.blank_evidence == "inoculum_blank_trajectory"
+    assert assessment.ready_for_manual_review
+
+
+def test_stage_a_assessment_does_not_treat_corrected_values_as_blank_provenance() -> None:
+    frame = _stage_a_frame()
+    frame = frame.loc[~frame["is_inoculum_blank"]]
+
+    assessment = assess_stage_a_readiness(frame)[0]
+
+    assert assessment.blank_evidence == "corrected_values_without_method"
+    assert not assessment.ready_for_manual_review
+
+
+def test_stage_a_assessment_rejects_missing_processed_trajectory_values() -> None:
+    frame = _stage_a_frame()
+    frame.loc[
+        frame["reactor_id"].eq("biochar_5_r1") & frame["time_days"].eq(1),
+        "blank_corrected_methane_ml_g_vs",
+    ] = pd.NA
+
+    assessment = assess_stage_a_readiness(frame)[0]
+
+    assert not assessment.all_required_rows_have_processed_methane
+    assert not assessment.ready_for_manual_review
+
+
+def test_stage_a_assessment_requires_comparable_doses_and_replicated_arms() -> None:
+    frame = _stage_a_frame()
+    frame.loc[frame["dose_value"].eq(10), "material_id"] = "different_biochar"
+    frame = frame.loc[~frame["reactor_id"].eq("biochar_2_r2")]
+
+    assessments = assess_stage_a_readiness(frame)
+
+    main_series = next(item for item in assessments if item.material_id == "biochar_a")
+    assert main_series.amended_doses == (2.0, 5.0)
+    assert not main_series.all_required_arms_replicated
+    assert not main_series.ready_for_manual_review

@@ -162,6 +162,18 @@ def test_cli_summarize_effects_reports_uncertainty_gaps(tmp_path, monkeypatch, c
         assert (study_effects["study_id"] == study_id).all()
 
 
+def test_cli_validate_intake_reports_stage_a_gate(monkeypatch, capsys) -> None:
+    monkeypatch.setattr(
+        "sys.argv", ["biochar-ad", "validate-intake", "data/templates/reactor_observations.csv"]
+    )
+    cli.main()
+
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["valid"]
+    assert payload["stage_a"]["ready_series"] == 0
+    assert len(payload["stage_a"]["candidate_series"]) == 1
+
+
 def test_cli_benchmark_pyrolysis_temperature_flags_collinearity(tmp_path, monkeypatch, capsys) -> None:
     output_dir = tmp_path / "pyrolysis_out"
     monkeypatch.setattr(
@@ -175,4 +187,3 @@ def test_cli_benchmark_pyrolysis_temperature_flags_collinearity(tmp_path, monkey
     assert "confounded" in payload["collinearity_warning"]
     assert (output_dir / "temperature_response_comparison.csv").exists()
     assert (output_dir / "descriptor_collinearity.csv").exists()
-

@@ -69,3 +69,22 @@ scientific limitation to report, not permission to manufacture missing informati
 Passing this gate establishes structural integrity only. Causal mechanism claims,
 global dose response, temperature extrapolation and plant-level control still require
 appropriate factorial designs and genuinely held-out reactors or studies.
+
+## Stage A readiness output
+
+`validate-intake` additionally groups amended observations by study, experiment,
+material, dose unit, digestion temperature, substrate and inoculum. This prevents
+incomparable doses from being counted as one dose-response series. Each series is checked
+for a matched zero-dose control, at least three amended doses, two or more reactors per
+required arm, at least three time points per reactor starting at day zero, blank evidence,
+complete blank-corrected methane values, and traceable row-level provenance.
+
+Raw inoculum-blank trajectories satisfy the machine blank-evidence check. When raw blanks
+cannot be shared, contributors may add an optional `blank_correction_reference` column
+whose non-empty values identify the source sheet, protocol or method used for correction.
+Corrected methane values alone do not document the correction method.
+
+`ready_for_manual_review` is intentionally not called `accepted`: software cannot prove
+that a submitted trajectory is complete, that every experimental reactor was disclosed,
+or that exclusions and blank correction are scientifically justified. Those points must
+be audited against the original source before Stage A analysis.
