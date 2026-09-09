@@ -113,6 +113,60 @@ class IntakeReport:
         }
 
 
+@dataclass(frozen=True)
+class StageASeriesAssessment:
+    """Machine-checkable readiness of one material/dose series for Stage A.
+
+    ``ready_for_manual_review`` deliberately does not mean that the source is
+    accepted as complete. Software can verify design structure, but only a
+    source-level audit can establish that a trajectory is the full record and
+    that no reactors or time points were omitted.
+    """
+
+    study_id: str
+    experiment_id: str
+    material_id: str
+    dose_unit: str
+    temperature_c: float
+    substrate_id: str
+    inoculum_id: str
+    amended_doses: tuple[float, ...]
+    has_matched_zero_dose_control: bool
+    minimum_reactors_per_required_arm: int
+    all_required_arms_replicated: bool
+    all_reactors_have_three_time_points: bool
+    all_reactors_start_at_day_zero: bool
+    all_required_rows_have_processed_methane: bool
+    blank_evidence: str
+    traceable_provenance: bool
+
+    @property
+    def ready_for_manual_review(self) -> bool:
+        return (
+            len(self.amended_doses) >= 3
+            and self.has_matched_zero_dose_control
+            and self.all_required_arms_replicated
+            and self.all_reactors_have_three_time_points
+            and self.all_reactors_start_at_day_zero
+            and self.all_required_rows_have_processed_methane
+            and self.blank_evidence
+            in {"inoculum_blank_trajectory", "documented_blank_correction"}
+            and self.traceable_provenance
+        )
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            **asdict(self),
+            "amended_doses": list(self.amended_doses),
+            "ready_for_manual_review": self.ready_for_manual_review,
+            "manual_review_required": (
+                "Confirm against the original source that trajectories are complete, "
+                "all experimental reactors are represented, exclusions are justified, "
+                "and blank correction is scientifically valid."
+            ),
+        }
+
+
 def _issue(severity: IssueSeverity, code: str, message: str) -> IntakeIssue:
     return IntakeIssue(severity=severity, code=code, message=message)
 
@@ -133,6 +187,135 @@ def _coerce_boolean(series: pd.Series) -> pd.Series:
         if isinstance(value, str)
         else mapping.get(value, pd.NA)
     )
+
+
+def assess_stage_a_readiness(frame: pd.DataFrame) -> tuple[StageASeriesAssessment, ...]:
+    """Assess candidate series against the machine-checkable Stage A gate.
+
+    A series holds study, experiment, material, dose unit, temperature,
+    substrate and inoculum constant. This prevents incomparable doses from
+    being counted as one dose-response design. The optional
+    ``blank_correction_reference`` column identifies an auditable correction
+    method when raw inoculum-blank trajectories cannot be shared.
+    """
+
+    if set(REQUIRED_OBSERVATION_COLUMNS).difference(frame.columns):
+        return ()
+
+    data = frame.copy()
+    for column in NUMERIC_COLUMNS:
+        data[column] = pd.to_numeric(data[column], errors="coerce")
+    for column in BOOLEAN_COLUMNS:
+        data[column] = _coerce_boolean(data[column])
+
+    included = data.loc[data["qc_include"].fillna(False).astype(bool)].copy()
+    if included.empty:
+        return ()
+
+    nonblank = included.loc[~included["is_inoculum_blank"].fillna(False).astype(bool)]
+    amended = nonblank.loc[
+        nonblank["dose_value"].gt(0)
+        & ~nonblank["is_control"].fillna(False).astype(bool)
+        & nonblank["material_id"].notna()
+        & nonblank["material_id"].astype(str).str.strip().ne("")
+        & nonblank["material_id"].astype(str).str.lower().ne("none")
+    ]
+    series_columns = [
+        "study_id",
+        "experiment_id",
+        "material_id",
+        "dose_unit",
+        "temperature_c",
+        "substrate_id",
+        "inoculum_id",
+    ]
+    assessments: list[StageASeriesAssessment] = []
+
+    for key, series in amended.groupby(series_columns, dropna=False, sort=True):
+        (
+            study_id,
+            experiment_id,
+            material_id,
+            dose_unit,
+            temperature_c,
+            substrate_id,
+            inoculum_id,
+        ) = key
+        experiment = included.loc[
+            included["study_id"].eq(study_id)
+            & included["experiment_id"].eq(experiment_id)
+        ]
+        matched_control = experiment.loc[
+            ~experiment["is_inoculum_blank"].fillna(False).astype(bool)
+            & experiment["is_control"].fillna(False).astype(bool)
+            & experiment["dose_value"].eq(0)
+            & experiment["temperature_c"].eq(temperature_c)
+            & experiment["substrate_id"].eq(substrate_id)
+            & experiment["inoculum_id"].eq(inoculum_id)
+        ]
+
+        required = pd.concat([series, matched_control], ignore_index=True)
+        reactor_key = ["study_id", "experiment_id", "reactor_id"]
+        reactor_rows = required.drop_duplicates(reactor_key)
+        arm_counts = reactor_rows.groupby(
+            ["is_control", "dose_value"], dropna=False
+        )["reactor_id"].nunique()
+        minimum_reactors = int(arm_counts.min()) if len(arm_counts) else 0
+        reactor_time = required.groupby(reactor_key)["time_days"]
+        time_counts = reactor_time.nunique()
+        starts = reactor_time.min()
+
+        blanks = experiment.loc[
+            experiment["is_inoculum_blank"].fillna(False).astype(bool)
+        ]
+        correction_reference = experiment.get("blank_correction_reference")
+        has_correction_reference = bool(
+            correction_reference is not None
+            and correction_reference.notna().all()
+            and correction_reference.astype(str).str.strip().ne("").all()
+        )
+        if not blanks.empty:
+            blank_evidence = "inoculum_blank_trajectory"
+        elif has_correction_reference:
+            blank_evidence = "documented_blank_correction"
+        elif nonblank["blank_corrected_methane_ml_g_vs"].notna().all():
+            blank_evidence = "corrected_values_without_method"
+        else:
+            blank_evidence = "none"
+
+        provenance = required[["data_origin", "source_record_id"]]
+        traceable_provenance = bool(
+            provenance.notna().all().all()
+            and provenance.astype(str).apply(lambda values: values.str.strip().ne("").all()).all()
+        )
+        assessments.append(
+            StageASeriesAssessment(
+                study_id=str(study_id),
+                experiment_id=str(experiment_id),
+                material_id=str(material_id),
+                dose_unit=str(dose_unit),
+                temperature_c=float(temperature_c),
+                substrate_id=str(substrate_id),
+                inoculum_id=str(inoculum_id),
+                amended_doses=tuple(
+                    float(value) for value in sorted(series["dose_value"].dropna().unique())
+                ),
+                has_matched_zero_dose_control=not matched_control.empty,
+                minimum_reactors_per_required_arm=minimum_reactors,
+                all_required_arms_replicated=minimum_reactors >= 2,
+                all_reactors_have_three_time_points=bool(
+                    len(time_counts) and time_counts.ge(3).all()
+                ),
+                all_reactors_start_at_day_zero=bool(len(starts) and starts.eq(0).all()),
+                all_required_rows_have_processed_methane=bool(
+                    required["blank_corrected_methane_ml_g_vs"].notna().all()
+                ),
+                blank_evidence=blank_evidence,
+                traceable_provenance=traceable_provenance,
+            )
+        )
+
+    return tuple(assessments)
 
 
 def validate_reactor_observations(frame: pd.DataFrame) -> IntakeReport:

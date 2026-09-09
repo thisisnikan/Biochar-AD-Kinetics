@@ -14,7 +14,7 @@ from .data import generate_demo_dataset
 from .effects import build_within_study_effect_table
 from .external_validation import compare_external_dose_responses
 from .fit import IDENTIFIABILITY_CORRELATION_THRESHOLD, bootstrap_parameters, fit_global
-from .intake import validate_reactor_observations
+from .intake import assess_stage_a_readiness, validate_reactor_observations
 from .pyrolysis_response import (
     DESCRIPTOR_COLLINEARITY_THRESHOLD,
     compare_pyrolysis_temperature_responses,
@@ -124,8 +124,20 @@ def _identifiability_warning(max_correlation: float) -> str | None:
 def main() -> None:
     args = build_parser().parse_args()
     if args.command == "validate-intake":
-        report = validate_reactor_observations(pd.read_csv(args.csv))
-        print(json.dumps(report.to_dict(), indent=2))
+        frame = pd.read_csv(args.csv)
+        report = validate_reactor_observations(frame)
+        payload = report.to_dict()
+        stage_a = assess_stage_a_readiness(frame) if report.valid else ()
+        payload["stage_a"] = {
+            "gate": "independent reactor-level dose-response validation",
+            "candidate_series": [assessment.to_dict() for assessment in stage_a],
+            "ready_series": sum(item.ready_for_manual_review for item in stage_a),
+            "interpretation": (
+                "A ready series has passed machine-checkable design checks only; "
+                "source-level manual review remains mandatory."
+            ),
+        }
+        print(json.dumps(payload, indent=2))
         if not report.valid:
             raise SystemExit(2)
         return
