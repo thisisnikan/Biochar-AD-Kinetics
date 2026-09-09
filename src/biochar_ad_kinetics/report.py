@@ -12,6 +12,12 @@ from .fit import predict_frame
 from .model import KineticParameters
 
 
+def _condition_prediction_curve(batch: pd.DataFrame) -> pd.DataFrame:
+    """Return one ordered prediction curve from possibly replicated observations."""
+
+    return batch[["time_days", "prediction"]].drop_duplicates().sort_values("time_days")
+
+
 def save_report(
     frame: pd.DataFrame,
     parameters: KineticParameters,
@@ -35,7 +41,12 @@ def save_report(
     for axis, (temperature, group) in zip(axes, temperature_groups, strict=True):
         for dose, batch in group.sort_values("dose_g_l").groupby("dose_g_l", sort=True):
             axis.scatter(batch["time_days"], batch["methane_ml_g_vs"], s=10, alpha=0.55)
-            axis.plot(batch["time_days"], batch["prediction"], label=f"{dose:g} g/L")
+            # Predictions are condition-level curves, whereas observations may
+            # contain several physical reactors. Plot one sorted curve instead
+            # of connecting the end of one replicate back to the start of the
+            # next and creating a false zig-zag line.
+            curve = _condition_prediction_curve(batch)
+            axis.plot(curve["time_days"], curve["prediction"], label=f"{dose:g} g/L")
         axis.set_title(f"{temperature:g} °C")
         axis.set_xlabel("Time (days)")
         axis.grid(alpha=0.2)

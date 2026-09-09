@@ -268,7 +268,7 @@ def assess_stage_a_readiness(frame: pd.DataFrame) -> tuple[StageASeriesAssessmen
         blanks = experiment.loc[
             experiment["is_inoculum_blank"].fillna(False).astype(bool)
         ]
-        correction_reference = experiment.get("blank_correction_reference")
+        correction_reference = required.get("blank_correction_reference")
         has_correction_reference = bool(
             correction_reference is not None
             and correction_reference.notna().all()
@@ -278,7 +278,7 @@ def assess_stage_a_readiness(frame: pd.DataFrame) -> tuple[StageASeriesAssessmen
             blank_evidence = "inoculum_blank_trajectory"
         elif has_correction_reference:
             blank_evidence = "documented_blank_correction"
-        elif nonblank["blank_corrected_methane_ml_g_vs"].notna().all():
+        elif required["blank_corrected_methane_ml_g_vs"].notna().all():
             blank_evidence = "corrected_values_without_method"
         else:
             blank_evidence = "none"
@@ -316,6 +316,92 @@ def assess_stage_a_readiness(frame: pd.DataFrame) -> tuple[StageASeriesAssessmen
         )
 
     return tuple(assessments)
+
+
+def build_stage_a_model_frame(
+    frame: pd.DataFrame, assessment: StageASeriesAssessment
+) -> pd.DataFrame:
+    """Convert one ready reactor-level series to the kinetic model schema.
+
+    Reactor identity and dose-group identity are retained as separate columns.
+    This is the critical distinction needed to compare replicate prediction
+    with prediction at a completely unseen dose without leaking sibling
+    replicates into the training fold.
+    """
+
+    report = validate_reactor_observations(frame)
+    if not report.valid:
+        raise ValueError("The reactor-level intake must pass structural validation before fitting")
+    if assessment not in assess_stage_a_readiness(frame):
+        raise ValueError("The selected Stage A assessment does not match the current intake file")
+    if not assessment.ready_for_manual_review:
+        raise ValueError("The selected dose series has not passed the machine-checkable Stage A gate")
+    if assessment.dose_unit != "g_l":
+        raise ValueError(
+            "The current kinetic model requires dose_unit='g_l'; convert other dose bases only "
+            "from a documented measured basis before fitting"
+        )
+
+    data = frame.copy()
+    for column in NUMERIC_COLUMNS:
+        data[column] = pd.to_numeric(data[column], errors="coerce")
+    for column in BOOLEAN_COLUMNS:
+        data[column] = _coerce_boolean(data[column])
+
+    base = (
+        data["study_id"].astype(str).eq(assessment.study_id)
+        & data["experiment_id"].astype(str).eq(assessment.experiment_id)
+        & data["temperature_c"].eq(assessment.temperature_c)
+        & data["substrate_id"].astype(str).eq(assessment.substrate_id)
+        & data["inoculum_id"].astype(str).eq(assessment.inoculum_id)
+        & data["qc_include"].fillna(False).astype(bool)
+        & ~data["is_inoculum_blank"].fillna(False).astype(bool)
+    )
+    amended = (
+        data["material_id"].astype(str).eq(assessment.material_id)
+        & data["dose_unit"].astype(str).eq(assessment.dose_unit)
+        & data["dose_value"].isin(assessment.amended_doses)
+        & ~data["is_control"].fillna(False).astype(bool)
+    )
+    control = data["is_control"].fillna(False).astype(bool) & data["dose_value"].eq(0)
+    selected = data.loc[base & (amended | control)].copy()
+    if selected.empty:
+        raise ValueError("The selected Stage A series has no model-ready observations")
+
+    selected["batch_id"] = (
+        selected["study_id"].astype(str)
+        + "::"
+        + selected["experiment_id"].astype(str)
+        + "::"
+        + selected["reactor_id"].astype(str)
+    )
+    selected["validation_reactor_id"] = selected["batch_id"]
+    selected["validation_dose_id"] = selected["dose_value"].map(
+        lambda value: f"{assessment.study_id}::{assessment.experiment_id}::dose={value:g}_g_l"
+    )
+    selected["dose_g_l"] = selected["dose_value"].astype(float)
+    selected["methane_ml_g_vs"] = selected["blank_corrected_methane_ml_g_vs"].astype(float)
+
+    model_columns = [
+        "batch_id",
+        "validation_reactor_id",
+        "validation_dose_id",
+        "study_id",
+        "experiment_id",
+        "reactor_id",
+        "treatment_id",
+        "replicate_id",
+        "material_id",
+        "time_days",
+        "dose_g_l",
+        "temperature_c",
+        "methane_ml_g_vs",
+        "data_origin",
+        "source_record_id",
+    ]
+    return selected.loc[:, model_columns].sort_values(
+        ["dose_g_l", "reactor_id", "time_days"]
+    ).reset_index(drop=True)
 
 
 def validate_reactor_observations(frame: pd.DataFrame) -> IntakeReport:

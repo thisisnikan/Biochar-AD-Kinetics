@@ -6,6 +6,7 @@ import pytest
 from biochar_ad_kinetics.intake import (
     NUMERIC_COLUMNS,
     assess_stage_a_readiness,
+    build_stage_a_model_frame,
     validate_reactor_observations,
 )
 
@@ -272,3 +273,26 @@ def test_stage_a_assessment_requires_comparable_doses_and_replicated_arms() -> N
     assert main_series.amended_doses == (2.0, 5.0)
     assert not main_series.all_required_arms_replicated
     assert not main_series.ready_for_manual_review
+
+
+def test_stage_a_model_frame_preserves_reactor_and_dose_identity() -> None:
+    source = _stage_a_frame()
+    assessment = assess_stage_a_readiness(source)[0]
+
+    model_frame = build_stage_a_model_frame(source, assessment)
+
+    assert model_frame["batch_id"].nunique() == 8
+    assert model_frame["validation_reactor_id"].nunique() == 8
+    assert model_frame["validation_dose_id"].nunique() == 4
+    assert set(model_frame["dose_g_l"]) == {0.0, 2.0, 5.0, 10.0}
+    assert model_frame.groupby("validation_reactor_id")["reactor_id"].nunique().eq(1).all()
+    assert model_frame.groupby("validation_dose_id")["dose_g_l"].nunique().eq(1).all()
+
+
+def test_stage_a_model_frame_refuses_silent_dose_unit_conversion() -> None:
+    source = _stage_a_frame()
+    source.loc[source["dose_value"].gt(0), "dose_unit"] = "pct_ts"
+    assessment = assess_stage_a_readiness(source)[0]
+
+    with pytest.raises(ValueError, match="requires dose_unit='g_l'"):
+        build_stage_a_model_frame(source, assessment)

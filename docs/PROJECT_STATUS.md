@@ -9,6 +9,7 @@ Last reviewed: 9 September 2026
 | Package and CLI | Working | Installable package with modelling, benchmarking, effect-summary and intake-validation commands |
 | Automated quality | Working | Ruff plus automated tests on Python 3.10 and 3.12 in GitHub Actions |
 | Data contribution gate | Working | Minimum reactor-time-point contract plus machine-readable Stage A dose-series readiness assessment; source-level review remains mandatory |
+| Intake-to-model path | Working, awaiting qualifying data | `fit-stage-a` preserves reactor identity and separates whole-reactor from whole-dose holdouts; dose units other than g/L require documented conversion before fitting |
 | Real-data contract import | Reproducible, source conflict flagged | 7,575 observations from 15 Kozłowski reactors, including individual blanks; [validation and gaps](../results/intake/README.md) |
 | Synthetic workflow | Reproducible | Labelled synthetic input and deterministic reporting pipeline |
 | Open experimental benchmark | Reproducible | Kozłowski et al. (2025) reactor-level trajectories and reference output |
@@ -35,6 +36,9 @@ Last reviewed: 9 September 2026
 - Every global fit reports whether its own 8 parameters are practically identifiable
   (`max_parameter_correlation`, `parameter_gram_condition_number`), instead of only
   reporting goodness of fit.
+- A qualifying reactor-level intake can be fitted without collapsing replicate identity;
+  `fit-stage-a` reports replicate reproducibility separately from dose generalization and
+  removes all sibling reactors at a held-out dose from training together.
 - `leave_one_batch_out` distinguishes held-out batches at the edge of the observed
   dose/temperature range (`is_boundary_condition`) from interior ones, so interpolation
   and extrapolation error are never silently averaged together.

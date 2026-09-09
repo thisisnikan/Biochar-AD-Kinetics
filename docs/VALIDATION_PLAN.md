@@ -1,6 +1,6 @@
 # Staged independent validation
 
-Updated 5 September 2026. This is a prospective protocol, not a completed external
+Updated 9 September 2026. This is a prospective protocol, not a completed external
 validation or an external preregistration. Existing published outcomes are already
 known; record that exposure when registering an eventual independent test.
 
@@ -48,11 +48,12 @@ measured conversion basis; a percent-TS value is not interchangeable with g/L.
 
 Freeze input hashes, material scope, QC decisions, fit bounds, candidate models
 and splits before evaluating raw outcomes. Keep material types separate unless
-an explicitly specified descriptor model is being tested. Use within-study
-reactor holdouts for reproducibility and whole-dose holdouts (all replicates at
-that dose together) for dose generalization. A within-study refit is not
-held-out-study transfer. The current batch CLI implements the former generic
-grouping, not an automatic study-transfer benchmark.
+an explicitly specified descriptor model is being tested. Use within-study reactor
+holdouts for reproducibility and whole-dose holdouts (all replicates at that dose
+together) for dose generalization. `biochar-ad fit-stage-a` implements both splits
+explicitly from the reactor-level intake contract and treats whole-dose RMSE as the
+primary Stage A metric. A within-study refit is not held-out-study transfer; the command
+records that no held-out-study transfer was performed.
 
 For eventual transfer, fit and select on development studies, then evaluate an
 untouched study with no parameter refitting. If zero-dose recalibration is

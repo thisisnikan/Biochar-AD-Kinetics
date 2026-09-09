@@ -129,6 +129,9 @@ represents biochar dose and temperature explicitly:
   (extrapolation) error instead of pooling them;
 - reproducible CSV, JSON and publication-ready PNG outputs.
 - a minimum reactor-time-point data contract with automated intake validation.
+- a direct Stage A path from that reactor-level contract to the kinetic model, with
+  separate whole-reactor and whole-dose holdouts so dose replicates cannot leak into
+  a nominally unseen-dose test.
 
 ## Model
 
@@ -252,6 +255,18 @@ biochar-ad validate-intake data/templates/reactor_observations.csv
 Passing this structural gate does not turn a limited design into causal or globally
 predictive evidence. Field definitions and warnings are documented in
 [`docs/DATA_CONTRACT.md`](docs/DATA_CONTRACT.md).
+
+Once one `g_l` material series passes the machine-checkable Stage A gate, run the
+leakage-safe modelling path directly from the same intake file:
+
+```bash
+biochar-ad fit-stage-a path/to/reactor_observations.csv --output outputs/stage-a
+```
+
+This writes separate `leave_one_reactor_out.csv` and `leave_one_dose_out.csv` results.
+The whole-dose split removes every replicate at the held-out dose together and is the
+primary Stage A prediction test. The command refuses silent conversion from `%TS`,
+`g/g VS` or other dose bases to `g/L`.
 
 The [first complete real-data intake](results/intake/README.md) contains all 15
 Kozłowski source reactors, including individual inoculum blanks, traceable cell

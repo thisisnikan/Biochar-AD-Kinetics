@@ -1,6 +1,7 @@
 """Command-line interface."""
 
 import argparse
+import hashlib
 import json
 import math
 from dataclasses import asdict
@@ -8,13 +9,24 @@ from pathlib import Path
 
 import pandas as pd
 
-from .analysis import compare_models, leave_one_batch_out, summarize_holdouts
+from .analysis import (
+    compare_models,
+    leave_one_batch_out,
+    leave_one_dose_out,
+    leave_one_reactor_out,
+    summarize_holdouts,
+)
 from .baselines import compare_experimental_baselines
 from .data import generate_demo_dataset
 from .effects import build_within_study_effect_table
 from .external_validation import compare_external_dose_responses
 from .fit import IDENTIFIABILITY_CORRELATION_THRESHOLD, bootstrap_parameters, fit_global
-from .intake import assess_stage_a_readiness, validate_reactor_observations
+from .intake import (
+    StageASeriesAssessment,
+    assess_stage_a_readiness,
+    build_stage_a_model_frame,
+    validate_reactor_observations,
+)
 from .pyrolysis_response import (
     DESCRIPTOR_COLLINEARITY_THRESHOLD,
     compare_pyrolysis_temperature_responses,
@@ -82,6 +94,15 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate a reactor-level contribution before modelling or publication",
     )
     intake.add_argument("csv", type=Path)
+    stage_a = commands.add_parser(
+        "fit-stage-a",
+        help="Fit one ready reactor-level dose series with leakage-safe validation splits",
+    )
+    stage_a.add_argument("csv", type=Path)
+    stage_a.add_argument("--output", type=Path, default=Path("outputs/stage-a"))
+    stage_a.add_argument("--study-id")
+    stage_a.add_argument("--experiment-id")
+    stage_a.add_argument("--material-id")
     pyrolysis = commands.add_parser(
         "benchmark-pyrolysis-temperature",
         help="Descriptive temperature-response check on a published pyrolysis summary table",
@@ -121,6 +142,92 @@ def _identifiability_warning(max_correlation: float) -> str | None:
     return None
 
 
+def _select_stage_a_series(
+    assessments: tuple[StageASeriesAssessment, ...],
+    study_id: str | None,
+    experiment_id: str | None,
+    material_id: str | None,
+) -> StageASeriesAssessment:
+    ready = [item for item in assessments if item.ready_for_manual_review]
+    selectors = {
+        "study_id": study_id,
+        "experiment_id": experiment_id,
+        "material_id": material_id,
+    }
+    for field, expected in selectors.items():
+        if expected is not None:
+            ready = [item for item in ready if getattr(item, field) == expected]
+    if len(ready) == 1:
+        return ready[0]
+    if not ready:
+        raise ValueError(
+            "No Stage A series passed the machine-checkable gate and the supplied selectors"
+        )
+    raise ValueError(
+        "Multiple Stage A series are ready; select one with --study-id, --experiment-id "
+        "and/or --material-id"
+    )
+
+
+def _run_stage_a(args: argparse.Namespace) -> None:
+    source_bytes = args.csv.read_bytes()
+    source = pd.read_csv(args.csv)
+    report = validate_reactor_observations(source)
+    if not report.valid:
+        raise ValueError("The intake file has structural errors; run validate-intake first")
+    assessment = _select_stage_a_series(
+        assess_stage_a_readiness(source), args.study_id, args.experiment_id, args.material_id
+    )
+    model_frame = build_stage_a_model_frame(source, assessment)
+
+    parameters, metrics = fit_global(model_frame)
+    comparison = compare_models(model_frame)
+    reactor_validation = leave_one_reactor_out(model_frame)
+    dose_validation = leave_one_dose_out(model_frame)
+    reactor_summary = summarize_holdouts(reactor_validation)
+    dose_summary = summarize_holdouts(dose_validation)
+
+    args.output.mkdir(parents=True, exist_ok=True)
+    save_report(model_frame, parameters, metrics, args.output)
+    model_frame.to_csv(args.output / "model_frame.csv", index=False)
+    comparison.to_csv(args.output / "model_comparison.csv", index=False)
+    reactor_validation.to_csv(args.output / "leave_one_reactor_out.csv", index=False)
+    dose_validation.to_csv(args.output / "leave_one_dose_out.csv", index=False)
+    reactor_summary.to_csv(args.output / "reactor_holdout_model_comparison.csv", index=False)
+    dose_summary.to_csv(args.output / "dose_holdout_model_comparison.csv", index=False)
+
+    manifest = {
+        "source_sha256": hashlib.sha256(source_bytes).hexdigest(),
+        "selected_series": assessment.to_dict(),
+        "model_rows": len(model_frame),
+        "reactors": model_frame["batch_id"].nunique(),
+        "doses_g_l": sorted(model_frame["dose_g_l"].unique().tolist()),
+        "split_semantics": {
+            "reactor": "one physical reactor held out; sibling dose replicates may train",
+            "dose": "all physical reactors at one dose held out together",
+        },
+        "held_out_study_transfer_performed": False,
+    }
+    (args.output / "stage_a_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+
+    print(
+        json.dumps(
+            {
+                **manifest,
+                "parameters": asdict(parameters),
+                "metrics": metrics,
+                "identifiability_warning": _identifiability_warning(
+                    metrics["max_parameter_correlation"]
+                ),
+                "best_model_by_reactor_holdout_rmse": reactor_summary.iloc[0]["model"],
+                "best_model_by_dose_holdout_rmse": dose_summary.iloc[0]["model"],
+                "primary_stage_a_metric": "mean whole-dose-held-out RMSE",
+            },
+            indent=2,
+        )
+    )
+
+
 def main() -> None:
     args = build_parser().parse_args()
     if args.command == "validate-intake":
@@ -140,6 +247,9 @@ def main() -> None:
         print(json.dumps(payload, indent=2))
         if not report.valid:
             raise SystemExit(2)
+        return
+    if args.command == "fit-stage-a":
+        _run_stage_a(args)
         return
     if args.command == "summarize-effects":
         effects = build_within_study_effect_table(

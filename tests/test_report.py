@@ -3,7 +3,7 @@ import pandas as pd
 
 from biochar_ad_kinetics.fit import fit_global
 from biochar_ad_kinetics.model import BatchCondition, KineticParameters, cumulative_methane
-from biochar_ad_kinetics.report import save_report
+from biochar_ad_kinetics.report import _condition_prediction_curve, save_report
 
 
 def _dataset(temperatures: tuple[float, ...]) -> pd.DataFrame:
@@ -42,3 +42,17 @@ def test_save_report_plots_every_temperature_group(tmp_path) -> None:
     save_report(two_panel_frame, two_panel_parameters, two_panel_metrics, tmp_path / "two_panel")
     two_panel_width_px = mpimg.imread(tmp_path / "two_panel" / "fitted_curves.png").shape[1]
     assert width_px > two_panel_width_px
+
+
+def test_replicates_do_not_create_a_zig_zag_prediction_line() -> None:
+    batch = pd.DataFrame(
+        {
+            "time_days": [0, 5, 10, 0, 5, 10],
+            "prediction": [1, 4, 8, 1, 4, 8],
+        }
+    )
+
+    curve = _condition_prediction_curve(batch)
+
+    assert curve["time_days"].tolist() == [0, 5, 10]
+    assert curve["prediction"].tolist() == [1, 4, 8]
