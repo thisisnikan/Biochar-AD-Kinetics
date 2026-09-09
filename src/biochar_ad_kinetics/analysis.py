@@ -5,13 +5,41 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from biochar_ad_kinetics.fit import fit_global, predict_frame
+from biochar_ad_kinetics.fit import (
+    IDENTIFIABILITY_CORRELATION_THRESHOLD,
+    fit_global,
+    predict_frame,
+)
 
 CANDIDATES = {
     "constant_gompertz": "constant",
     "log_linear_dose_temperature": "log_linear",
     "global_dose_temperature": "log_quadratic",
 }
+
+
+def _identifiability_fields(metrics: dict[str, float]) -> dict[str, float | bool]:
+    """Return candidate-level identifiability diagnostics without hiding failures.
+
+    Holdout model selection is primarily predictive, but a low held-out RMSE must
+    not be interpreted as evidence that the fitted kinetic parameters are
+    individually meaningful.  Older tests monkeypatch ``fit_global`` with only
+    ``n_parameters``; missing diagnostics therefore become NaN and are treated as
+    unverified rather than as passing.
+    """
+
+    max_correlation = float(metrics.get("max_parameter_correlation", np.nan))
+    condition_number = float(metrics.get("parameter_gram_condition_number", np.nan))
+    identifiable = bool(
+        np.isfinite(max_correlation)
+        and max_correlation < IDENTIFIABILITY_CORRELATION_THRESHOLD
+        and np.isfinite(condition_number)
+    )
+    return {
+        "max_parameter_correlation": max_correlation,
+        "parameter_gram_condition_number": condition_number,
+        "identifiability_pass": identifiable,
+    }
 
 
 def information_criteria(observed: np.ndarray, predicted: np.ndarray, k: int) -> dict[str, float]:
@@ -32,7 +60,7 @@ def information_criteria(observed: np.ndarray, predicted: np.ndarray, k: int) ->
 
 
 def compare_models(frame: pd.DataFrame) -> pd.DataFrame:
-    """Compare the proposed global model with a parsimonious Gompertz baseline."""
+    """Compare nested kinetic candidates on fit quality and identifiability."""
     frame = frame.reset_index(drop=True)
     observed = frame["methane_ml_g_vs"].to_numpy(float)
     rows = []
@@ -46,6 +74,7 @@ def compare_models(frame: pd.DataFrame) -> pd.DataFrame:
                 "model": name,
                 "parameters": k,
                 "rmse_ml_g_vs": float(np.sqrt(np.mean(residual**2))),
+                **_identifiability_fields(metrics),
                 **information_criteria(observed, predicted, k),
             }
         )
@@ -103,6 +132,7 @@ def leave_one_batch_out(frame: pd.DataFrame) -> pd.DataFrame:
                     "n_test": len(test),
                     "parameters": int(metrics["n_parameters"]),
                     "is_boundary_condition": is_boundary_condition,
+                    **_identifiability_fields(metrics),
                     "rmse_ml_g_vs": float(np.sqrt(np.mean(residual**2))),
                     "mae_ml_g_vs": float(np.mean(np.abs(residual))),
                 }
@@ -150,6 +180,7 @@ def _leave_one_explicit_group_out(
                     "n_test_observations": len(test),
                     "parameters": int(metrics["n_parameters"]),
                     "is_boundary_condition": is_boundary,
+                    **_identifiability_fields(metrics),
                     "rmse_ml_g_vs": float(np.sqrt(np.mean(residual**2))),
                     "mae_ml_g_vs": float(np.mean(np.abs(residual))),
                 }
@@ -184,11 +215,19 @@ def leave_one_dose_out(frame: pd.DataFrame) -> pd.DataFrame:
 
 
 def summarize_holdouts(validation: pd.DataFrame) -> pd.DataFrame:
-    """Weight each held-out batch equally; keep training criteria secondary."""
+    """Weight each held-out group equally and expose identifiability failures."""
     fold_column = "held_out_group" if "held_out_group" in validation else "held_out_batch"
     summary = validation.groupby("model", as_index=False).agg(
         mean_held_out_rmse_ml_g_vs=("rmse_ml_g_vs", "mean"),
         mean_held_out_mae_ml_g_vs=("mae_ml_g_vs", "mean"),
         n_folds=(fold_column, "nunique"),
     )
+    if "identifiability_pass" in validation:
+        identifiability = validation.groupby("model", as_index=False).agg(
+            identifiable_folds=("identifiability_pass", "sum"),
+            mean_max_parameter_correlation=("max_parameter_correlation", "mean"),
+            worst_max_parameter_correlation=("max_parameter_correlation", "max"),
+        )
+        summary = summary.merge(identifiability, on="model", how="left")
+        summary["all_folds_identifiable"] = summary["identifiable_folds"].eq(summary["n_folds"])
     return summary.sort_values("mean_held_out_rmse_ml_g_vs").reset_index(drop=True)
