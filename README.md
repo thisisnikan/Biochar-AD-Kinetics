@@ -5,10 +5,11 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-1B3FC4)](LICENSE)
 [![Scientific status: research prototype](https://img.shields.io/badge/status-research%20prototype-B06A22)](docs/PROJECT_STATUS.md)
 
-A reproducible Python workflow for analysing batch biomethane potential (BMP)
-experiments with biochar amendment. It fits all dose–temperature conditions
-simultaneously, quantifies goodness of fit, and estimates parameter uncertainty
-with a batch-aware residual bootstrap.
+An open, evidence-gated modelling project for testing when and under which
+conditions biochar changes anaerobic-digestion performance. The current
+software starts with the part that can be tested honestly today: reproducible
+analysis of batch biomethane potential (BMP) experiments, including kinetic-model
+comparison, uncertainty and leakage-safe validation.
 
 **New to this project? Start with the map:** [Architecture and glossary](docs/ARCHITECTURE.md)
 explains the idea, the repository layout and the code path in plain language.
@@ -19,20 +20,111 @@ explains the idea, the repository layout and the code path in plain language.
 [Reproducible results](results/README.md) ·
 [Presentation](presentation/README.md) · [Contributing](CONTRIBUTING.md)
 
-## Scope and terminology
+## The problem
 
-This project was originally named "Biochar–AD Digital Twin," for continuity
-with the author's earlier research. It has been renamed to **Biochar–AD
-Kinetics** because "digital twin" overstated its scope: the software is a
-**batch kinetic-modelling and statistical-benchmarking framework**, not a
-live, sensor-connected process twin. There is no mass/energy balance (e.g.
-ADM1), no reactor hydrodynamics, and no data-assimilation loop against a
-running digester. The dose-response term in `model.py` is also **phenomenological,
-not mechanistic**: it is a flexible curve shape chosen to be testable against
-data, not derived from a specific biological mechanism (e.g. direct
-interspecies electron transfer or VFA/ammonia adsorption). Both simplifications
-are deliberate for a research prototype, but should not be assumed away when
-reading the results.
+Biochar-assisted anaerobic digestion has a translation problem, not just a curve-fitting
+problem:
+
+- Experimental evidence is fragmented across substrates, inocula, temperatures,
+  biochar feedstocks, production conditions, doses and reporting conventions. Raw reactor
+  trajectories, blanks and material descriptors are often unavailable or incompatible.
+- A high score on pooled literature data can overstate generalisation. In a 623-condition,
+  107-study analysis, random-forest R² fell from 0.683 under conventional validation to
+  0.36 when entire studies were held out, exposing substantial study-to-study heterogeneity
+  ([Huaraca et al., 2026](https://doi.org/10.1016/j.biortech.2026.135652)).
+- Methane improvement alone cannot establish a mechanism. Conductivity, surface area, pH,
+  pyrolysis temperature and feedstock can change together, so correlations must not be
+  presented as proof of direct interspecies electron transfer or adsorption.
+- A fitted batch curve is not yet a digital twin. Operational use would additionally require
+  a dynamic process model, continuous-reactor data, sensors, state estimation, online
+  calibration, uncertainty bounds and prospective plant validation.
+
+The result is a gap between promising experiments and trustworthy decisions: researchers
+cannot compare studies cleanly, operators cannot know whether a result will transfer, and
+apparently precise models can hide data leakage or parameter confounding.
+
+## How this project addresses it now
+
+| Problem | Repository response | Evidence gate |
+| --- | --- | --- |
+| Incompatible or incomplete reactor data | A provenance-aware intake contract preserves reactor identity, blanks, controls, units, QC and raw/processed values | `validate-intake` must pass; source-level review is still required |
+| One curve fit per treatment gives inconsistent comparisons | Shared kinetic candidates are evaluated on identical data and folds | Held-out error is primary; AIC/AICc/BIC are descriptive |
+| Replicates can leak into an allegedly unseen dose | Reactor and dose generalisation are tested separately | `fit-stage-a` removes every sibling reactor at the held-out dose |
+| Flexible models can look convincing while parameters remain confounded | Every global fit reports parameter correlation and the Gram-matrix condition number | A low-error but non-identifiable fit does not pass the scientific gate |
+| Positive results are easier to publish than negative ones | Independent challenges and failed hypotheses remain visible | The log-quadratic dose response is reported as unsupported on the current external challenge |
+| Process response can be mistaken for mechanism | Each dataset receives an explicit mechanism-evidence grade | Mechanistic language cannot exceed the measurements that support it |
+
+**Current boundary.** This repository is a batch kinetic-modelling and statistical-
+benchmarking framework. Its dose-response term is phenomenological: a falsifiable curve
+shape, not a biological mechanism. It currently has no ADM1 mass balance, reactor
+hydrodynamics, sensor connection or live data-assimilation loop.
+
+## What this project can become
+
+The long-term opportunity is a research-to-operations platform for biochar-assisted
+anaerobic digestion. That future should be earned in stages, with every new capability
+unlocked by stronger data rather than by a larger claim.
+
+```mermaid
+flowchart TD
+    A["Auditable batch kinetics"] --> B["Open cross-study benchmark"]
+    B --> C["Material-aware prediction"]
+    C --> D["Hybrid ADM1 simulator"]
+    D --> E["Sensor-connected digital twin"]
+    E --> F["Decision support and safe control"]
+```
+
+| Stage | What the project becomes | Minimum evidence required | Claim unlocked |
+| --- | --- | --- | --- |
+| 0 — current | Auditable batch-kinetics benchmark and contribution workflow | Traceable reactor trajectories, explicit blanks/controls and leakage-safe splits | Reproducible within-dataset kinetic comparison |
+| 1 — open benchmark | FAIR, versioned multi-study data resource with common units, material metadata and benchmark tasks | Redistribution rights, DOI/source hashes, transformation logs and study-held-out evaluation | Reproducible comparison across published studies |
+| 2 — material-aware predictor | Model linking dose and operating conditions with feedstock, pyrolysis temperature, BET area, conductivity, pH and surface chemistry | Sufficiently diverse studies; collinearity checks; calibrated uncertainty; external-study validation | Conditional prediction for unseen study/material combinations within a declared domain |
+| 3 — hybrid process simulator | ADM1-based mass balances augmented by validated biochar effects or learned parameter mappings | Continuous-reactor measurements of gas, VFA, ammonia, pH and feed composition; mass-balance closure | Dynamic scenario testing, not merely cumulative-curve fitting |
+| 4 — experiment and decision support | Uncertainty-aware comparison of material, dose and operating scenarios; active-learning suggestions for the next experiment; optional cost, energy and carbon objectives | Prospective tests showing recommendations outperform fixed or expert-only designs; validated economic and life-cycle inputs for non-process objectives | Multi-objective decision support with a stated applicability domain |
+| 5 — operational digital twin | A live reactor counterpart combining sensor streams, delayed laboratory results, state estimation and online calibration | Timestamped plant data, fault handling, drift detection and prospective site validation | Monitored state estimation and forecasting for a specific plant |
+| 6 — safe optimisation | Human-supervised model-predictive control for feed, loading or other permitted actions | Safety constraints, fail-safe modes, operator approval and controlled field trials | Operational optimisation at validated sites |
+
+An API, dashboard and collaborative data portal can support every stage, but they are
+delivery layers rather than substitutes for scientific validation.
+
+### Roadmap: problem → evidence → capability
+
+1. **Now — pass Stage A dose validation.** Acquire independent reactor-level trajectories
+   at one digestion temperature, including a zero-dose control, at least three amended
+   doses of the same material, intact replicates, blanks and provenance. Freeze QC and model
+   comparisons before viewing held-out outcomes.
+2. **Next — prove transfer across studies and materials.** Build a licensed, FAIR dataset;
+   standardise units and metadata; establish simple baselines; and evaluate only with whole
+   studies and whole material families held out.
+3. **Then — add mechanism-compatible dynamics.** Introduce ADM1 or another mass-balanced
+   process model, measure the states needed to identify biochar effects, and compare a
+   mechanistic baseline with hybrid mechanistic–machine-learning alternatives.
+4. **Later — connect a real reactor.** Ingest timestamped sensors and delayed laboratory
+   measurements, estimate hidden states, quantify drift and uncertainty, and validate
+   forecasts prospectively before any control recommendation is exposed.
+5. **Finally — test decisions, not just predictions.** Evaluate experiment selection,
+   operational recommendations and constrained control against predefined safety and
+   performance criteria, with operators retaining authority.
+
+### Research basis for this direction
+
+- [ADM1](https://doi.org/10.2166/wst.2002.0292) provides the established biochemical and
+  physicochemical modelling foundation for a future mass-balanced simulator.
+- A [hybrid ADM1–machine-learning study](https://doi.org/10.1016/j.biombioe.2024.107176)
+  demonstrates a credible route for predicting sensitive kinetic parameters from feedstock
+  and operating information rather than replacing process structure with a black box.
+- ADM1-based [state estimation on a full-scale biogas plant](https://doi.org/10.2166/wst.2012.174)
+  and anaerobic-digestion [online soft sensors](https://doi.org/10.3390/pr8010067) show the
+  additional measurement and estimation layers required before “digital twin” is an
+  operational claim.
+- Anaerobic-digestion [model-predictive-control research](https://doi.org/10.2166/wst.2025.151)
+  motivates the final control stage, but only after plant-specific forecasting and safety
+  validation.
+- The [FAIR Guiding Principles](https://doi.org/10.1038/sdata.2016.18) motivate making the
+  data, metadata, algorithms and workflows findable, accessible, interoperable and reusable.
+- Evidence that anaerobic-digestion experiments need stronger standardisation
+  ([Lavergne et al., 2018](https://doi.org/10.1016/j.jenvman.2018.05.030)) supports treating
+  data quality and shared reporting as the first research infrastructure, not an afterthought.
 
 ## Current evidence at a glance
 
@@ -108,7 +200,7 @@ research on biochar characterization for anaerobic digestion.
 > one carbon-material dose. It therefore does **not** validate the global
 > dose-temperature hypothesis.
 
-## Why this is useful
+## Current modelling workflow
 
 Most BMP curves are fitted one at a time. That makes it difficult to compare
 operating conditions consistently. This tool uses a shared parameter set and
@@ -310,16 +402,6 @@ between them, see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 Private author-shared inputs and their derived private outputs are intentionally excluded
 through `.gitignore`; see [`data/README.md`](data/README.md) for the access boundary.
-
-## Responsible use and next validation step
-
-Synthetic data tests software behaviour, not scientific validity. The real-data
-benchmark tests kinetic curve families and reproducible data handling, not the
-causal effect of biochar. The external table challenges the dose-response form,
-but cannot validate complete trajectories. A meaningful next step is access to
-independent reactor-level trajectories, followed by a multi-temperature dataset
-with replicates, preregistered comparison criteria, residual diagnostics, and
-practical parameter-identifiability analysis.
 
 ## Interpretation rules
 

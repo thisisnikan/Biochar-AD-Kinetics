@@ -34,10 +34,12 @@ release model while the public API remains experimental.
 - Split Stage A validation into explicit whole-reactor and whole-dose holdouts; the
   latter removes every replicate at the held-out dose together to prevent leakage.
 - Refuse silent conversion of non-g/L dose bases in the current kinetic model.
-- Renamed the project from "Biochar–AD Digital Twin" to **Biochar–AD Kinetics**
-  (GitHub repository, Python distribution and import package, README, presentation
-  deck, `CITATION.cff`) because "digital twin" overstated the software's scope —
-  see the README's "Scope and terminology" section.
+- Reframed the README around the research problem, the current evidence-gated
+  solution, and a primary-literature-backed roadmap from batch kinetics to a
+  possible future operational digital twin.
+- Renamed the public project, Python distribution, import package, README,
+  presentation deck and `CITATION.cff` from "Biochar–AD Digital Twin" to
+  **Biochar–AD Kinetics** because "digital twin" overstated the current scope.
 - Added `docs/MECHANISM_EVIDENCE.md`, a Weak/Moderate/Strong evidence-grading rubric
   (Pilarska 2026) applied to every dataset in the repository, so a good process-level
   fit is never described using stronger mechanistic (e.g. DIET) language than the

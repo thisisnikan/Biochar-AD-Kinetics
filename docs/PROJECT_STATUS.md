@@ -71,7 +71,7 @@ Last reviewed: 9 September 2026
   parameter-level challenge only; the paper's raw reactor time series were not obtained.
 - That summary-curve residuals replace biological replicate uncertainty.
 - That this research prototype is already an operational plant digital twin (see
-  [README § Scope and terminology](../README.md#scope-and-terminology)): there is no
+  [README § What this project can become](../README.md#what-this-project-can-become)): there is no
   mass/energy balance, reactor hydrodynamics, or live data-assimilation loop here.
 - That the 8-parameter global model's individual parameter values are meaningful on their
   own — on the bundled synthetic demo dataset itself, the identifiability diagnostic already
