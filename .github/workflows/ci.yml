@@ -29,6 +29,11 @@ jobs:
           python scripts/run_stage_c_material_fingerprint.py
           --input results/batch-stage-ab-ci/kinetic_fingerprints.csv
           --output results/stage-c-material-aware-ci
+      - name: Run Stage C feature ablation
+        run: >-
+          python scripts/run_stage_c_feature_ablation.py
+          --input results/batch-stage-ab-ci/kinetic_fingerprints.csv
+          --output results/stage-c-feature-ablation-ci
       - name: Upload batch modelling artifacts
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
@@ -37,3 +42,4 @@ jobs:
           path: |
             results/batch-stage-ab-ci
             results/stage-c-material-aware-ci
+            results/stage-c-feature-ablation-ci
