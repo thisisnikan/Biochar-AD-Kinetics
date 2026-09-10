@@ -28,7 +28,6 @@ This registry separates datasets that are already modelling-ready from datasets 
 - Status: `BLOCKED_OFFICIAL_EXPORT_PROVENANCE_ONLY`.
 - Gate: see `docs/CAI_BMP_INGESTION_GATE.md`.
 
-
 ### Sanglier et al. 2022 — repeated-cycle / semi-continuous food-waste AD
 - Dataset DOI: `10.57745/BUJORT`
 - Public files confirmed: `Process.xlsx`, `SeqArchaea.xlsx`, `SeqBacteria.xlsx`, `Python code.zip`.
