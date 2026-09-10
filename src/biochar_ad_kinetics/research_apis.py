@@ -12,9 +12,9 @@ import json
 import os
 from dataclasses import dataclass
 from typing import Any
-from urllib.parse import quote, urlencode
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlencode
 from urllib.request import Request, urlopen
-
 
 DEFAULT_USER_AGENT = "Biochar-AD-Kinetics/0.1 (+https://github.com/thisisnikan/Biochar-AD-Kinetics)"
 
@@ -30,16 +30,24 @@ class ResearchRecord:
     raw: dict[str, Any] | None = None
 
 
-def _get_json(url: str, headers: dict[str, str] | None = None, timeout: int = 30) -> dict[str, Any]:
+def _get_json(
+    url: str,
+    headers: dict[str, str] | None = None,
+    timeout: int = 30,
+) -> dict[str, Any]:
     request_headers = {"User-Agent": DEFAULT_USER_AGENT, "Accept": "application/json"}
     if headers:
         request_headers.update(headers)
     request = Request(url, headers=request_headers)
-    with urlopen(request, timeout=timeout) as response:  # noqa: S310 - fixed HTTPS API endpoints
+    with urlopen(request, timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8"))
 
 
-def search_openalex(query: str, per_page: int = 25, api_key: str | None = None) -> list[ResearchRecord]:
+def search_openalex(
+    query: str,
+    per_page: int = 25,
+    api_key: str | None = None,
+) -> list[ResearchRecord]:
     """Search OpenAlex works and normalize core bibliographic fields."""
     params = {"search": query, "per-page": max(1, min(per_page, 100))}
     key = api_key or os.getenv("OPENALEX_API_KEY")
@@ -62,9 +70,16 @@ def search_openalex(query: str, per_page: int = 25, api_key: str | None = None) 
     return records
 
 
-def search_crossref(query: str, rows: int = 25, mailto: str | None = None) -> list[ResearchRecord]:
+def search_crossref(
+    query: str,
+    rows: int = 25,
+    mailto: str | None = None,
+) -> list[ResearchRecord]:
     """Search Crossref works using the polite pool when an email is provided."""
-    params: dict[str, Any] = {"query.bibliographic": query, "rows": max(1, min(rows, 1000))}
+    params: dict[str, Any] = {
+        "query.bibliographic": query,
+        "rows": max(1, min(rows, 1000)),
+    }
     email = mailto or os.getenv("CROSSREF_MAILTO")
     if email:
         params["mailto"] = email
@@ -105,7 +120,11 @@ def search_datacite(query: str, page_size: int = 25) -> list[ResearchRecord]:
                 source="datacite",
                 title=title,
                 doi=doi,
-                year=int(year) if isinstance(year, (int, str)) and str(year).isdigit() else None,
+                year=(
+                    int(year)
+                    if isinstance(year, (int, str)) and str(year).isdigit()
+                    else None
+                ),
                 url=attrs.get("url") or (f"https://doi.org/{doi}" if doi else None),
                 raw=item,
             )
@@ -184,7 +203,7 @@ def search_all(query: str, limit_per_source: int = 20) -> list[ResearchRecord]:
     for collect in collectors:
         try:
             records = collect()
-        except Exception:  # source outage/rate limit must not block other providers
+        except (HTTPError, URLError, TimeoutError, OSError, ValueError):
             continue
         for record in records:
             key = (record.doi or record.title).strip().lower()
@@ -195,7 +214,10 @@ def search_all(query: str, limit_per_source: int = 20) -> list[ResearchRecord]:
     return merged
 
 
-def record_to_dict(record: ResearchRecord, include_raw: bool = False) -> dict[str, Any]:
+def record_to_dict(
+    record: ResearchRecord,
+    include_raw: bool = False,
+) -> dict[str, Any]:
     data = {
         "source": record.source,
         "title": record.title,
