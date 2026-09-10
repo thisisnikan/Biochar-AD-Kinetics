@@ -8,10 +8,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from biochar_ad_kinetics.material_fingerprint import (
-    assess_readiness,
-    leave_one_study_out,
-)
+from biochar_ad_kinetics.material_fingerprint import assess_readiness, leave_one_study_out
 
 
 def run(input_path: Path, output: Path) -> dict[str, object]:
@@ -21,12 +18,14 @@ def run(input_path: Path, output: Path) -> dict[str, object]:
     benchmark = leave_one_study_out(frame)
 
     benchmark.to_csv(output / "leave_one_study_out.csv", index=False)
-    status = readiness.to_dict()
-    status["input"] = str(input_path)
-    status["scientific_boundary"] = (
-        "No transferable material-aware performance claim is made unless the "
-        "minimum independent-study gate is passed."
-    )
+    status = {
+        "input": str(input_path),
+        "targets": {target: item.to_dict() for target, item in readiness.items()},
+        "scientific_boundary": (
+            "Transfer performance is only reported per kinetic target when at least three "
+            "independent studies contain that target and the required features."
+        ),
+    }
     (output / "stage_c_status.json").write_text(
         json.dumps(status, indent=2) + "\n",
         encoding="utf-8",
