@@ -1,0 +1,4 @@
+isr_i_s_vs,lag_change_min_pct,lag_change_max_pct,rmax_change_min_pct,rmax_change_max_pct,best_biochar_dose_g_g_waste,evidence_level,model_use,source_doi,interpretation_note
+2.0,-20.0,10.9,100.0,275.0,2.5,abstract_reported_aggregate,reference_only,10.1177/0734242X16634196,"Negative lower bound is reproduced from the abstract wording; verify direction in full text."
+1.0,43.3,54.4,100.0,133.3,0.625,abstract_reported_aggregate,reference_only,10.1177/0734242X16634196,"Range summarizes multiple biochar treatments relative to the no-biochar control."
+0.8,36.3,54.0,33.3,100.0,0.5,abstract_reported_aggregate,reference_only,10.1177/0734242X16634196,"Range summarizes multiple biochar treatments relative to the no-biochar control."
