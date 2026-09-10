@@ -1,0 +1,45 @@
+# Stage C source audit
+
+This note records the current evidence boundary for material-aware transfer modelling. It intentionally separates verified model-ready evidence from sources that are only partially recovered.
+
+## García-Prats CYPRUS2025 — private, model-ready within study
+
+Author-shared unpublished material contains nine biochars tested at 5% and 10% TS with dose-specific controls, modified-Gompertz lag, Rmax and Ymax, plus pH, EC, C/N/O/H, H/C, O/C, feedstock and pyrolysis temperature.
+
+Use only in the private pipeline. The two dose campaigns used substrate/inoculum collected at different times, so effects must be normalized to the corresponding campaign control. Do not commit the unpublished numeric tables to this public repository.
+
+One source-value anomaly must remain explicit: Q500 at 10% is printed as Rmax = 6.2 in the source table even though surrounding values and manuscript prose suggest a possible typographical error. Preserve 6.2 as source-exact and treat 62 only as a labeled sensitivity scenario.
+
+## Cai / Tongji BMP records 583–594 — blocked
+
+The Liu et al. (2024) BMP database supplement verifies that query IDs 583–594 map to Cai Jiao's Tongji University master's thesis, "Promoting Anaerobic Digestion by Biochar: Preliminary Study on Technology Optimization and Mechanism Analysis."
+
+Current recovery status:
+
+- 12 target query identifiers verified.
+- 0 official row exports recovered.
+- 0 model-import-ready rows.
+- Public Cai et al. (2016) article provides only ISR-level response ranges and best-dose summaries, not the 12 row-level observations.
+
+Decision: retain as provenance-registered but blocked. Do not convert aggregate ranges into synthetic rows and do not fill unknown values with zero. Promotion requires an official BMP export or a primary thesis table/figure that verifies treatment mapping, units, outcome definitions and values.
+
+## Vayena et al. 2024 — highest-priority public acquisition
+
+DOI: 10.1016/j.renene.2024.121569
+
+Why it matters: seven biochars span multiple feedstocks and pyrolysis/activation conditions and are characterized with surface area, pore structure, electrical conductivity and other physicochemical descriptors. The article reports that study data are included in the article and supplementary material; Supplementary Data 1 contains digestion-related data and Gompertz results.
+
+Acquisition objective: recover Supplementary Data 1 and construct a provenance-preserving treatment table linking kinetic outputs to biochar descriptors. Keep native dose units and convert only where the denominator is explicit.
+
+## Stage C scientific decision
+
+Current cross-study result rejects dose + pyrolysis temperature as a transferable predictor. The next test is therefore not "more rows" but whether measured material properties and reactor/substrate context improve whole-study transfer.
+
+Priority order:
+
+1. Recover and ingest Vayena Supplementary Data 1.
+2. Obtain official Cai/Tongji rows 583–594 when Marta sends the prepared Excel/export.
+3. Add another independent descriptor-rich kinetic study before fitting a cross-study rich-feature model.
+4. Evaluate M0 study-mean baseline, M1 dose, M2 dose + pyrolysis temperature, M3 material descriptors, and M4 material + reactor/substrate context on identical grouped splits.
+
+No rich-feature claim is allowed until at least three independent studies contain the target and requested descriptors.
