@@ -18,6 +18,17 @@ This registry separates datasets that are already modelling-ready from datasets 
 
 ## External-validation intake
 
+### Cai Jiao Tongji thesis — BMP query records 583–594
+- Source mapping: Liu et al. (2024) Supplementary Table S1 maps query IDs 583–594 to Cai Jiao's Tongji master's thesis, *Promoting Anaerobic Digestion by Biochar: Preliminary Study on Technology Optimization and Mechanism Analysis*.
+- Thesis DOI: not reported.
+- Related article DOI: `10.1177/0734242X16634196`; row-level equivalence to the thesis records is not verified.
+- Current evidence: the 12 identifiers are preserved in a blocked candidate manifest; three ISR-level response ranges from the article abstract are stored separately as reference-only aggregate evidence.
+- Access blocker: on 2026-09-10 the BMP platform failed HTTPS certificate verification before login, so no secure official export was available.
+- Rule: keep all unrecovered fields blank; do not map aggregate ranges to query IDs, infer treatments or replicates, or use this candidate for training/validation.
+- Status: `BLOCKED_OFFICIAL_EXPORT_PROVENANCE_ONLY`.
+- Gate: see `docs/CAI_BMP_INGESTION_GATE.md`.
+
+
 ### Sanglier et al. 2022 — repeated-cycle / semi-continuous food-waste AD
 - Dataset DOI: `10.57745/BUJORT`
 - Public files confirmed: `Process.xlsx`, `SeqArchaea.xlsx`, `SeqBacteria.xlsx`, `Python code.zip`.
