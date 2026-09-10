@@ -3,7 +3,6 @@ from pathlib import Path
 
 import pytest
 
-
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "build_daskaloudis_2026_continuous_dataset.py"
 spec = importlib.util.spec_from_file_location("dask_builder", SCRIPT)
 mod = importlib.util.module_from_spec(spec)
