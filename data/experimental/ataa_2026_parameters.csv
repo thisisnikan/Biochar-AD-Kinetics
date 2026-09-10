@@ -1,0 +1,8 @@
+study_id,source_doi,treatment,feedstock,activation,process_temperature_c,surface_area_m2_g,pore_volume_cm3_g,dose_value,dose_unit,bmax_ml,rmax_ml_day,lag_days,r2,rmse_percent,aic,evidence_level
+ataa_2026_jee,10.12911/22998993/216571,AD,control,none,,,0,none,388.466,18,0,0.983,9.960,250.849,published_table_5
+ataa_2026_jee,10.12911/22998993/216571,AD-BC-AW-H3PO4,agricultural_waste,H3PO4,600,1100,1.2,0.25,g_biochar_per_g_food_waste,1201.301,103.6,0,0.981,11.4444,350.173,published_table_5
+ataa_2026_jee,10.12911/22998993/216571,AD-BC-AW-KOH,agricultural_waste,KOH,700,2111.9,1.43,0.25,g_biochar_per_g_food_waste,2233.189,170,0,0.989,9.2608,365.34,published_table_5
+ataa_2026_jee,10.12911/22998993/216571,AD-BC-S-KOH,sewage_sludge,KOH,700,1211.3,1.01,0.25,g_biochar_per_g_food_waste,1682.063,144,0,0.965,14.902,365.510,published_table_5
+ataa_2026_jee,10.12911/22998993/216571,AD-BC-AW,agricultural_waste,none,360,100,0.1,0.25,g_biochar_per_g_food_waste,1207.755,105,0,0.968,14.622,324.336,published_table_5
+ataa_2026_jee,10.12911/22998993/216571,AD-BC-S-H3PO4,sewage_sludge,H3PO4,600,800,0.7,0.25,g_biochar_per_g_food_waste,881.584,70.4,0,0.980,11.106,285.650,published_table_5
+ataa_2026_jee,10.12911/22998993/216571,AD-BC-S,sewage_sludge,none,500,22,0.08,0.25,g_biochar_per_g_food_waste,745.586,43,0,0.987,7.9705,236.764,published_table_5
