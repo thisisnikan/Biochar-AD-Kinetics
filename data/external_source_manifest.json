@@ -43,6 +43,44 @@
       "status": "raw_longitudinal_file_not_confirmed",
       "operational_event_warning": "documented feed/pipe disturbance and control-reactor pH collapse must be encoded explicitly",
       "fallback": "figure digitisation only after raw-data/thesis search is exhausted"
+    },
+    {
+      "study_id": "liu_2024_bmp_database",
+      "doi": "10.1016/j.biortech.2023.130111",
+      "expected_file": null,
+      "role": "external_bmp_reference_population_and_source_index",
+      "status": "platform_and_source_map_confirmed_not_yet_exported",
+      "platform": "https://bmp.wmdatabase.cn",
+      "known_scope": {
+        "records": 746,
+        "substrate_categories": 7,
+        "kinetic_outputs": ["Pmax", "Rmax", "lambda"],
+        "metadata_examples": ["ISR", "temperature", "substrate concentration", "additives", "blank correction"]
+      },
+      "use_constraints": [
+        "do not pool all BMP records into biochar model training",
+        "use as baseline population/QC envelope unless additive-compatible subset is isolated",
+        "retain source DOI/query number for every exported record"
+      ],
+      "first_gate": "manual platform export followed by schema/QC inventory"
+    },
+    {
+      "study_id": "cai_2016_biochar_food_waste_bmp",
+      "doi": "10.1177/0734242X16634196",
+      "expected_file": null,
+      "role": "high_priority_biochar_bmp_external_validation_candidate",
+      "status": "source_identified_records_583_594_not_yet_exported",
+      "source_platform": "liu_2024_bmp_database",
+      "bmp_query_numbers": [583, 584, 585, 586, 587, 588, 589, 590, 591, 592, 593, 594],
+      "study_design": ["biochar dose", "inoculum-to-substrate ratio"],
+      "reported_kinetic_relevance": ["lag phase", "maximum methane production rate"],
+      "validation_value": "tests biochar effect under changing ISR rather than a single-context dose response",
+      "use_constraints": [
+        "treat digitized/reconstructed values as approximate if raw numeric export is unavailable",
+        "do not infer replicate identity unless explicitly present in source records",
+        "encode ISR as an interaction/context variable rather than silently pooling conditions"
+      ],
+      "first_gate": "export BMP query records 583-594 and compare fields against repository data contract"
     }
   ]
 }
