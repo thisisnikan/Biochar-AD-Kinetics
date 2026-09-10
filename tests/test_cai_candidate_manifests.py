@@ -2,7 +2,6 @@ import csv
 import json
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 CANDIDATE = ROOT / "data" / "candidate_manifests" / "cai_jiao_bmp_records_583_594.csv"
 AGGREGATE = ROOT / "data" / "candidate_manifests" / "cai_2016_aggregate_evidence.csv"
