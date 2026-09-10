@@ -27,9 +27,11 @@ On 2026-09-10, `https://bmp.wmdatabase.cn/` returned an expired-certificate erro
 
 The article abstract reports, for ISR 2.0, 1.0, and 0.8:
 
-- lag-phase change ranges of -20.0% to 10.9%, 43.3% to 54.4%, and 36.3% to 54.0%;
-- maximum methane-production-rate change ranges of 100% to 275%, 100% to 133.3%, and 33.3% to 100%;
+- reported lag-phase shortening ranges of -20.0% to 10.9%, 43.3% to 54.4%, and 36.3% to 54.0%;
+- reported maximum methane-production-rate increases of 100% to 275%, 100% to 133.3%, and 33.3% to 100%;
 - best reported biochar doses of 2.5, 0.625, and 0.5 g/g-waste.
+
+Positive lag-shortening values mean a reduction in lag duration. For ISR 2.0, the abstract's unusual negative endpoint is preserved verbatim as numeric evidence but its direction is explicitly unverified; it must not be interpreted until full-text treatment mapping is recovered.
 
 These values summarize several treatments. They must not be assigned to individual query numbers or expanded into pseudo-observations.
 
