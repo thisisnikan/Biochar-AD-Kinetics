@@ -1,9 +1,12 @@
-"""Batch trajectory benchmarking and matched-control kinetic effects.
+"""Batch trajectory benchmarking: per-reactor kinetic curve fitting.
 
 This module complements the global dose-response model with per-reactor fits.
 It is deliberately descriptive: fitting a trajectory does not establish a
-mechanism. The resulting kinetic summaries can be compared between matched
-biochar and control reactors before any cross-study ML is attempted.
+mechanism. Matched-control effect extraction (the control-normalized
+comparison between treated and control reactor fits) lives in
+``batch_effects.py`` so there is exactly one definition of "effect" used
+across the codebase; this module only produces the per-reactor fits that
+``batch_effects.extract_matched_control_effects`` consumes.
 """
 
 from __future__ import annotations
@@ -33,26 +36,6 @@ class TrajectoryFit:
     aicc: float
     n_observations: int
     converged: bool = True
-
-    def to_dict(self) -> dict[str, object]:
-        return asdict(self)
-
-
-@dataclass(frozen=True)
-class KineticEffect:
-    study_id: str
-    experiment_id: str
-    treatment_id: str
-    reactor_id: str
-    control_group_id: str
-    dose_g_l: float
-    delta_potential: float
-    delta_max_rate: float
-    delta_lag: float
-    delta_t50: float
-    delta_t90: float
-    treated_model: str
-    control_model: str
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
@@ -246,89 +229,4 @@ def fit_batch_frame(
             row["model_rank"] = rank
             row["selected"] = rank == 1
             rows.append(row)
-    return pd.DataFrame(rows)
-
-
-def _relative(treated: float, control: float) -> float:
-    if not np.isfinite(control) or abs(control) < 1e-12:
-        return float("nan")
-    return float((treated - control) / control)
-
-
-def matched_control_effects(
-    frame: pd.DataFrame,
-    fits: pd.DataFrame,
-    *,
-    control_group_columns: tuple[str, ...] = (
-        "study_id",
-        "experiment_id",
-        "temperature_c",
-        "substrate_id",
-        "inoculum_id",
-    ),
-) -> pd.DataFrame:
-    """Compute kinetic effects relative to the mean matched control trajectory."""
-    required = {
-        "reactor_id",
-        "treatment_id",
-        "dose_g_l",
-        "is_control",
-        *control_group_columns,
-    }
-    missing = required.difference(frame.columns)
-    if missing:
-        raise ValueError(
-            "Missing columns for matched-control effects: "
-            + ", ".join(sorted(missing))
-        )
-    if "selected" not in fits or "reactor_id" not in fits:
-        raise ValueError("fits must come from fit_batch_frame and include selected/reactor_id")
-
-    meta = frame.drop_duplicates("reactor_id").copy()
-    selected = fits.loc[fits["selected"].astype(bool)].copy()
-    merged = selected.merge(meta, on="reactor_id", how="left", validate="one_to_one")
-
-    rows: list[dict[str, object]] = []
-    for key, group in merged.groupby(list(control_group_columns), dropna=False, sort=True):
-        controls = group.loc[group["is_control"].astype(bool)]
-        treated = group.loc[~group["is_control"].astype(bool)]
-        if controls.empty or treated.empty:
-            continue
-
-        baseline = controls[
-            ["potential", "max_rate", "lag_days", "t50_days", "t90_days"]
-        ].mean()
-        control_models = ",".join(sorted(set(controls["model"].astype(str))))
-        key_tuple = key if isinstance(key, tuple) else (key,)
-        control_group_id = "::".join(str(value) for value in key_tuple)
-
-        for _, row in treated.iterrows():
-            effect = KineticEffect(
-                study_id=str(row["study_id"]),
-                experiment_id=str(row["experiment_id"]),
-                treatment_id=str(row["treatment_id"]),
-                reactor_id=str(row["reactor_id"]),
-                control_group_id=control_group_id,
-                dose_g_l=float(row["dose_g_l"]),
-                delta_potential=_relative(
-                    float(row["potential"]), float(baseline["potential"])
-                ),
-                delta_max_rate=_relative(
-                    float(row["max_rate"]), float(baseline["max_rate"])
-                ),
-                delta_lag=(
-                    _relative(float(baseline["lag_days"]), float(row["lag_days"]))
-                    if float(row["lag_days"]) > 0
-                    else float("nan")
-                ),
-                delta_t50=_relative(
-                    float(baseline["t50_days"]), float(row["t50_days"])
-                ),
-                delta_t90=_relative(
-                    float(baseline["t90_days"]), float(row["t90_days"])
-                ),
-                treated_model=str(row["model"]),
-                control_model=control_models,
-            )
-            rows.append(effect.to_dict())
     return pd.DataFrame(rows)
