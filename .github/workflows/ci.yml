@@ -20,4 +20,13 @@ jobs:
       - run: pip install -e ".[dev]"
       - run: ruff check .
       - run: pytest -q
-
+      - name: Run real-data batch Stage A-B analysis
+        run: >-
+          python scripts/analyze_batch_kinetic_fingerprints.py
+          --output results/batch-stage-ab-ci
+      - name: Upload batch Stage A-B artifact
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: batch-stage-ab
+          path: results/batch-stage-ab-ci
