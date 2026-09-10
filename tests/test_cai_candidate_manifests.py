@@ -38,9 +38,13 @@ def test_cai_aggregate_evidence_remains_reference_only():
     assert all(
         row["evidence_level"] == "abstract_reported_aggregate" for row in rows
     )
-    assert rows[0]["lag_shortening_direction_verified"] == "No"
+
+    isr_2_0 = next(row for row in rows if row["isr_i_s_vs"] == "2.0")
+    assert isr_2_0["lag_shortening_direction_verified"] == "No"
     assert all(
-        row["lag_shortening_direction_verified"] == "Yes" for row in rows[1:]
+        row["lag_shortening_direction_verified"] == "Yes"
+        for row in rows
+        if row is not isr_2_0
     )
 
 
