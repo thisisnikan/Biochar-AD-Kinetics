@@ -10,7 +10,6 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-
 DEFAULT_MATCH_COLUMNS = (
     "study_id",
     "experiment_id",
@@ -40,12 +39,7 @@ def extract_matched_control_effects(
     *,
     control_group_columns: tuple[str, ...] = DEFAULT_MATCH_COLUMNS,
 ) -> pd.DataFrame:
-    """Compute per-reactor kinetic effects against matched control means.
-
-    The caller should pass model-selection output from ``fit_batch_frame``.
-    Only rows marked ``selected=True`` are used. Controls are matched within
-    study, experiment, temperature, substrate, and inoculum by default.
-    """
+    """Compute per-reactor kinetic effects against matched control means."""
     required_meta = {
         "reactor_id",
         "treatment_id",
