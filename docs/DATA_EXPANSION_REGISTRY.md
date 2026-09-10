@@ -46,6 +46,16 @@ This registry separates datasets that are already modelling-ready from datasets 
 - Value to this repository: external process-stability validation across seven real industrial reactors, not methane-productivity validation.
 - Status: `PUBLIC_SUPPLEMENT_CONFIRMED_DOWNLOAD_NOT_YET_INGESTED`
 
+## Adjacent mechanistic comparator — do not pool as biochar
+
+### Kalantzis et al. 2023 — continuous GAC pilot reactor
+- Paper DOI: `10.1016/j.biortech.2023.128908`
+- Design: 180 L anaerobic digester in an integrated pilot system, with continuous addition of conductive granular activated carbon (GAC) at 5 g/L.
+- Reported result: biogas production increased by about 32% after GAC addition and Methanosaeta relative abundance increased.
+- Why useful: this is a continuous conductive-carbon intervention in a pilot-scale agro-industrial wastewater digester and can challenge whether dynamic signatures attributed to biochar are more generally signatures of conductive-carbon amendment.
+- Critical boundary: GAC is not biochar. It must never be merged into a biochar treatment class or used as direct biochar external validation.
+- Status: `MECHANISTIC_COMPARATOR_PAPER_FOUND_RAW_DATA_NOT_CONFIRMED`
+
 ## Admission rules
 
 A candidate becomes modelling-ready only after all of the following are satisfied:
@@ -69,6 +79,7 @@ The goal is not maximum row count. The priority order is:
 2. parallel control/treatment continuous designs;
 3. raw longitudinal stability variables (VFA, TAN, pH, COD/VS) alongside methane outputs;
 4. independent biochar materials/doses with descriptors;
-5. endpoint-only BMP studies after the dynamic evidence base is stronger.
+5. endpoint-only BMP studies after the dynamic evidence base is stronger;
+6. clearly separated adjacent conductive-carbon comparators for mechanism-transfer tests.
 
 This keeps the repository focused on transferability and reproducibility rather than creating an artificially large pooled table with incompatible experimental units.
