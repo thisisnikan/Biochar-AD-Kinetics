@@ -8,8 +8,9 @@ biochar and control reactors before any cross-study ML is attempted.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import asdict, dataclass
-from typing import Callable, Literal
+from typing import Literal
 
 import numpy as np
 import pandas as pd
@@ -65,16 +66,28 @@ def modified_gompertz(
     return potential * np.exp(-np.exp(np.clip(exponent, -50.0, 50.0)))
 
 
-def first_order(time_days: ArrayLike, potential: float, rate_constant: float) -> NDArray[np.float64]:
+def first_order(
+    time_days: ArrayLike,
+    potential: float,
+    rate_constant: float,
+) -> NDArray[np.float64]:
     time = np.asarray(time_days, dtype=float)
     return potential * (1.0 - np.exp(-rate_constant * np.clip(time, 0.0, None)))
 
 
 def logistic(
-    time_days: ArrayLike, potential: float, rate_constant: float, midpoint_days: float
+    time_days: ArrayLike,
+    potential: float,
+    rate_constant: float,
+    midpoint_days: float,
 ) -> NDArray[np.float64]:
     time = np.asarray(time_days, dtype=float)
-    return potential / (1.0 + np.exp(np.clip(-rate_constant * (time - midpoint_days), -50, 50)))
+    return potential / (
+        1.0
+        + np.exp(
+            np.clip(-rate_constant * (time - midpoint_days), -50, 50)
+        )
+    )
 
 
 def _aicc(observed: np.ndarray, predicted: np.ndarray, n_parameters: int) -> float:
@@ -88,7 +101,10 @@ def _aicc(observed: np.ndarray, predicted: np.ndarray, n_parameters: int) -> flo
 
 
 def _crossing_time(
-    fn: Callable[..., NDArray[np.float64]], params: tuple[float, ...], fraction: float, max_time: float
+    fn: Callable[..., NDArray[np.float64]],
+    params: tuple[float, ...],
+    fraction: float,
+    max_time: float,
 ) -> float:
     potential = params[0]
     target = fraction * potential
@@ -98,14 +114,25 @@ def _crossing_time(
     return float(grid[reached[0]]) if reached.size else float("nan")
 
 
-def _fit_one_model(time: np.ndarray, methane: np.ndarray, model: ModelName) -> tuple[tuple[float, ...], np.ndarray]:
+def _fit_one_model(
+    time: np.ndarray,
+    methane: np.ndarray,
+    model: ModelName,
+) -> tuple[tuple[float, ...], np.ndarray]:
     max_y = max(float(np.nanmax(methane)), 1.0)
     max_t = max(float(np.nanmax(time)), 1.0)
 
     if model == "modified_gompertz":
         fn = modified_gompertz
-        p0 = (max_y * 1.05, max(max_y / max_t, 0.1), max(float(np.nanmin(time)), 0.0))
-        bounds = ((1e-6, 1e-6, 0.0), (max_y * 10.0 + 1.0, max_y * 10.0 + 1.0, max_t * 2.0 + 10.0))
+        p0 = (
+            max_y * 1.05,
+            max(max_y / max_t, 0.1),
+            max(float(np.nanmin(time)), 0.0),
+        )
+        bounds = (
+            (1e-6, 1e-6, 0.0),
+            (max_y * 10.0 + 1.0, max_y * 10.0 + 1.0, max_t * 2.0 + 10.0),
+        )
     elif model == "first_order":
         fn = first_order
         p0 = (max_y * 1.05, 0.15)
@@ -113,7 +140,10 @@ def _fit_one_model(time: np.ndarray, methane: np.ndarray, model: ModelName) -> t
     elif model == "logistic":
         fn = logistic
         p0 = (max_y * 1.05, 0.3, max_t / 2.0)
-        bounds = ((1e-6, 1e-8, 0.0), (max_y * 10.0 + 1.0, 10.0, max_t * 3.0 + 10.0))
+        bounds = (
+            (1e-6, 1e-8, 0.0),
+            (max_y * 10.0 + 1.0, 10.0, max_t * 3.0 + 10.0),
+        )
     else:
         raise ValueError(f"Unknown trajectory model: {model}")
 
@@ -125,7 +155,11 @@ def fit_reactor_trajectory(
     time_days: ArrayLike,
     methane: ArrayLike,
     reactor_id: str = "reactor",
-    models: tuple[ModelName, ...] = ("modified_gompertz", "first_order", "logistic"),
+    models: tuple[ModelName, ...] = (
+        "modified_gompertz",
+        "first_order",
+        "logistic",
+    ),
 ) -> list[TrajectoryFit]:
     """Fit multiple candidate kinetic curves to one reactor trajectory."""
     time = np.asarray(time_days, dtype=float)
@@ -202,7 +236,11 @@ def fit_batch_frame(
 
     rows: list[dict[str, object]] = []
     for reactor_id, group in frame.groupby(reactor_col, sort=True):
-        fits = fit_reactor_trajectory(group[time_col], group[response_col], str(reactor_id))
+        fits = fit_reactor_trajectory(
+            group[time_col],
+            group[response_col],
+            str(reactor_id),
+        )
         for rank, fit in enumerate(fits, start=1):
             row = fit.to_dict()
             row["model_rank"] = rank
@@ -229,12 +267,7 @@ def matched_control_effects(
         "inoculum_id",
     ),
 ) -> pd.DataFrame:
-    """Compute kinetic effects relative to the mean matched control trajectory.
-
-    Only each reactor's selected best-fit trajectory is used. Controls are
-    matched within study/experiment/temperature/substrate/inoculum. This avoids
-    comparing a treatment with an unrelated BMP baseline from another study.
-    """
+    """Compute kinetic effects relative to the mean matched control trajectory."""
     required = {
         "reactor_id",
         "treatment_id",
@@ -244,7 +277,10 @@ def matched_control_effects(
     }
     missing = required.difference(frame.columns)
     if missing:
-        raise ValueError(f"Missing columns for matched-control effects: {', '.join(sorted(missing))}")
+        raise ValueError(
+            "Missing columns for matched-control effects: "
+            + ", ".join(sorted(missing))
+        )
     if "selected" not in fits or "reactor_id" not in fits:
         raise ValueError("fits must come from fit_batch_frame and include selected/reactor_id")
 
@@ -259,9 +295,12 @@ def matched_control_effects(
         if controls.empty or treated.empty:
             continue
 
-        baseline = controls[["potential", "max_rate", "lag_days", "t50_days", "t90_days"]].mean()
+        baseline = controls[
+            ["potential", "max_rate", "lag_days", "t50_days", "t90_days"]
+        ].mean()
         control_models = ",".join(sorted(set(controls["model"].astype(str))))
-        control_group_id = "::".join(str(value) for value in (key if isinstance(key, tuple) else (key,)))
+        key_tuple = key if isinstance(key, tuple) else (key,)
+        control_group_id = "::".join(str(value) for value in key_tuple)
 
         for _, row in treated.iterrows():
             effect = KineticEffect(
@@ -271,11 +310,23 @@ def matched_control_effects(
                 reactor_id=str(row["reactor_id"]),
                 control_group_id=control_group_id,
                 dose_g_l=float(row["dose_g_l"]),
-                delta_potential=_relative(float(row["potential"]), float(baseline["potential"])),
-                delta_max_rate=_relative(float(row["max_rate"]), float(baseline["max_rate"])),
-                delta_lag=_relative(float(baseline["lag_days"]), float(row["lag_days"])) if float(row["lag_days"]) > 0 else float("nan"),
-                delta_t50=_relative(float(baseline["t50_days"]), float(row["t50_days"])),
-                delta_t90=_relative(float(baseline["t90_days"]), float(row["t90_days"])),
+                delta_potential=_relative(
+                    float(row["potential"]), float(baseline["potential"])
+                ),
+                delta_max_rate=_relative(
+                    float(row["max_rate"]), float(baseline["max_rate"])
+                ),
+                delta_lag=(
+                    _relative(float(baseline["lag_days"]), float(row["lag_days"]))
+                    if float(row["lag_days"]) > 0
+                    else float("nan")
+                ),
+                delta_t50=_relative(
+                    float(baseline["t50_days"]), float(row["t50_days"])
+                ),
+                delta_t90=_relative(
+                    float(baseline["t90_days"]), float(row["t90_days"])
+                ),
                 treated_model=str(row["model"]),
                 control_model=control_models,
             )
