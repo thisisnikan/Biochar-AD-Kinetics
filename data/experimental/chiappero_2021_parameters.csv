@@ -1,0 +1,8 @@
+study_id,source_doi,treatment,feedstock,activated,pyrolysis_temperature_c,activation_temperature_c,dose_g_l,surface_area_m2_g,pore_volume_cm3_g,potential_nm3_kg_vs,max_rate_nm3_kg_vs_day,lag_days,r2,evidence_level
+chiappero_2021_catalysts,10.3390/catal11091094,CTRL,control,false,,,0,,,0.150,0.027,0.0,0.910,published_table_3
+chiappero_2021_catalysts,10.3390/catal11091094,RH550,rice_husk,false,550,,10,19.2,0.012,0.121,0.014,0.0,0.960,published_table_3
+chiappero_2021_catalysts,10.3390/catal11091094,RH550a,rice_husk,true,550,900,10,263.4,0.209,0.153,0.026,0.0,0.961,published_table_3
+chiappero_2021_catalysts,10.3390/catal11091094,SS550,sewage_sludge,false,550,,10,15.7,0.010,0.162,0.024,0.0,0.940,published_table_3
+chiappero_2021_catalysts,10.3390/catal11091094,SS550a,sewage_sludge,true,550,900,10,109.2,0.169,0.183,0.027,0.0,0.926,published_table_3
+chiappero_2021_catalysts,10.3390/catal11091094,SWP550,soft_wood_pellets,false,550,,10,25.9,0.027,0.181,0.034,0.0,0.936,published_table_3
+chiappero_2021_catalysts,10.3390/catal11091094,SWP550a,soft_wood_pellets,true,550,900,10,605.1,0.416,0.119,0.014,0.0,0.973,published_table_3
