@@ -1,0 +1,4 @@
+isr_i_s_vs,reported_lag_shortening_min_pct,reported_lag_shortening_max_pct,lag_shortening_direction_verified,rmax_increase_min_pct,rmax_increase_max_pct,best_biochar_dose_g_g_waste,evidence_level,model_use,source_doi,interpretation_note
+2.0,-20.0,10.9,No,100.0,275.0,2.5,abstract_reported_aggregate,reference_only,10.1177/0734242X16634196,"Values reproduce the abstract's 'shortened ... by -20.0%-10.9%' wording; the negative endpoint is not interpreted until full-text treatment mapping is verified."
+1.0,43.3,54.4,Yes,100.0,133.3,0.625,abstract_reported_aggregate,reference_only,10.1177/0734242X16634196,"Positive values represent lag-phase shortening; range summarizes multiple biochar treatments relative to the no-biochar control."
+0.8,36.3,54.0,Yes,33.3,100.0,0.5,abstract_reported_aggregate,reference_only,10.1177/0734242X16634196,"Positive values represent lag-phase shortening; range summarizes multiple biochar treatments relative to the no-biochar control."

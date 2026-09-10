@@ -28,7 +28,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-
 TARGETS = (
     "methane_pct",
     "CH4_L_d",

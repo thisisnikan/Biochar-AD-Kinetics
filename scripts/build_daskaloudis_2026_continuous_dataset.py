@@ -1,6 +1,13 @@
 from __future__ import annotations
-import argparse,csv,json,math,xml.etree.ElementTree as ET,zipfile
+
+import argparse
+import csv
+import json
+import math
+import xml.etree.ElementTree as ET
+import zipfile
 from pathlib import Path
+
 XML='http://schemas.openxmlformats.org/spreadsheetml/2006/main'; REL='http://schemas.openxmlformats.org/officeDocument/2006/relationships'; PREL='http://schemas.openxmlformats.org/package/2006/relationships'
 SHEET='Table'; DATA_DOI='10.17632/r84yctsxx6.1'; PAPER_DOI='10.30955/gnc2025.00357'
 COLS=("phase","time","Q_L_d","OL_g_VS","OLR","HRT","TS_in_gTS_L","TS_out_gTS_L","TS_removal_pct","VS_in_gVS_L","VS_out_gVS_L","VS_removal_pct","pH_in_primary","pH_reactor","alkalinity_mg_CaCO3_L","pH_in_secondary","pH_out","biogas","methane_pct","CH4_L_d","SMP_L_CH4_gVS","methane_yield_Nml_gVS","sCOD_in_gO2_L","COD_out","COD_removal_pct","phenols_in_gGAeq_L","phenols_out_gGAeq_L","phenols_removal_pct","TAN_in","TAN_out")
@@ -36,7 +43,7 @@ def read_rows(p):
                 if c.attrib.get('t')=='s': val=ss[int(raw)]
                 else:
                     try: val=float(raw)
-                    except: val=raw
+                    except (TypeError, ValueError): val=raw
         if val=='': val=None
         if val is not None: rows.setdefault(rn,{})[cn]=val
     out=[]
