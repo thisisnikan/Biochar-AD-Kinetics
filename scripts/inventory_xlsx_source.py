@@ -16,9 +16,9 @@ import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 
+from biochar_ad_kinetics.xlsx_reader import read_shared_strings, read_sheet_paths
+
 MAIN = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
-REL = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-PKGREL = "http://schemas.openxmlformats.org/package/2006/relationships"
 
 
 def sha256(path: Path) -> str:
@@ -29,32 +29,8 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-def shared_strings(z: zipfile.ZipFile) -> list[str]:
-    try:
-        root = ET.fromstring(z.read("xl/sharedStrings.xml"))
-    except KeyError:
-        return []
-    return [
-        "".join(t.text or "" for t in item.iter(f"{{{MAIN}}}t"))
-        for item in root
-    ]
-
-
 def workbook_sheets(z: zipfile.ZipFile) -> list[tuple[str, str]]:
-    wb = ET.fromstring(z.read("xl/workbook.xml"))
-    rels = ET.fromstring(z.read("xl/_rels/workbook.xml.rels"))
-    targets = {
-        r.attrib["Id"]: r.attrib["Target"]
-        for r in rels.iter(f"{{{PKGREL}}}Relationship")
-    }
-    out = []
-    for sheet in wb.iter(f"{{{MAIN}}}sheet"):
-        rid = sheet.attrib[f"{{{REL}}}id"]
-        target = targets[rid].lstrip("/")
-        if not target.startswith("xl/"):
-            target = "xl/" + target
-        out.append((sheet.attrib["name"], target))
-    return out
+    return list(read_sheet_paths(z).items())
 
 
 def cell_value(cell: ET.Element, ss: list[str]):
@@ -85,7 +61,7 @@ def sheet_inventory(z: zipfile.ZipFile, path: str, ss: list[str]) -> dict:
 
 def inventory(path: Path) -> dict:
     with zipfile.ZipFile(path) as z:
-        ss = shared_strings(z)
+        ss = read_shared_strings(z)
         sheets = []
         for name, sheet_path in workbook_sheets(z):
             item = {"name": name, "xml_path": sheet_path}

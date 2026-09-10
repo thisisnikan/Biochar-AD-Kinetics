@@ -21,6 +21,8 @@ import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 
+from biochar_ad_kinetics.xlsx_reader import column_number, read_shared_strings, read_sheet_paths
+
 SOURCE_URL = (
     "https://media.springernature.com/original/springer-static/esm/"
     "art%3A10.1038%2Fs41598-025-02564-0/MediaObjects/"
@@ -30,8 +32,6 @@ SOURCE_SHA256 = "a5be0c25990acbdd0a6ac14dfa202398e61713fea8496884018e97f1cf87b98
 SOURCE_DOI = "10.1038/s41598-025-02564-0"
 SHEET_NAME = "Godzinowe"
 XML_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
-REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 
 INOCULUM_VS_G = 8.851386739388484
 SUBSTRATE_VS_G = 4.425592386264921
@@ -63,50 +63,19 @@ TREATMENTS = (
     ),
 )
 
-def _column_number(reference: str) -> int:
-    letters = "".join(character for character in reference if character.isalpha())
-    result = 0
-    for character in letters:
-        result = result * 26 + ord(character.upper()) - ord("A") + 1
-    return result
-
-
-def _shared_strings(archive: zipfile.ZipFile) -> list[str]:
-    try:
-        root = ET.fromstring(archive.read("xl/sharedStrings.xml"))
-    except KeyError:
-        return []
-    return ["".join(node.text or "" for node in item.iter(f"{{{XML_NS}}}t")) for item in root]
-
-
-def _sheet_path(archive: zipfile.ZipFile, sheet_name: str) -> str:
-    workbook = ET.fromstring(archive.read("xl/workbook.xml"))
-    relationship_id = None
-    for sheet in workbook.iter(f"{{{XML_NS}}}sheet"):
-        if sheet.attrib["name"] == sheet_name:
-            relationship_id = sheet.attrib[f"{{{REL_NS}}}id"]
-            break
-    if relationship_id is None:
-        raise ValueError(f"Worksheet not found: {sheet_name}")
-
-    relationships = ET.fromstring(archive.read("xl/_rels/workbook.xml.rels"))
-    for relationship in relationships.iter(f"{{{PACKAGE_REL_NS}}}Relationship"):
-        if relationship.attrib["Id"] == relationship_id:
-            target = relationship.attrib["Target"].lstrip("/")
-            return target if target.startswith("xl/") else f"xl/{target}"
-    raise ValueError(f"Worksheet relationship not found: {sheet_name}")
-
-
 def _read_cells(path: Path) -> dict[tuple[int, int], float | str]:
     with zipfile.ZipFile(path) as archive:
-        strings = _shared_strings(archive)
-        root = ET.fromstring(archive.read(_sheet_path(archive, SHEET_NAME)))
+        strings = read_shared_strings(archive)
+        paths = read_sheet_paths(archive)
+        if SHEET_NAME not in paths:
+            raise ValueError(f"Worksheet not found: {SHEET_NAME}")
+        root = ET.fromstring(archive.read(paths[SHEET_NAME]))
 
     cells: dict[tuple[int, int], float | str] = {}
     for cell in root.iter(f"{{{XML_NS}}}c"):
         reference = cell.attrib["r"]
         row = int("".join(character for character in reference if character.isdigit()))
-        column = _column_number(reference)
+        column = column_number(reference)
         value_node = cell.find(f"{{{XML_NS}}}v")
         if value_node is None or value_node.text is None:
             continue
