@@ -3,6 +3,12 @@
 Validation is target-specific because independent studies do not always report
 all kinetic descriptors. A target is only evaluated when at least three
 independent studies contain that target plus the requested features.
+Validation is always grouped by whole held-out study (leave-one-study-out),
+never a random row split, so cross-study claims cannot leak sibling
+observations between train and test. Numeric predictors are standardized
+(mean/scale) using the training fold only, then the same transform is
+applied to the held-out fold, so Ridge's L2 penalty is scale-invariant and
+no test-fold statistic reaches the fitted coefficients.
 """
 
 from __future__ import annotations
@@ -93,12 +99,24 @@ def assess_readiness(
     }
 
 
+def _numeric_scaler(x_train: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Fit a mean/scale standardizer on the training fold only."""
+    mean = x_train.mean(axis=0)
+    scale = x_train.std(axis=0)
+    scale[scale == 0] = 1.0
+    return mean, scale
+
+
 def _design_matrix(
     frame: pd.DataFrame,
     numeric_features: tuple[str, ...],
     categories: list[str] | None = None,
+    numeric_mean: np.ndarray | None = None,
+    numeric_scale: np.ndarray | None = None,
 ) -> tuple[np.ndarray, list[str]]:
     numeric = frame.loc[:, numeric_features].astype(float).to_numpy(float)
+    if numeric_mean is not None and numeric_scale is not None:
+        numeric = (numeric - numeric_mean) / numeric_scale
     observed = frame["material"].fillna("unknown").astype(str)
     fitted_categories = sorted(observed.unique()) if categories is None else categories
     encoded = np.column_stack(
@@ -144,8 +162,18 @@ def leave_one_study_out(
         for held_out in sorted(usable["study_id"].unique()):
             train = usable.loc[usable["study_id"] != held_out].copy()
             test = usable.loc[usable["study_id"] == held_out].copy()
-            x_train, categories = _design_matrix(train, numeric_features)
-            x_test, _ = _design_matrix(test, numeric_features, categories=categories)
+            raw_train_numeric = train.loc[:, numeric_features].astype(float).to_numpy(float)
+            numeric_mean, numeric_scale = _numeric_scaler(raw_train_numeric)
+            x_train, categories = _design_matrix(
+                train, numeric_features, numeric_mean=numeric_mean, numeric_scale=numeric_scale
+            )
+            x_test, _ = _design_matrix(
+                test,
+                numeric_features,
+                categories=categories,
+                numeric_mean=numeric_mean,
+                numeric_scale=numeric_scale,
+            )
             y_train = train[target].to_numpy(float)
             y_test = test[target].to_numpy(float)
             beta = _ridge_fit(x_train, y_train, alpha)
