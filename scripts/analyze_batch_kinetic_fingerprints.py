@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Build Stage A->B batch kinetic fingerprints from real repository datasets.
 
 Public reactor trajectories are fitted per reactor. Published condition-level
@@ -61,13 +60,10 @@ def prepare_kozlowski(path: Path) -> tuple[pd.DataFrame, dict[str, int]]:
 
     negative = included["methane_ml_g_vs"].lt(0)
     n_negative = int(negative.sum())
-    # Blank-corrected cumulative methane may be slightly negative early in a run.
-    # The kinetic families are non-negative, so the fit input uses an explicit
-    # physical floor while retaining the untouched public source file.
     included["fit_methane_ml_g_vs"] = included["methane_ml_g_vs"].clip(lower=0.0)
 
     audit = {
-        "rows_included": int(len(included)),
+        "rows_included": len(included),
         "reactors_included": int(included["reactor_id"].nunique()),
         "negative_blank_corrected_observations_floored_for_fit": n_negative,
     }
@@ -178,7 +174,7 @@ def summarize(fingerprints: pd.DataFrame) -> dict[str, object]:
         by_study.append(
             {
                 "study_id": study_id,
-                "n_effect_rows": int(len(group)),
+                "n_effect_rows": len(group),
                 "dose_min_g_l": float(group["dose_g_l"].min()),
                 "dose_max_g_l": float(group["dose_g_l"].max()),
                 "mean_delta_potential": float(group["delta_potential"].mean()),
@@ -193,8 +189,8 @@ def summarize(fingerprints: pd.DataFrame) -> dict[str, object]:
             "Stage A->B descriptive kinetic fingerprints; no pooled causal or "
             "cross-study treatment-effect estimate is claimed."
         ),
-        "n_fingerprint_rows": int(len(fingerprints)),
-        "n_biochar_rows": int(len(public_biochar)),
+        "n_fingerprint_rows": len(fingerprints),
+        "n_biochar_rows": len(public_biochar),
         "studies_with_public_effect_information": sorted(
             fingerprints["study_id"].unique().tolist()
         ),
