@@ -38,7 +38,6 @@ def gompertz_crossing_time(
 
 
 def _as_true(series: pd.Series) -> pd.Series:
-    """Coerce common CSV boolean encodings without treating 'false' as truthy."""
     if pd.api.types.is_bool_dtype(series):
         return series.fillna(False)
     return series.astype(str).str.strip().str.lower().isin({"true", "1", "yes"})
@@ -57,15 +56,12 @@ def prepare_kozlowski(path: Path) -> tuple[pd.DataFrame, dict[str, int]]:
     included["is_control"] = included["treatment"].eq("food_waste")
     included["substrate_id"] = "food_waste"
     included["inoculum_id"] = "kozlowski_shared_inoculum"
-
     negative = included["methane_ml_g_vs"].lt(0)
-    n_negative = int(negative.sum())
     included["fit_methane_ml_g_vs"] = included["methane_ml_g_vs"].clip(lower=0.0)
-
     audit = {
         "rows_included": len(included),
         "reactors_included": int(included["reactor_id"].nunique()),
-        "negative_blank_corrected_observations_floored_for_fit": n_negative,
+        "negative_blank_corrected_observations_floored_for_fit": int(negative.sum()),
     }
     return included, audit
 
@@ -84,12 +80,7 @@ def kozlowski_fingerprints(
     material = frame[
         ["reactor_id", "carbon_material", "process_temperature_c", "source_doi"]
     ].drop_duplicates("reactor_id")
-    effects = effects.merge(
-        material,
-        on="reactor_id",
-        how="left",
-        validate="many_to_one",
-    )
+    effects = effects.merge(material, on="reactor_id", how="left", validate="many_to_one")
     effects = effects.rename(
         columns={
             "carbon_material": "material",
@@ -102,75 +93,108 @@ def kozlowski_fingerprints(
     return fits, effects, audit
 
 
-def valentin_fingerprints(path: Path) -> pd.DataFrame:
-    data = pd.read_csv(path).sort_values("dose_g_l").reset_index(drop=True)
-    control = data.loc[data["dose_g_l"].eq(0)].iloc[0]
+def _published_gompertz_effects(
+    data: pd.DataFrame,
+    *,
+    study_id: str,
+    experiment_id: str,
+    treatment_col: str,
+    control_mask: pd.Series,
+    potential_col: str,
+    rate_col: str,
+    lag_col: str,
+    dose_col: str,
+    temperature_col: str,
+    source_scope: str,
+) -> pd.DataFrame:
+    control = data.loc[control_mask].iloc[0]
     control_t50 = gompertz_crossing_time(
-        float(control["potential_ml_g_vs"]),
-        float(control["max_rate_ml_g_vs_day"]),
-        float(control["lag_days"]),
-        0.5,
+        float(control[potential_col]), float(control[rate_col]), float(control[lag_col]), 0.5
     )
     control_t90 = gompertz_crossing_time(
-        float(control["potential_ml_g_vs"]),
-        float(control["max_rate_ml_g_vs_day"]),
-        float(control["lag_days"]),
-        0.9,
+        float(control[potential_col]), float(control[rate_col]), float(control[lag_col]), 0.9
     )
-
     rows: list[dict[str, object]] = []
-    for _, row in data.loc[data["dose_g_l"].gt(0)].iterrows():
-        t50 = gompertz_crossing_time(
-            float(row["potential_ml_g_vs"]),
-            float(row["max_rate_ml_g_vs_day"]),
-            float(row["lag_days"]),
-            0.5,
-        )
-        t90 = gompertz_crossing_time(
-            float(row["potential_ml_g_vs"]),
-            float(row["max_rate_ml_g_vs_day"]),
-            float(row["lag_days"]),
-            0.9,
-        )
+    for _, row in data.loc[~control_mask].iterrows():
+        lag = float(row[lag_col])
+        control_lag = float(control[lag_col])
+        t50 = gompertz_crossing_time(float(row[potential_col]), float(row[rate_col]), lag, 0.5)
+        t90 = gompertz_crossing_time(float(row[potential_col]), float(row[rate_col]), lag, 0.9)
         rows.append(
             {
-                "study_id": "valentin_bialowiec_2024_scientific_reports",
-                "experiment_id": "valentin_2024_glucose_37c",
-                "treatment_id": f"dose_{float(row['dose_g_l']):g}_g_l",
+                "study_id": study_id,
+                "experiment_id": experiment_id,
+                "treatment_id": str(row[treatment_col]),
                 "reactor_id": "published_condition_parameter",
-                "control_group_id": "valentin_2024::dose_0_g_l",
-                "dose_g_l": float(row["dose_g_l"]),
+                "control_group_id": f"{study_id}::control",
+                "dose_g_l": float(row[dose_col]),
                 "delta_potential": relative_gain(
-                    float(row["potential_ml_g_vs"]),
-                    float(control["potential_ml_g_vs"]),
+                    float(row[potential_col]), float(control[potential_col])
                 ),
-                "delta_max_rate": relative_gain(
-                    float(row["max_rate_ml_g_vs_day"]),
-                    float(control["max_rate_ml_g_vs_day"]),
-                ),
-                "delta_lag": relative_reduction(
-                    float(row["lag_days"]),
-                    float(control["lag_days"]),
+                "delta_max_rate": relative_gain(float(row[rate_col]), float(control[rate_col])),
+                "delta_lag": (
+                    relative_reduction(lag, control_lag)
+                    if control_lag > 0
+                    else float("nan")
                 ),
                 "delta_t50": relative_reduction(t50, control_t50),
                 "delta_t90": relative_reduction(t90, control_t90),
                 "treated_model": "published_modified_gompertz",
                 "control_model": "published_modified_gompertz",
                 "material": "biochar",
-                "material_process_temperature_c": float(row["biochar_pyrolysis_c"]),
+                "material_process_temperature_c": float(row[temperature_col]),
                 "source_doi": str(row["source_doi"]),
                 "evidence_level": "published_condition_parameter",
                 "replicate_level_available": False,
-                "source_scope": "published_table_3",
+                "source_scope": source_scope,
             }
         )
     return pd.DataFrame(rows)
 
 
+def valentin_fingerprints(path: Path) -> pd.DataFrame:
+    data = pd.read_csv(path).sort_values("dose_g_l").reset_index(drop=True)
+    return _published_gompertz_effects(
+        data,
+        study_id="valentin_bialowiec_2024_scientific_reports",
+        experiment_id="valentin_2024_glucose_37c",
+        treatment_col="dose_g_l",
+        control_mask=data["dose_g_l"].eq(0),
+        potential_col="potential_ml_g_vs",
+        rate_col="max_rate_ml_g_vs_day",
+        lag_col="lag_days",
+        dose_col="dose_g_l",
+        temperature_col="biochar_pyrolysis_c",
+        source_scope="published_table_3",
+    )
+
+
+def chiappero_fingerprints(path: Path) -> pd.DataFrame:
+    data = pd.read_csv(path)
+    effects = _published_gompertz_effects(
+        data,
+        study_id="chiappero_2021_catalysts",
+        experiment_id="chiappero_2021_bmp",
+        treatment_col="treatment",
+        control_mask=data["treatment"].eq("CTRL"),
+        potential_col="potential_nm3_kg_vs",
+        rate_col="max_rate_nm3_kg_vs_day",
+        lag_col="lag_days",
+        dose_col="dose_g_l",
+        temperature_col="pyrolysis_temperature_c",
+        source_scope="published_table_3",
+    )
+    descriptors = data.loc[~data["treatment"].eq("CTRL"), [
+        "treatment", "feedstock", "activated", "activation_temperature_c",
+        "surface_area_m2_g", "pore_volume_cm3_g",
+    ]].copy()
+    descriptors = descriptors.rename(columns={"treatment": "treatment_id"})
+    return effects.merge(descriptors, on="treatment_id", how="left", validate="one_to_one")
+
+
 def summarize(fingerprints: pd.DataFrame) -> dict[str, object]:
-    public_biochar = fingerprints.loc[fingerprints["material"].eq("biochar")].copy()
     by_study = []
-    for study_id, group in public_biochar.groupby("study_id", sort=True):
+    for study_id, group in fingerprints.groupby("study_id", sort=True):
         by_study.append(
             {
                 "study_id": study_id,
@@ -179,22 +203,20 @@ def summarize(fingerprints: pd.DataFrame) -> dict[str, object]:
                 "dose_max_g_l": float(group["dose_g_l"].max()),
                 "mean_delta_potential": float(group["delta_potential"].mean()),
                 "mean_delta_max_rate": float(group["delta_max_rate"].mean()),
-                "mean_delta_lag": float(group["delta_lag"].mean()),
+                "mean_delta_lag": float(group["delta_lag"].mean()) if group["delta_lag"].notna().any() else None,
                 "mean_delta_t50": float(group["delta_t50"].mean()),
                 "mean_delta_t90": float(group["delta_t90"].mean()),
             }
         )
     return {
         "interpretation": (
-            "Stage A->B descriptive kinetic fingerprints; no pooled causal or "
-            "cross-study treatment-effect estimate is claimed."
+            "Descriptive kinetic fingerprints; published-parameter studies are not treated "
+            "as replicate-level estimates and no pooled causal effect is claimed."
         ),
         "n_fingerprint_rows": len(fingerprints),
-        "n_biochar_rows": len(public_biochar),
-        "studies_with_public_effect_information": sorted(
-            fingerprints["study_id"].unique().tolist()
-        ),
-        "biochar_by_study": by_study,
+        "n_independent_studies": int(fingerprints["study_id"].nunique()),
+        "studies_with_public_effect_information": sorted(fingerprints["study_id"].unique()),
+        "by_study": by_study,
     }
 
 
@@ -202,69 +224,48 @@ def run(output: Path) -> dict[str, object]:
     output.mkdir(parents=True, exist_ok=True)
     koz_path = Path("data/experimental/kozlowski_2025_bmp.csv")
     val_path = Path("data/experimental/valentin_bialowiec_2024_parameters.csv")
+    chi_path = Path("data/experimental/chiappero_2021_parameters.csv")
 
     koz_fits, koz_effects, koz_audit = kozlowski_fingerprints(koz_path)
-    val_effects = valentin_fingerprints(val_path)
-    fingerprints = pd.concat([koz_effects, val_effects], ignore_index=True, sort=False)
-    fingerprints = fingerprints.sort_values(
-        ["study_id", "dose_g_l", "material", "reactor_id"]
-    ).reset_index(drop=True)
+    fingerprints = pd.concat(
+        [koz_effects, valentin_fingerprints(val_path), chiappero_fingerprints(chi_path)],
+        ignore_index=True,
+        sort=False,
+    ).sort_values(["study_id", "dose_g_l", "treatment_id"]).reset_index(drop=True)
 
     koz_fits.to_csv(output / "kozlowski_model_fits.csv", index=False)
     koz_fits.loc[koz_fits["selected"].astype(bool)].to_csv(
-        output / "kozlowski_selected_fits.csv",
-        index=False,
+        output / "kozlowski_selected_fits.csv", index=False
     )
     fingerprints.to_csv(output / "kinetic_fingerprints.csv", index=False)
 
     status = {
-        "kozlowski_2025": {
-            "status": "run_public_reactor_level",
-            "input": str(koz_path),
-            "audit": koz_audit,
-        },
+        "kozlowski_2025": {"status": "run_public_reactor_level", "audit": koz_audit},
         "valentin_bialowiec_2024": {
             "status": "run_public_published_parameters",
-            "input": str(val_path),
-            "limitation": (
-                "No raw reactor trajectories or parameter uncertainty in repository."
-            ),
+            "limitation": "No reactor-level parameter uncertainty in repository.",
         },
-        "zhang_2022": {
-            "status": "private_input_required_not_run_in_public_ci",
-            "reason": (
-                "Author-shared workbook is not redistributed and original triplicate "
-                "reactor trajectories are unavailable."
-            ),
+        "chiappero_2021": {
+            "status": "run_public_published_parameters",
+            "limitation": "Published condition-level Gompertz parameters; lag is zero for all conditions.",
         },
-        "garcia_prats_cyprus2025": {
-            "status": "private_input_required_not_run_in_public_ci",
-            "reason": (
-                "Author-shared unpublished data are intentionally excluded from public CI."
-            ),
+        "ataa_2026": {
+            "status": "registered_not_used_for_g_l_model",
+            "reason": "Native dose is 5 g biochar per 20 g food waste; no unverified g/L conversion is made.",
         },
+        "zhang_2022": {"status": "private_input_required_not_run_in_public_ci"},
+        "garcia_prats_cyprus2025": {"status": "private_input_required_not_run_in_public_ci"},
     }
-    (output / "dataset_status.json").write_text(
-        json.dumps(status, indent=2) + "\n",
-        encoding="utf-8",
-    )
-
+    (output / "dataset_status.json").write_text(json.dumps(status, indent=2) + "\n")
     summary = summarize(fingerprints)
     summary["kozlowski_fit_audit"] = koz_audit
-    (output / "summary.json").write_text(
-        json.dumps(summary, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    (output / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     return summary
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--output",
-        type=Path,
-        default=Path("results/batch-stage-ab"),
-    )
+    parser.add_argument("--output", type=Path, default=Path("results/batch-stage-ab"))
     args = parser.parse_args()
     print(json.dumps(run(args.output), indent=2))
 
