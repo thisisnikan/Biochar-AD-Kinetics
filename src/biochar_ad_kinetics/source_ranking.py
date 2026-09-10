@@ -7,8 +7,8 @@ reactor-level intake/QC gates before entering fitting or validation.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass
-from typing import Iterable
 
 from .research_apis import ResearchRecord
 
@@ -65,7 +65,10 @@ def rank_record(record: ResearchRecord, criteria: SourceCriteria) -> RankedSourc
         score += 0.18
         reasons.append("AD/methane relevance")
 
-    if any(term in text for term in ("time series", "time-series", "daily methane", "cumulative methane")):
+    if any(
+        term in text
+        for term in ("time series", "time-series", "daily methane", "cumulative methane")
+    ):
         score += 0.18
         reasons.append("time-series signal")
     elif criteria.require_time_series:
@@ -121,9 +124,15 @@ def rank_record(record: ResearchRecord, criteria: SourceCriteria) -> RankedSourc
     return RankedSource(score=score, decision=decision, reasons=tuple(reasons), record=record)
 
 
-def rank_sources(records: Iterable[ResearchRecord], criteria: SourceCriteria) -> list[RankedSource]:
+def rank_sources(
+    records: Iterable[ResearchRecord],
+    criteria: SourceCriteria,
+) -> list[RankedSource]:
     ranked = [rank_record(record, criteria) for record in records]
-    return sorted(ranked, key=lambda item: (-item.score, item.record.year or 0, item.record.title))
+    return sorted(
+        ranked,
+        key=lambda item: (-item.score, item.record.year or 0, item.record.title),
+    )
 
 
 def build_candidate_manifest(
