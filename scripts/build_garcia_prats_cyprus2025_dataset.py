@@ -78,7 +78,6 @@ EXPECTED_BIOCHAR_IDS = (
     "PH300", "PH400", "PH500",
     "Q300", "Q400", "Q500",
 )
-EXPECTED_DOSES_PCT = (5, 10)
 
 SHEETS = ("characteristics", "kinetics", "correlations", "ad_performance")
 

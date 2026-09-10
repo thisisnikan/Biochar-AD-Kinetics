@@ -33,7 +33,6 @@ SOURCE_DOI = "10.1038/s41598-025-02564-0"
 SHEET_NAME = "Godzinowe"
 XML_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 
-INOCULUM_VS_G = 8.851386739388484
 SUBSTRATE_VS_G = 4.425592386264921
 
 
