@@ -31,8 +31,9 @@ Outputs include biogas production, methane fraction, methane production and spec
 
 ### QC issues found
 
-- Day 235 is duplicated in Phase III. The two rows should be compared exactly before one is removed in any processed dataset.
+- Day 235 is duplicated in Phase III. The duplicate pair should be resolved explicitly in the processed dataset. For the exploratory modelling below, only one occurrence was retained.
 - Missingness must be handled variable-by-variable. Earlier inspection suggested apparent placeholder behaviour in the workbook, but the principal continuous-model variables do not support a blanket `0 = missing` rule. No global zero replacement is allowed.
+- For the exploratory gas-output analysis below, zero entries in the gas-output fields during otherwise operating periods were treated as unavailable measurements rather than true zero-production observations. This rule must be confirmed against the source documentation before it becomes part of the permanent ingestion pipeline.
 - Whole-phase averages do not exactly reproduce values reported in the associated paper, suggesting the publication may have used steady-state windows or selected subsets. The model must therefore preserve raw trajectories and explicitly define any steady-state filtering.
 
 ### Current scientific questions
@@ -90,9 +91,55 @@ Simple linear trend checks across each phase show that Phase III was already dri
 
 The VFA workbook contains phase-level means/dispersion rather than a day-resolved VFA trajectory. It can support phase-to-phase consistency checks, but it cannot currently support day-scale lag estimation. Reported phase means show acetate falling strongly in Phase IV, while propionate and butyrate rise relative to Phase III. The correct statement is that VFA composition shifts; total-VFA improvement should not be claimed without reconstructing a justified aggregate.
 
-### Current interpretation
+## 2026-09-10 — Exploratory interrupted time-series model
 
-The first HRT-based analysis does not support a simple statement that Phase IV 'improved methane production'. The later Phase IV period has higher methane concentration but similar absolute CH4 production despite higher OLR, and lower specific methane yield. The dataset therefore reinforces the need for a multi-metric continuous-performance definition.
+A first segmented regression was fitted to Phase III + Phase IV observations only. This is an exploratory attribution test, not a causal estimate. The model form was:
+
+`response = intercept + pre-existing time trend + OLR + Phase-IV level change + post-Phase-IV slope change`
+
+The intervention boundary was day 309. One duplicate day-235 row was removed. Heteroskedasticity-robust (HC3-style) standard errors were used for the coefficient diagnostic. Four candidate intervention delays (0, 10, 20 and 40 d) were compared descriptively using AIC. Because this is one reactor with no parallel control reactor, the coefficients cannot by themselves identify a biochar causal effect.
+
+### Main day-309 segmented model
+
+| Response | Phase-IV level coefficient | Robust SE | Pre-boundary slope | Post-slope change | Approx. post-boundary net slope |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Methane fraction (%) | +2.56 percentage points | 0.84 | -0.043 pp/d | +0.109 pp/d | +0.066 pp/d |
+| CH4 production (L/d) | -3.95 | 7.59 | -0.325 L/d/d | +0.336 L/d/d | +0.011 L/d/d |
+| Methane yield (workbook field) | -22.34 | 22.34 | -0.857 units/d | +0.917 units/d | +0.060 units/d |
+| Biogas (L/d) | -15.81 | 11.72 | -0.305 L/d/d | +0.091 L/d/d | -0.214 L/d/d |
+
+The most important pattern is not a universal positive output shift. Methane fraction shows a clear change in trajectory around the Phase-IV boundary, whereas absolute CH4 production becomes approximately flat rather than showing a large sustained production increase. Biogas continues to trend downward in this simple specification.
+
+### Does adding the segmented intervention improve descriptive fit?
+
+AIC was compared between a time+OLR baseline, a level-change model, and the full segmented model:
+
+| Response | Time + OLR | + Phase-IV level | + Phase-IV level and slope change |
+| --- | ---: | ---: | ---: |
+| Methane fraction (%) | 41.54 | 40.88 | **10.38** |
+| CH4 production (L/d) | 181.40 | 182.14 | **178.72** |
+| Methane yield | 262.92 | 262.00 | **259.09** |
+| Biogas (L/d) | 210.50 | **209.04** | 210.86 |
+
+For methane fraction, the slope-changing segmented structure is strongly favoured descriptively. For CH4 production and methane yield the improvement is modest. For biogas, a simple level-change model is marginally preferred over the more flexible slope-change model. This divergence reinforces the decision not to collapse continuous performance to a single methane-percentage metric.
+
+### Delay sensitivity
+
+For methane fraction, the no-delay day-309 segmented model had substantially lower AIC than analogous 10-, 20- or 40-day delayed boundaries (10.38 vs 26.40, 29.16 and 30.46 respectively). This suggests that the trajectory change is statistically aligned with the Phase-IV boundary rather than requiring a long explicit delay term in this simple model.
+
+This does **not** prove an immediate biological biochar effect. The Phase-IV boundary may coincide with other operational changes, and the reactor has no contemporaneous untreated control. HRT-based delayed biological interpretation should therefore remain separate from the statistical change-point result.
+
+### OLR remains important
+
+In the segmented methane-yield model, the OLR coefficient is strongly negative descriptively (about -278 yield units per +1 gVS/L/d, robust SE about 59). Because OLR rises entering Phase IV and is correlated with phase/time, this coefficient should not be treated as a stable mechanistic parameter; it does show why raw pre/post means are unsafe.
+
+### Current conclusion from the interrupted analysis
+
+The data support the following narrow statement:
+
+> Phase IV is associated with a change in methane-composition trajectory after accounting for a linear pre-existing time trend and OLR, but the same model does not show a comparable increase in absolute methane production. With one reactor and phase-confounded operating changes, this is association rather than a causal biochar effect.
+
+This is a more defensible result than either `biochar improved the reactor` or `biochar reduced methane production`.
 
 ### Next modelling gate
 
@@ -102,9 +149,11 @@ Before any ADM1 or ML model is added:
 2. Confirm exact duplicate handling for day 235.
 3. Build a reproducible processed table with provenance and missingness/QC flags.
 4. Define candidate stable windows using both HRT and statistical stability criteria rather than arbitrary calendar cuts.
-5. Fit an interrupted/segmented time-series model around the Phase III → IV boundary with OLR and other measurable operating variables as covariates.
-6. Treat microbial and phase-level VFA measurements as supporting evidence, not high-frequency predictors.
-7. Compare alternative continuous performance targets: CH4 L/d, specific methane yield, methane fraction, removal efficiency and a transparent multi-metric stability score.
+5. Reproduce the interrupted model in repository code and add sensitivity analyses for alternative missing-data and transition-window rules.
+6. Test additional measurable covariates only where the sampling density supports them; avoid feature inflation on this small single-reactor series.
+7. Treat microbial and phase-level VFA measurements as supporting evidence, not high-frequency predictors.
+8. Compare alternative continuous performance targets: CH4 L/d, specific methane yield, methane fraction, removal efficiency and a transparent multi-metric stability score.
+9. Seek a second continuous biochar reactor/study for external validation before any general continuous-biochar claim.
 
 ### Analysis plan
 
