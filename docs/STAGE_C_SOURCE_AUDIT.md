@@ -51,6 +51,8 @@ Why it matters: seven biochars span multiple feedstocks and pyrolysis/activation
 
 Acquisition objective: recover Supplementary Data 1 and construct a provenance-preserving treatment table linking kinetic outputs to biochar descriptors. Keep native dose units and convert only where the denominator is explicit.
 
+Acquisition attempt (2026-09-10): the sandbox this session ran in could not reach `sciencedirect.com`, `doi.org`, or `orbit.dtu.dk` (all connections egress-blocked), so Supplementary Data 1's actual sheet/column structure could not be inspected. No ingestion script was written for this source, because this project's own rule is to encode a transcription schema only after seeing the real table structure (see the García-Prats CYPRUS2025 script for that pattern) - guessing column names here would look like a verified schema without being one. `scripts/inventory_xlsx_source.py` and `src/biochar_ad_kinetics/xlsx_reader.py` are ready to inventory and read the file as soon as someone with real network/journal access downloads it locally. This remains the highest-priority acquisition target.
+
 ## Stage C scientific decision
 
 Current cross-study result rejects dose + pyrolysis temperature as a transferable predictor. The next test is therefore not "more rows" but whether measured material properties and reactor/substrate context improve whole-study transfer.
