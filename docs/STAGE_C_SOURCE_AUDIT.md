@@ -23,6 +23,26 @@ Current recovery status:
 
 Decision: retain as provenance-registered but blocked. Do not convert aggregate ranges into synthetic rows and do not fill unknown values with zero. Promotion requires an official BMP export or a primary thesis table/figure that verifies treatment mapping, units, outcome definitions and values.
 
+## Ataa 2026 — quarantined from methane-specific modelling
+
+DOI: 10.12911/22998993/216571 (*Journal of Ecological Engineering*, Table 5).
+
+`data/experimental/ataa_2026_parameters.csv` preserves the published biochar-dose kinetic
+parameters, but the source paper's own results distinguish cumulative gas production from a
+separately reported methane-yield percentage. Table 5's `Bmax`/`Rmax` columns are total
+biogas, not methane, so the CSV columns are named `bmax_ml_total_biogas` /
+`rmax_ml_total_biogas_day` and every row carries `response_basis = total_biogas_not_methane`
+to make this explicit at the data level, not only in prose.
+
+Decision: this source must never be merged into `delta_potential`/`delta_max_rate`/methane
+kinetic fingerprints, because its Pmax/Rmax analogue measures a different physical quantity
+than every other study in the fingerprint table. Native dose (5 g biochar per 20 g food waste)
+is also not convertible to g/L without an unverified assumption, which independently blocks it
+from the current dose-response model. `scripts/analyze_batch_kinetic_fingerprints.py` registers
+it as `quarantined_from_methane_specific_modelling` and does not read the CSV into the
+fingerprint pipeline. Promotion would require either a reported methane fraction per condition
+(to convert biogas to methane) or a primary source that reports methane volume directly.
+
 ## Vayena et al. 2024 — highest-priority public acquisition
 
 DOI: 10.1016/j.renene.2024.121569

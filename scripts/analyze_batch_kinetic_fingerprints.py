@@ -250,8 +250,13 @@ def run(output: Path) -> dict[str, object]:
             "limitation": "Published condition-level Gompertz parameters; lag is zero for all conditions.",
         },
         "ataa_2026": {
-            "status": "registered_not_used_for_g_l_model",
-            "reason": "Native dose is 5 g biochar per 20 g food waste; no unverified g/L conversion is made.",
+            "status": "quarantined_from_methane_specific_modelling",
+            "reason": (
+                "Table 5 reports Bmax/Rmax as total biogas volume, not methane; mixing it "
+                "into methane-effect fingerprints would violate the evidence boundary between "
+                "biogas and methane response. Native dose is also 5 g biochar per 20 g food "
+                "waste, so no unverified g/L conversion is made either."
+            ),
         },
         "zhang_2022": {"status": "private_input_required_not_run_in_public_ci"},
         "garcia_prats_cyprus2025": {"status": "private_input_required_not_run_in_public_ci"},
