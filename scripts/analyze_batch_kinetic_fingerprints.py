@@ -24,7 +24,10 @@ from biochar_ad_kinetics.batch_trajectory import fit_batch_frame
 
 
 def gompertz_crossing_time(
-    potential: float, max_rate: float, lag_days: float, fraction: float
+    potential: float,
+    max_rate: float,
+    lag_days: float,
+    fraction: float,
 ) -> float:
     """Analytic time at which a modified-Gompertz curve reaches fraction*P."""
     if potential <= 0 or max_rate <= 0 or not 0 < fraction < 1:
@@ -35,9 +38,16 @@ def gompertz_crossing_time(
     )
 
 
+def _as_true(series: pd.Series) -> pd.Series:
+    """Coerce common CSV boolean encodings without treating 'false' as truthy."""
+    if pd.api.types.is_bool_dtype(series):
+        return series.fillna(False)
+    return series.astype(str).str.strip().str.lower().isin({"true", "1", "yes"})
+
+
 def prepare_kozlowski(path: Path) -> tuple[pd.DataFrame, dict[str, int]]:
     raw = pd.read_csv(path)
-    included = raw.loc[raw["included_in_benchmark"].astype(bool)].copy()
+    included = raw.loc[_as_true(raw["included_in_benchmark"])].copy()
     included["reactor_id"] = (
         included["treatment"].astype(str)
         + "::rep"
@@ -64,7 +74,9 @@ def prepare_kozlowski(path: Path) -> tuple[pd.DataFrame, dict[str, int]]:
     return included, audit
 
 
-def kozlowski_fingerprints(path: Path) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, int]]:
+def kozlowski_fingerprints(
+    path: Path,
+) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, int]]:
     frame, audit = prepare_kozlowski(path)
     fits = fit_batch_frame(
         frame,
@@ -76,7 +88,12 @@ def kozlowski_fingerprints(path: Path) -> tuple[pd.DataFrame, pd.DataFrame, dict
     material = frame[
         ["reactor_id", "carbon_material", "process_temperature_c", "source_doi"]
     ].drop_duplicates("reactor_id")
-    effects = effects.merge(material, on="reactor_id", how="left", validate="many_to_one")
+    effects = effects.merge(
+        material,
+        on="reactor_id",
+        how="left",
+        validate="many_to_one",
+    )
     effects = effects.rename(
         columns={
             "carbon_material": "material",
@@ -136,7 +153,8 @@ def valentin_fingerprints(path: Path) -> pd.DataFrame:
                     float(control["max_rate_ml_g_vs_day"]),
                 ),
                 "delta_lag": relative_reduction(
-                    float(row["lag_days"]), float(control["lag_days"])
+                    float(row["lag_days"]),
+                    float(control["lag_days"]),
                 ),
                 "delta_t50": relative_reduction(t50, control_t50),
                 "delta_t90": relative_reduction(t90, control_t90),
@@ -198,7 +216,8 @@ def run(output: Path) -> dict[str, object]:
 
     koz_fits.to_csv(output / "kozlowski_model_fits.csv", index=False)
     koz_fits.loc[koz_fits["selected"].astype(bool)].to_csv(
-        output / "kozlowski_selected_fits.csv", index=False
+        output / "kozlowski_selected_fits.csv",
+        index=False,
     )
     fingerprints.to_csv(output / "kinetic_fingerprints.csv", index=False)
 
@@ -211,7 +230,9 @@ def run(output: Path) -> dict[str, object]:
         "valentin_bialowiec_2024": {
             "status": "run_public_published_parameters",
             "input": str(val_path),
-            "limitation": "No raw reactor trajectories or parameter uncertainty in repository.",
+            "limitation": (
+                "No raw reactor trajectories or parameter uncertainty in repository."
+            ),
         },
         "zhang_2022": {
             "status": "private_input_required_not_run_in_public_ci",
@@ -222,17 +243,21 @@ def run(output: Path) -> dict[str, object]:
         },
         "garcia_prats_cyprus2025": {
             "status": "private_input_required_not_run_in_public_ci",
-            "reason": "Author-shared unpublished data are intentionally excluded from public CI.",
+            "reason": (
+                "Author-shared unpublished data are intentionally excluded from public CI."
+            ),
         },
     }
     (output / "dataset_status.json").write_text(
-        json.dumps(status, indent=2) + "\n", encoding="utf-8"
+        json.dumps(status, indent=2) + "\n",
+        encoding="utf-8",
     )
 
     summary = summarize(fingerprints)
     summary["kozlowski_fit_audit"] = koz_audit
     (output / "summary.json").write_text(
-        json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+        json.dumps(summary, indent=2) + "\n",
+        encoding="utf-8",
     )
     return summary
 
