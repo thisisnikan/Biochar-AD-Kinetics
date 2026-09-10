@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "raw_files_are_not_training_data_until_qc_passes": true,
+    "record_sha256_before_ingestion": true,
+    "preserve_reactor_batch_replicate_identity": true,
+    "no_global_zero_to_missing_rule": true
+  },
+  "sources": [
+    {
+      "study_id": "daskaloudis_2026_mendeley",
+      "doi": "10.17632/r84yctsxx6.1",
+      "expected_file": "recirculation&biochar.xlsx",
+      "role": "development_dynamic_reactor",
+      "status": "ingestion_reproducible",
+      "ingestion_script": "scripts/build_daskaloudis_2026_continuous_dataset.py",
+      "qc_report": "results/daskaloudis_2026_continuous_qc.json"
+    },
+    {
+      "study_id": "sanglier_2022_recherche_data_gouv",
+      "doi": "10.57745/BUJORT",
+      "expected_file": "Process.xlsx",
+      "role": "locked_external_validation_dynamic_semicontinuous",
+      "status": "public_binary_not_yet_ingested",
+      "cointervention_warning": "trace elements and biochar must be reconstructed independently",
+      "first_gate": "scripts/inventory_xlsx_source.py"
+    },
+    {
+      "study_id": "heitkamp_2021_industrial_cstr",
+      "doi": "10.1186/s13068-021-02034-5",
+      "expected_file": "13068_2021_2034_MOESM1_ESM.xlsx",
+      "role": "locked_external_validation_process_stability",
+      "status": "public_binary_confirmed_not_yet_materialized",
+      "known_scope": ["acetic_acid", "propionic_acid", "butyric_acid"],
+      "not_valid_for": ["biogas_productivity_validation"],
+      "first_gate": "scripts/inventory_xlsx_source.py"
+    },
+    {
+      "study_id": "wambugu_2019_uasb_pair",
+      "doi": "10.3389/fenrg.2019.00014",
+      "expected_file": null,
+      "role": "high_priority_parallel_control_external_validation_candidate",
+      "status": "raw_longitudinal_file_not_confirmed",
+      "operational_event_warning": "documented feed/pipe disturbance and control-reactor pH collapse must be encoded explicitly",
+      "fallback": "figure digitisation only after raw-data/thesis search is exhausted"
+    }
+  ]
+}
