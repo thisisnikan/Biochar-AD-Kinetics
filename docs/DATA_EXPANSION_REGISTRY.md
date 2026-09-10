@@ -12,6 +12,7 @@ This registry separates datasets that are already modelling-ready from datasets 
 - QC-approved unique observations: 98.
 - Duplicate day 235 is complementary and is coalesced with both source-row identifiers retained.
 - Numeric zero is never globally converted to missing.
+- Processed dataset was regenerated deterministically from the original workbook and the Phase III→IV sensitivity analysis was rerun from that permanent QC output.
 - Status: `INGESTION_REPRODUCIBLE_DYNAMIC_ANALYSIS_REPRODUCED`
 - Remaining scientific limitation: Phase I–III intervention definitions are unresolved, and there is no contemporaneous untreated reactor.
 
@@ -28,23 +29,25 @@ This registry separates datasets that are already modelling-ready from datasets 
 
 ### Wambugu et al. 2019 — paired continuous UASB reactors
 - Paper DOI: `10.3389/fenrg.2019.00014`
-- Design: two identical UASB reactors operated for 40 d at 30 °C; one control and one biochar-amended reactor.
-- OLR: stepwise 3.4–7.8 g COD/L/d; HRT 24 h.
-- Daily effluent measurements reported for COD, NH4-N, pH and VFA; methane composition and cumulative biogas are reported in the paper.
+- Design: two identical 2.25 L UASB reactors operated at 30 °C; one control and one biochar-amended reactor.
+- Biochar: treated-waste-wood pyrochar in the test reactor.
+- OLR: 3.4–7.8 g COD/L/d; HRT 24 h.
+- The paper reports daily/longitudinal reactor behaviour for COD removal, pH, VFA and gas production and documents a control-vs-treatment contrast.
+- At OLR 6.9–7.8 g COD/L/d, reported average COD removal was 47% in the control and 77% in the biochar-amended reactor.
 - Strong feature: parallel contemporaneous control makes the design structurally stronger for attribution than the single-reactor Daskaloudis trajectory.
-- Known disruption: around day 5–9 an influent-pipe clogging/design failure affected reactor performance; this must be encoded as an operational event, not silently smoothed.
-- Status: `HIGH_VALUE_CANDIDATE_RAW_LONGITUDINAL_FILE_NOT_CONFIRMED`
-- Next gate: search thesis/repository/supplementary sources for machine-readable daily reactor data before digitising figures.
+- Known operating disturbances include feed/pipe problems and a control-reactor pH drop; these must be represented as operational events and never silently smoothed.
+- A targeted search did not confirm a public machine-readable raw longitudinal file or thesis dataset. Figure digitisation therefore remains a last-resort acquisition path, not the default.
+- Status: `HIGH_VALUE_CANDIDATE_RAW_LONGITUDINAL_FILE_NOT_CONFIRMED_AFTER_TARGETED_SEARCH`
 
 ### Heitkamp et al. 2021 — seven industrial CSTR digesters
 - Paper DOI: `10.1186/s13068-021-02034-5`
 - Design: seven full-scale industrial CSTR digesters supplied with biochar for approximately one year.
 - Biochar intervention: initial reactor supplementation of 1.8 kg/t reactor content, followed by 1.8 kg/t substrate.
-- Raw supplementary XLSX is publicly linked by the journal and contains plant-level organic-acid observations.
-- Main useful variables: acetate, propionate, butyrate / TVFA; paper also reports pH, NH4-N, FOS/TAC, TS and VS observations.
+- Public supplementary workbook confirmed by both Springer and PubMed Central: `13068_2021_2034_MOESM1_ESM.xlsx` (~82.8 KB), described as recorded raw data for acetic, propionic and butyric acid.
+- Main useful variables: acetate, propionate, butyrate / TVFA. The paper also reports pH, NH4-N, FOS/TAC, TS and VS observations.
 - Important limitation: authors explicitly state that reliable biogas-productivity data were unavailable.
 - Value to this repository: external process-stability validation across seven real industrial reactors, not methane-productivity validation.
-- Status: `PUBLIC_SUPPLEMENT_CONFIRMED_DOWNLOAD_NOT_YET_INGESTED`
+- Status: `PUBLIC_RAW_SUPPLEMENT_FILENAME_CONFIRMED_BINARY_NOT_YET_MATERIALIZED`
 
 ## Adjacent mechanistic comparator — do not pool as biochar
 
