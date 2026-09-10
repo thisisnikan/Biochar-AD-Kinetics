@@ -31,8 +31,14 @@
       "expected_file": "13068_2021_2034_MOESM1_ESM.xlsx",
       "role": "locked_external_validation_process_stability",
       "status": "public_binary_confirmed_not_yet_materialized",
-      "known_scope": ["acetic_acid", "propionic_acid", "butyric_acid"],
-      "not_valid_for": ["biogas_productivity_validation"],
+      "known_scope": [
+        "acetic_acid",
+        "propionic_acid",
+        "butyric_acid"
+      ],
+      "not_valid_for": [
+        "biogas_productivity_validation"
+      ],
       "first_gate": "scripts/inventory_xlsx_source.py"
     },
     {
@@ -54,33 +60,67 @@
       "known_scope": {
         "records": 746,
         "substrate_categories": 7,
-        "kinetic_outputs": ["Pmax", "Rmax", "lambda"],
-        "metadata_examples": ["ISR", "temperature", "substrate concentration", "additives", "blank correction"]
+        "kinetic_outputs": [
+          "Pmax",
+          "Rmax",
+          "lambda"
+        ],
+        "metadata_examples": [
+          "ISR",
+          "temperature",
+          "substrate concentration",
+          "additives",
+          "blank correction"
+        ]
       },
       "use_constraints": [
         "do not pool all BMP records into biochar model training",
         "use as baseline population/QC envelope unless additive-compatible subset is isolated",
         "retain source DOI/query number for every exported record"
       ],
-      "first_gate": "manual platform export followed by schema/QC inventory"
+      "first_gate": "manual platform export followed by schema/QC inventory",
+      "access_blocker": {
+        "observed_on": "2026-09-10",
+        "status": "https_certificate_expired",
+        "consequence": "secure registration/login and export unavailable"
+      }
     },
     {
-      "study_id": "cai_2016_biochar_food_waste_bmp",
-      "doi": "10.1177/0734242X16634196",
-      "expected_file": null,
-      "role": "high_priority_biochar_bmp_external_validation_candidate",
-      "status": "source_identified_records_583_594_not_yet_exported",
+      "study_id": "cai_jiao_tongji_thesis_bmp",
+      "doi": null,
+      "related_article_doi": "10.1177/0734242X16634196",
+      "expected_file": "cai_jiao_bmp_records_583_594.csv",
+      "role": "blocked_biochar_bmp_external_validation_candidate",
+      "status": "query_ids_mapped_to_thesis_row_values_not_exported",
       "source_platform": "liu_2024_bmp_database",
-      "bmp_query_numbers": [583, 584, 585, 586, 587, 588, 589, 590, 591, 592, 593, 594],
-      "study_design": ["biochar dose", "inoculum-to-substrate ratio"],
-      "reported_kinetic_relevance": ["lag phase", "maximum methane production rate"],
-      "validation_value": "tests biochar effect under changing ISR rather than a single-context dose response",
-      "use_constraints": [
-        "treat digitized/reconstructed values as approximate if raw numeric export is unavailable",
-        "do not infer replicate identity unless explicitly present in source records",
-        "encode ISR as an interaction/context variable rather than silently pooling conditions"
+      "source_reference": "Promoting Anaerobic Digestion by Biochar: Preliminary Study on Technology Optimization and Mechanism Analysis",
+      "author": "Cai Jiao",
+      "affiliation": "Tongji University",
+      "paper_type": "Master thesis",
+      "bmp_query_numbers": [
+        583,
+        584,
+        585,
+        586,
+        587,
+        588,
+        589,
+        590,
+        591,
+        592,
+        593,
+        594
       ],
-      "first_gate": "export BMP query records 583-594 and compare fields against repository data contract"
+      "aggregate_context_file": "data/candidate_manifests/cai_2016_aggregate_evidence.csv",
+      "candidate_manifest": "data/candidate_manifests/cai_jiao_bmp_records_583_594.csv",
+      "use_constraints": [
+        "query IDs map to the thesis; equivalence to the related 2016 article is not verified",
+        "keep unrecovered values blank and never coerce them to zero",
+        "do not expand abstract-level ranges into synthetic row-level observations",
+        "do not infer treatment or replicate identity",
+        "exclude from training and external validation until the official export passes source-specific QC"
+      ],
+      "first_gate": "obtain the official export for BMP query records 583-594 and verify treatment mapping, units, outcomes, and provenance"
     }
   ]
 }
