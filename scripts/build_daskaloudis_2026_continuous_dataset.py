@@ -8,32 +8,20 @@ import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 
-XML='http://schemas.openxmlformats.org/spreadsheetml/2006/main'; REL='http://schemas.openxmlformats.org/officeDocument/2006/relationships'; PREL='http://schemas.openxmlformats.org/package/2006/relationships'
+from biochar_ad_kinetics.xlsx_reader import column_number, read_shared_strings, read_sheet_paths
+
+XML='http://schemas.openxmlformats.org/spreadsheetml/2006/main'
 SHEET='Table'; DATA_DOI='10.17632/r84yctsxx6.1'; PAPER_DOI='10.30955/gnc2025.00357'
 COLS=("phase","time","Q_L_d","OL_g_VS","OLR","HRT","TS_in_gTS_L","TS_out_gTS_L","TS_removal_pct","VS_in_gVS_L","VS_out_gVS_L","VS_removal_pct","pH_in_primary","pH_reactor","alkalinity_mg_CaCO3_L","pH_in_secondary","pH_out","biogas","methane_pct","CH4_L_d","SMP_L_CH4_gVS","methane_yield_Nml_gVS","sCOD_in_gO2_L","COD_out","COD_removal_pct","phenols_in_gGAeq_L","phenols_out_gGAeq_L","phenols_removal_pct","TAN_in","TAN_out")
-def colnum(ref):
-    n=0
-    for ch in ''.join(x for x in ref if x.isalpha()).upper(): n=n*26+ord(ch)-64
-    return n
-def shared(z):
-    try:r=ET.fromstring(z.read('xl/sharedStrings.xml'))
-    except KeyError:return []
-    return [''.join(n.text or '' for n in it.iter(f'{{{XML}}}t')) for it in r]
-def sheetpath(z):
-    wb=ET.fromstring(z.read('xl/workbook.xml')); rid=None
-    for s in wb.iter(f'{{{XML}}}sheet'):
-        if s.attrib['name']==SHEET: rid=s.attrib[f'{{{REL}}}id']; break
-    rs=ET.fromstring(z.read('xl/_rels/workbook.xml.rels'))
-    for r in rs.iter(f'{{{PREL}}}Relationship'):
-        if r.attrib['Id']==rid:
-            t=r.attrib['Target'].lstrip('/'); return t if t.startswith('xl/') else 'xl/'+t
-    raise ValueError('sheet not found')
 def read_rows(p):
     with zipfile.ZipFile(p) as z:
-        ss=shared(z); root=ET.fromstring(z.read(sheetpath(z)))
+        ss=read_shared_strings(z)
+        paths=read_sheet_paths(z)
+        if SHEET not in paths: raise ValueError('sheet not found')
+        root=ET.fromstring(z.read(paths[SHEET]))
     rows={}
     for c in root.iter(f'{{{XML}}}c'):
-        ref=c.attrib['r']; rn=int(''.join(x for x in ref if x.isdigit())); cn=colnum(ref); val=None
+        ref=c.attrib['r']; rn=int(''.join(x for x in ref if x.isdigit())); cn=column_number(ref); val=None
         if c.attrib.get('t')=='inlineStr':
             ins=c.find(f'{{{XML}}}is'); val=''.join(n.text or '' for n in ins.iter(f'{{{XML}}}t')) if ins is not None else None
         else:

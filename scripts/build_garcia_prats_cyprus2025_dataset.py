@@ -54,9 +54,9 @@ import csv
 import hashlib
 import json
 import re
-import xml.etree.ElementTree as ET
-import zipfile
 from pathlib import Path
+
+from biochar_ad_kinetics.xlsx_reader import read_workbook as _read_workbook
 
 SOURCE_DOI = None
 SOURCE_NOTE = (
@@ -78,87 +78,14 @@ EXPECTED_BIOCHAR_IDS = (
     "PH300", "PH400", "PH500",
     "Q300", "Q400", "Q500",
 )
-EXPECTED_DOSES_PCT = (5, 10)
-
-XML_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
-REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 
 SHEETS = ("characteristics", "kinetics", "correlations", "ad_performance")
-
-
-def _column_number(reference: str) -> int:
-    letters = "".join(character for character in reference if character.isalpha())
-    result = 0
-    for character in letters:
-        result = result * 26 + ord(character.upper()) - ord("A") + 1
-    return result
-
-
-def _shared_strings(archive: zipfile.ZipFile) -> list[str]:
-    try:
-        root = ET.fromstring(archive.read("xl/sharedStrings.xml"))
-    except KeyError:
-        return []
-    return ["".join(node.text or "" for node in item.iter(f"{{{XML_NS}}}t")) for item in root]
-
-
-def _sheet_paths(archive: zipfile.ZipFile) -> dict[str, str]:
-    workbook = ET.fromstring(archive.read("xl/workbook.xml"))
-    relationships = ET.fromstring(archive.read("xl/_rels/workbook.xml.rels"))
-    targets = {
-        node.attrib["Id"]: node.attrib["Target"]
-        for node in relationships.iter(f"{{{PACKAGE_REL_NS}}}Relationship")
-    }
-    paths = {}
-    for sheet in workbook.iter(f"{{{XML_NS}}}sheet"):
-        target = targets[sheet.attrib[f"{{{REL_NS}}}id"]].lstrip("/")
-        paths[sheet.attrib["name"]] = target if target.startswith("xl/") else f"xl/{target}"
-    return paths
-
-
-def _read_sheet(archive: zipfile.ZipFile, path: str, strings: list[str]) -> list[list[object]]:
-    root = ET.fromstring(archive.read(path))
-    cells: dict[tuple[int, int], object] = {}
-    max_row = 0
-    max_column = 0
-    for cell in root.iter(f"{{{XML_NS}}}c"):
-        reference = cell.attrib["r"]
-        row = int("".join(character for character in reference if character.isdigit()))
-        column = _column_number(reference)
-        value_node = cell.find(f"{{{XML_NS}}}v")
-        if cell.attrib.get("t") == "inlineStr":
-            value: object = "".join(
-                node.text or "" for node in cell.iter(f"{{{XML_NS}}}t")
-            )
-        elif value_node is None or value_node.text is None:
-            value = None
-        elif cell.attrib.get("t") == "s":
-            value = strings[int(value_node.text)]
-        else:
-            try:
-                value = float(value_node.text)
-            except ValueError:
-                value = value_node.text
-        cells[(row, column)] = value
-        max_row = max(max_row, row)
-        max_column = max(max_column, column)
-    return [
-        [cells.get((row, column)) for column in range(1, max_column + 1)]
-        for row in range(1, max_row + 1)
-    ]
 
 
 def read_workbook(path: Path) -> dict[str, list[list[object]]]:
     """Read the four expected worksheets without an Excel engine dependency."""
 
-    with zipfile.ZipFile(path) as archive:
-        strings = _shared_strings(archive)
-        paths = _sheet_paths(archive)
-        missing = set(SHEETS).difference(paths)
-        if missing:
-            raise ValueError(f"Missing worksheets: {', '.join(sorted(missing))}")
-        return {name: _read_sheet(archive, paths[name], strings) for name in SHEETS}
+    return _read_workbook(path, sheet_names=SHEETS)
 
 
 def _rows_as_dicts(sheet: list[list[object]]) -> list[dict[str, object]]:

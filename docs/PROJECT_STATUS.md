@@ -20,6 +20,9 @@ Last reviewed: 9 September 2026
 | Effect-size uncertainty | Partially reported | Reactor-level percent-change effects now carry a 95% CI and a `low_replication` flag; published-table effects still carry no uncertainty at all |
 | Pyrolysis-temperature descriptor confounding | Checked and confounded | CDU / Wang (2026) six-biochar summary table: temperature, BET, conductivity and pH correlate above the checked threshold, so `benchmark-pyrolysis-temperature` refuses to attribute a trend to any one of them |
 | Mechanism-evidence grading | Documented | `docs/MECHANISM_EVIDENCE.md` grades every dataset Weak/Moderate/Strong (Pilarska 2026); no dataset in this repository currently reaches Strong |
+| Stage C material-aware transfer (H1: dose + pyrolysis temperature) | Tested and rejected | Leave-one-study-out Ridge on 3 independent studies (Kozłowski 2025, Valentin & Białowiec 2024, Chiappero 2021): 0 of 3 held-out studies beat the training-study mean baseline for `delta_potential` or `delta_max_rate` (`scripts/run_stage_c_material_fingerprint.py`) |
+| Stage C material-aware transfer (H2: measured biochar properties + AD context) | Not evaluated — blocked | Only 1 of 3 fingerprinted studies (Chiappero 2021) reports `surface_area_m2_g`/`pore_volume_cm3_g` alongside kinetic effects; the 3-independent-study gate in `material_fingerprint.py` blocks any richer-descriptor claim until that changes (`docs/STAGE_C_DATA_GAPS.md`) |
+| Zero-anchored Gompertz vs. modified Gompertz (unseen-reactor, day-10 forecast) | Tested and rejected | Nested whole-reactor holdout on 10 Kozłowski reactors: challenger's treatment-balanced RMSE is 4.0% *higher* (worse), not the prespecified ≥10% improvement; 1 of 7 decision-rule criteria passed. A naive linear-rate extrapolation baseline beats both curve models. See [`results/predictive_adequacy/README.md`](../results/predictive_adequacy/README.md) |
 
 ## What can be claimed now
 
@@ -95,6 +98,20 @@ Last reviewed: 9 September 2026
   repository could not independently verify them from its network environment; only the
   specific published numeric values already summarised in issue #10 are transcribed, with
   full citation, pending that confirmation.
+- That measured biochar properties (surface area, pore volume, elemental composition) plus
+  AD context improve held-out-study transfer beyond dose and pyrolysis temperature (the
+  "H2" material-descriptor hypothesis). This has not been tested, let alone validated: only
+  one of the three studies currently in the kinetic-fingerprint table reports surface/pore
+  descriptors alongside kinetic effects, so `leave_one_study_out` refuses to evaluate the
+  richer feature set until at least three independent, descriptor-complete studies exist.
+  Rejecting the simpler H1 (dose + pyrolysis temperature) is not evidence for H2.
+- That a zero-anchored Gompertz curve is a better predictor of a held-out reactor's later
+  trajectory than the project's existing modified Gompertz. Tested directly with a nested,
+  leakage-safe day-10-forecast holdout on the 10 qc-included Kozłowski reactors: the challenger
+  is 4.0% worse, not better, on the primary treatment-balanced metric, and only 1 of 7
+  prespecified acceptance criteria passed. Full report, including the failure-source diagnosis
+  (both curve forms underpredict continued late-trajectory methane production past day 10):
+  [`results/predictive_adequacy/README.md`](../results/predictive_adequacy/README.md).
 
 ## Next validation gate
 

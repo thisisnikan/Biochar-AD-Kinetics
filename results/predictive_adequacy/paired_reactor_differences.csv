@@ -1,0 +1,11 @@
+treatment,held_out_reactor,paired_difference,model_a,model_b,value_column
+food_waste,O1,-0.45318376961186857,zero_anchored_gompertz,modified_gompertz,rmse
+food_waste,O2,-0.061707505273425056,zero_anchored_gompertz,modified_gompertz,rmse
+food_waste,O3,0.1307276272725275,zero_anchored_gompertz,modified_gompertz,rmse
+food_waste_hydrochar_240c,O+H1,0.7122953617655376,zero_anchored_gompertz,modified_gompertz,rmse
+food_waste_hydrochar_240c,O+H2,0.4142047178448589,zero_anchored_gompertz,modified_gompertz,rmse
+food_waste_hydrochar_240c,O+H3,0.8208841434115701,zero_anchored_gompertz,modified_gompertz,rmse
+food_waste_pyrolysis_600c,O+B1,0.23468690079030896,zero_anchored_gompertz,modified_gompertz,rmse
+food_waste_pyrolysis_600c,O+B2,0.8472176371469562,zero_anchored_gompertz,modified_gompertz,rmse
+food_waste_torrefaction_240c,O+T1,1.3792213431582958,zero_anchored_gompertz,modified_gompertz,rmse
+food_waste_torrefaction_240c,O+T3,1.3112748240679437,zero_anchored_gompertz,modified_gompertz,rmse
