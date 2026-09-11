@@ -42,6 +42,16 @@ def _validate_effect_table(frame: pd.DataFrame) -> None:
         raise ValueError("study_id and response must be complete")
     if frame["dose_g_l"].isna().any() or (frame["dose_g_l"] < 0).any():
         raise ValueError("dose_g_l must be complete and non-negative")
+    if frame["replicate_level_available"].isna().any():
+        raise ValueError(
+            "replicate_level_available must be complete: a missing value is not "
+            "the same as False and must not be silently coerced by astype(bool)"
+        )
+    if frame["supports_cross_study_pooling"].isna().any():
+        raise ValueError(
+            "supports_cross_study_pooling must be complete: a missing value is not "
+            "the same as False and must not be silently coerced by astype(bool)"
+        )
 
 
 def _dose_overlap_fraction(a: pd.Series, b: pd.Series) -> float:

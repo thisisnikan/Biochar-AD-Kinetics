@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pytest
 
 from biochar_ad_kinetics.generalization import (
     audit_generalization_readiness,
@@ -64,3 +65,24 @@ def test_readiness_can_pass_minimum_evidence_gate() -> None:
     assert audit["n_independent_studies"] == 3
     assert audit["ready_for_loso"]
     assert audit["blocking_reasons"] == ""
+
+
+def test_missing_pooling_admission_is_rejected_not_silently_passed() -> None:
+    # A blank/undetermined cell (as pd.read_csv produces for an empty field,
+    # yielding an object-dtype column) must never be coerced to True by
+    # astype(bool) and let a row through as if explicitly admitted for pooling.
+    frame = _effect_rows()
+    frame["supports_cross_study_pooling"] = frame["supports_cross_study_pooling"].astype(object)
+    frame.loc[0, "supports_cross_study_pooling"] = np.nan
+
+    with pytest.raises(ValueError, match="supports_cross_study_pooling"):
+        audit_generalization_readiness(frame)
+
+
+def test_missing_replicate_level_flag_is_rejected_not_silently_passed() -> None:
+    frame = _effect_rows()
+    frame["replicate_level_available"] = frame["replicate_level_available"].astype(object)
+    frame.loc[0, "replicate_level_available"] = np.nan
+
+    with pytest.raises(ValueError, match="replicate_level_available"):
+        audit_generalization_readiness(frame)
