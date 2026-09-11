@@ -1,0 +1,8 @@
+criterion,value,threshold,passed,detail,overall_hypothesis_provisionally_supported
+1_treatment_balanced_rmse_at_least_10pct_lower,0.03983837761152744,-0.1,False,zero_anchored_gompertz RMSE 15.708 vs modified_gompertz 15.107 ml/g VS (+4.0% change; negative is an improvement),False
+2_no_treatment_worsened_by_more_than_10pct,0.07157190043333911,0.1,True,"{'food_waste': -0.0069, 'food_waste_hydrochar_240c': 0.0424, 'food_waste_pyrolysis_600c': 0.0699, 'food_waste_torrefaction_240c': 0.0716}",False
+3_zero_initial_condition,structural (see tests),M(0) == 0.0 exactly,True,"verified by unit test, not refit per fold",False
+4_predictions_nonnegative_and_monotonic,"{'monotonicity_violations': 0, 'negative_predictions': 0}",0,True,summed across all challenger folds,False
+5_parameters_not_consistently_on_bounds,{'lower_bound_hits:lag': 1.0},0.5,False,worst bound-hit fraction across 20 challenger folds,False
+6_improvement_survives_blank_and_grid_sensitivities,"{'grid_hourly': False, 'grid_48h': True, 'blank_leave_K1_out': False, 'blank_leave_K2_out': False, 'blank_leave_K3_out': False, 'flagged_reactor_stress_test': True, 'robust_loss': False}",challenger RMSE < reference RMSE in every listed sensitivity,False,checked against 7 sensitivity analyses,False
+7_paired_improvement_interval_excludes_no_improvement,"{'ci_low': 0.48564190944842694, 'ci_high': 0.7183185624317129}",interval entirely below 0 (paired_difference = challenger - reference RMSE),False,90% interval from 2000 resamples,False

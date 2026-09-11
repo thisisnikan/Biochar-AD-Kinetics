@@ -1,0 +1,40 @@
+{
+  "source_commit": "bb56467433a997330cf902b27ca96686f83bb4ad",
+  "dataset": "data/experimental/kozlowski_2025_reactor_observations.csv.gz",
+  "dataset_role": "Kozlowski et al. (2025) public reactor-observation export",
+  "analysis_population": "10 qc_include=True substrate reactors across 4 treatments, 3 inoculum blanks",
+  "excluded_reactors": {
+    "O+B3": "qc_include=False (publisher-flagged inconsistent raw signal)",
+    "O+T2": "qc_include=False (publisher-flagged inconsistent raw signal)"
+  },
+  "validation_task": "Nested whole-reactor holdout: train on sibling reactors of the same treatment restricted to time_days <= cutoff, predict the held-out reactor for time_days in (cutoff, 21]. Not unseen-study, unseen-material, or dose-response transfer.",
+  "primary_cutoff_days": 10.0,
+  "sensitivity_cutoffs_days": [
+    7.0,
+    14.0
+  ],
+  "forecast_horizon_end_days": 21.0,
+  "reference_model": "modified_gompertz",
+  "challenger_model": "zero_anchored_gompertz",
+  "decision_rule_margin": 0.1,
+  "decision_rule_margin_note": "Prespecified practical threshold given in the task brief, not a value derived from known measurement error.",
+  "random_seed": 27,
+  "bootstrap_iterations_requested": 300,
+  "bootstrap_iterations_succeeded": 71,
+  "bootstrap_note": "Conditional, unstable interval: only 2-3 reactors retained per treatment, so whole-reactor bootstrap resampling has very few distinct values to draw from within some treatments.",
+  "robust_loss_f_scale_ml_g_vs": 20.0,
+  "primary_hypothesis_provisionally_supported": false,
+  "effective_reactor_counts_by_treatment": {
+    "food_waste": 3,
+    "food_waste_hydrochar_240c": 3,
+    "food_waste_pyrolysis_600c": 2,
+    "food_waste_torrefaction_240c": 2
+  },
+  "software_versions": {
+    "python": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "pandas": "3.0.5",
+    "platform": "Linux-6.18.44-fc-v24-x86_64-with-glibc2.39"
+  }
+}
