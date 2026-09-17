@@ -29,6 +29,13 @@ release model while the public API remains experimental.
 
 ## Unreleased
 
+- Added `docs/DATA_USABILITY_REPORT.md`, a single consolidated report of every
+  screened or attempted dataset that is not fully usable for its intended
+  purpose (intended use, usable/partially usable/not usable status, exact
+  blocking reason, whether an additional data request would resolve it, and
+  what would unlock use), so a failed or restricted data acquisition is a
+  visible research result rather than something that silently disappears
+  from the workflow.
 - Connected the reactor-level intake contract to the kinetic model with
   `biochar-ad fit-stage-a`, preserving physical-reactor identity and source hashes.
 - Split Stage A validation into explicit whole-reactor and whole-dose holdouts; the

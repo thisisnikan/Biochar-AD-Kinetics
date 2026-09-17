@@ -133,3 +133,6 @@ prototype for falsifiable kinetic modelling**, not as a validated predictive pro
 - Record every public dataset's license, DOI, source hash and transformation decisions.
 - Never commit author-shared files without explicit redistribution permission.
 - Update this page whenever the scientific evidence boundary changes.
+- Report every unusable or insufficient dataset explicitly in
+  [`docs/DATA_USABILITY_REPORT.md`](DATA_USABILITY_REPORT.md) instead of
+  letting a failed acquisition attempt disappear from the workflow.
