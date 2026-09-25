@@ -34,8 +34,16 @@ This registry separates datasets that are already modelling-ready from datasets 
 - Design: successive lab-scale AD batches with digestate recirculation; trace-element interventions plus biochar at 1% and 2% w/w.
 - Valuable endpoints: methane trajectory/yield, VFA re-consumption, TAN/acidosis response, microbial-community changes.
 - Critical confounder: trace elements and biochar interventions must be reconstructed separately.
-- Status: `PUBLIC_RAW_DATA_CONFIRMED_BINARY_NOT_YET_INGESTED`
-- Rule: keep completely outside model fitting until cycle/intervention reconstruction and source-specific QC are complete.
+- Status: `SOURCE_HASH_VERIFIED_METHANE_CANDIDATE_QUARANTINED`.
+- `AMPTShort` and `Inoculation` now join into a source-traceable methane candidate
+  table with 8,403 time points. This is a 12-hour derivative of `AMPTS`, not a
+  second independent experiment. The intake flags four BRL bottle/cycles whose
+  control label conflicts with positive inoculation biochar mass, plus a condition
+  label disagreement in 12 later bottle/cycles.
+- Rule: keep completely outside model fitting and external validation until
+  the source conflicts and co-interventions are resolved and `Analyses` / `Events`
+  are joined with a predeclared validation target. See the ingestion gate and
+  `results/intake/sanglier_2022_candidate.csv.gz`.
 
 ### Wambugu et al. 2019 — paired continuous UASB reactors
 - Paper DOI: `10.3389/fenrg.2019.00014`

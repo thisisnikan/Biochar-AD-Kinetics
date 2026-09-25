@@ -4,7 +4,42 @@ Dataset: Sanglier et al. (2022), *Supplementation of biochar and trace elements 
 
 Persistent identifier: `10.57745/BUJORT`
 
-Status: **public source confirmed; process workbook not yet ingested**.
+Status: **source hash verified; methane candidate ingested and quarantined**.
+
+## Reproducible candidate intake (25 September 2026)
+
+Download the official [Process.xlsx](https://entrepot.recherche.data.gouv.fr/api/access/datafile/152903)
+and rebuild from the repository root:
+
+```bash
+python scripts/build_sanglier_2022_candidate.py /path/to/Process.xlsx
+pytest -q tests/test_sanglier_candidate.py
+```
+
+The script refuses a file whose MD5 differs from the published deposit checksum.
+It writes `results/intake/sanglier_2022_candidate.csv.gz` and the machine-readable
+`results/intake/sanglier_2022_qc.json`. The original workbook is not committed.
+The candidate preserves source sheet rows, bottle, batch, lab, raw and corrected
+cumulative methane volume, flow, yield, inoculation mass, and separate intervention
+labels. The 0/1/2 `Biochar` label is not treated as a g/L dose. `Days` is an
+absolute day count within each lab; within-batch time subtracts the earliest
+observed time for that lab and batch. Numeric zero remains distinct from empty.
+
+All 8,403 `AMPTShort` time points join uniquely to one of 363 Inoculation
+bottle/batch records. There are no duplicate `(lab, batch, bottle, Days)` keys.
+The source contains two unresolved discordances:
+
+- BRL bottle `II.4`, batches 2–5: 64 methane rows retain a zero/control
+  `Biochar` label while Inoculation records positive biochar mass (0.5115 or
+  0.6424 g). These four cycles cannot be assigned an unambiguous treatment.
+- BRL bottles `II.13`–`II.15`, batches 11–14: 318 methane rows say `MBE[2]+`,
+  while Inoculation says `MBE[2] + N`. The label difference may encode an
+  additional intervention; the intake flags it without guessing its meaning.
+
+There are 348 empty values and 348 measured zeros in each cumulative-volume
+column. `Analyses` (VFA/TAN/pH) and `Events` are inventoried but not joined.
+The candidate must not enter fitting, a methane-benefit claim, or external
+validation until those sheets and the intervention chronology are reconciled.
 
 ## Confirmed source inventory
 
