@@ -1,0 +1,58 @@
+{
+  "bottle_batch_rows": 363,
+  "chemistry_bottle_batches": 315,
+  "chemistry_rows": 923,
+  "chemistry_samples_without_methane": 15,
+  "event_policy": "Same-lab prior events are context, not assigned exposure or duration.",
+  "event_rows": 8,
+  "gate_blockers": [
+    "control_label_mass_conflicts",
+    "chemistry_unit_verification",
+    "bottle_specific_event_scope_and_carryover",
+    "freeze_external_validation_protocol_before_outcome_analysis"
+  ],
+  "join_policy": "Exact Lab/Batch/Bottle linkage; no chemistry interpolation onto methane times.",
+  "measurement_nonmissing": {
+    "C2": 673,
+    "C3": 673,
+    "C4": 673,
+    "C5": 673,
+    "C6": 673,
+    "FAN": 32,
+    "IC4": 673,
+    "IC5": 673,
+    "IC6": 673,
+    "TAN": 212,
+    "TS": 145,
+    "VS": 144,
+    "pH": 673,
+    "sCOD": 239
+  },
+  "measurement_zeros": {
+    "C2": 13,
+    "C3": 25,
+    "C4": 102,
+    "C5": 329,
+    "C6": 96,
+    "FAN": 0,
+    "IC4": 324,
+    "IC5": 535,
+    "IC6": 477,
+    "TAN": 0,
+    "TS": 0,
+    "VS": 0,
+    "pH": 0,
+    "sCOD": 0
+  },
+  "methane_rows": 8403,
+  "qc_flag_counts": {
+    "condition_label_disagreement": 6,
+    "control_label_positive_inoculation_biochar": 4,
+    "no_methane_for_bottle_batch": 15
+  },
+  "source_doi": "10.57745/BUJORT",
+  "source_md5": "282f5076857dd4f8ca38089a6d499909",
+  "source_sha256": "34a01d5a11c22973f5106139b29ca0a62d5ac84466339187d0dea42a0b603092",
+  "status": "CANDIDATE_QC_ONLY_NOT_ADMITTED_FOR_FITTING_OR_VALIDATION",
+  "units_policy": "Original chemistry headers and values retained; units unverified; no conversion."
+}

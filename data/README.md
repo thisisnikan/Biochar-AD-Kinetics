@@ -256,3 +256,13 @@ comparator from:
   collaboration only. It is not a substitute for public reproduction,
   independent validation, or peer review, and none of those claims should be
   made from it.
+
+
+## 27 September 2026 source expansion
+
+Sanglier chemistry/events and the independent Heitkamp industrial chemistry
+candidate are documented in `docs/RESEARCH_EVIDENCE_2026_09.md`. Both remain
+outside fitting and validation. Derived source data retain their source licenses
+(Sanglier: Etalab Open License 2.0; Heitkamp: CC BY 4.0), not the software MIT license.
+Rebuild with `scripts/build_sanglier_2022_context.py` and
+`scripts/build_heitkamp_2021_candidate.py`; both verify the audited source hash.

@@ -21,16 +21,26 @@
       "doi": "10.57745/BUJORT",
       "expected_file": "Process.xlsx",
       "role": "locked_external_validation_dynamic_semicontinuous",
-      "status": "public_binary_not_yet_ingested",
+      "status": "source_verified_methane_chemistry_events_quarantined",
       "cointervention_warning": "trace elements and biochar must be reconstructed independently",
-      "first_gate": "scripts/inventory_xlsx_source.py"
+      "first_gate": "scripts/inventory_xlsx_source.py",
+      "ingestion_scripts": [
+        "scripts/build_sanglier_2022_candidate.py",
+        "scripts/build_sanglier_2022_context.py"
+      ],
+      "qc_reports": [
+        "results/intake/sanglier_2022_qc.json",
+        "results/intake/sanglier_2022_context_qc.json"
+      ],
+      "source_sha256": "34a01d5a11c22973f5106139b29ca0a62d5ac84466339187d0dea42a0b603092",
+      "model_admission": false
     },
     {
       "study_id": "heitkamp_2021_industrial_cstr",
       "doi": "10.1186/s13068-021-02034-5",
       "expected_file": "13068_2021_2034_MOESM1_ESM.xlsx",
       "role": "locked_external_validation_process_stability",
-      "status": "public_binary_confirmed_not_yet_materialized",
+      "status": "source_verified_chemistry_candidate_quarantined",
       "known_scope": [
         "acetic_acid",
         "propionic_acid",
@@ -39,7 +49,12 @@
       "not_valid_for": [
         "biogas_productivity_validation"
       ],
-      "first_gate": "scripts/inventory_xlsx_source.py"
+      "first_gate": "scripts/inventory_xlsx_source.py",
+      "ingestion_script": "scripts/build_heitkamp_2021_candidate.py",
+      "qc_report": "results/intake/heitkamp_2021_qc.json",
+      "source_sha256": "c60a45ab498d3fbbb25ece27d6cd338b348742f8f03ca8bd126d4a5ffd0ded00",
+      "source_license": "CC-BY-4.0",
+      "model_admission": false
     },
     {
       "study_id": "wambugu_2019_uasb_pair",
@@ -121,6 +136,19 @@
         "exclude from training and external validation until the official export passes source-specific QC"
       ],
       "first_gate": "obtain the official export for BMP query records 583-594 and verify treatment mapping, units, outcomes, and provenance"
+    },
+    {
+      "study_id": "garcia_prats_2024_author_summary",
+      "doi": "10.3389/fceng.2024.1384495",
+      "expected_file": "Data Frontiers.xlsx",
+      "source_sha256": "c731306efea9f4fc8cfa77c5b4c65e68450212e3364ccc134c6dee6d5d3f9355",
+      "status": "private_summary_ingested_not_reactor_level_admitted",
+      "role": "author_shared_summary_dose_response_candidate",
+      "source_received_date": "2026-09-18",
+      "ingestion_script": "scripts/build_garcia_prats_2024_summary.py",
+      "qc_report": "results/private/garcia_prats_2024/intake_qc.json",
+      "redistribution_permission": "not_established",
+      "model_admission": false
     }
   ]
 }

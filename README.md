@@ -20,6 +20,28 @@ explains the idea, the repository layout and the code path in plain language.
 [Reproducible results](results/README.md) ·
 [Presentation](presentation/README.md) · [Contributing](CONTRIBUTING.md)
 
+## Marta’s author-shared dataset
+
+The [Frontiers workbook importer](docs/GARCIA_PRATS_2024_SUMMARY_INTAKE.md) now
+links methane means and standard deviations to the existing material/dose design.
+It preserves 119 observations, separates feeding periods and flags the second
+feeding’s time-origin discrepancy. Original data and generated tables stay private.
+
+## September 2026 data and research expansion
+
+- **Sanglier context:** 923 chemistry samples and eight operating events now link
+  to the existing 8,403 methane records through 363 bottle/batch identities.
+- **New independent study:** 1,365 chemistry measurements from seven Heitkamp
+  industrial plants, covering 91 sampling occasions and 15 variables.
+- **Research screen:** seven source records with DOI, access status, inspection
+  depth and the next acquisition gate.
+
+These additions are source-verified **quarantined candidates**, not extra training
+replicates or completed external validation. Unit conflicts, co-interventions and
+missing data remain explicit. Start with the [research update](docs/RESEARCH_EVIDENCE_2026_09.md),
+[Sanglier audit](docs/SANGLIER_2022_CONTEXT_AUDIT.md) and
+[industrial intake](docs/HEITKAMP_2021_INGESTION_GATE.md).
+
 ## The problem
 
 Biochar-assisted anaerobic digestion has a translation problem, not just a curve-fitting
