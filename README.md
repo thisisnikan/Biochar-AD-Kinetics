@@ -36,6 +36,11 @@ feeding’s time-origin discrepancy. Original data and generated tables stay pri
 - **Research screen:** seven source records with DOI, access status, inspection
   depth and the next acquisition gate.
 
+- **Sanglier admission decision:** a frozen spec, outcome-blind admission and a
+  leakage audit conclude that Sanglier is only **partially admissible**. It cannot
+  externally validate any model here; see the
+  [decision record](docs/SANGLIER_2022_VALIDATION_ADMISSION.md).
+
 These additions are source-verified **quarantined candidates**, not extra training
 replicates or completed external validation. Unit conflicts, co-interventions and
 missing data remain explicit. Start with the [research update](docs/RESEARCH_EVIDENCE_2026_09.md),

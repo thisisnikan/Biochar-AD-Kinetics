@@ -1,0 +1,50 @@
+plant_id,analyte,unit_label,sampling_days,numeric_values,nonnumeric_tokens,zeros,median,min,max
+BGP1,Acetic acid,mg/L,26,26,0,0,987.5,455,1800
+BGP1,FOS TAC,FOS/TAC,26,26,0,0,0.195,0.17,0.288
+BGP1,NH4-N,NH4-N [kg/t],26,26,0,0,5.45,4.5,8.1
+BGP1,Propionic acid,mg/L,26,26,0,5,102,0,810
+BGP1,TVFA,mg/L,26,26,0,0,1113.86,455,2415.6
+BGP1,pH,pH,26,26,0,0,8.1,7.95,8.3
+BGP2,Acetic acid,mg/L,17,17,0,0,2800,1400,6200
+BGP2,FOS TAC,FOS/TAC,17,17,0,0,0.25,0.18,0.38
+BGP2,NH4-N,NH4-N [kg/t],17,17,0,0,5.6,4.9,6.4
+BGP2,Propionic acid,mg/L,17,17,0,0,820,297.5,1800
+BGP2,TVFA,mg/L,17,17,0,0,3546.39,1667.3,8058.98
+BGP2,pH,pH,17,17,0,0,8.2,7.8,8.2
+BGP3,Acetic acid,mg/L,3,3,0,0,160,140,710
+BGP3,FOS TAC,FOS/TAC,3,3,0,0,0.22,0.2,0.33
+BGP3,NH4-N,NH4-N [kg/t],3,3,0,0,1.5,1.4,1.6
+BGP3,Propionic acid,mg/L,3,3,0,2,0,0,330
+BGP3,TVFA,mg/L,3,3,0,0,160,120,1051.14
+BGP3,pH,pH,3,3,0,0,8.1,8,8.2
+BGP4,Acetic acid,mg/L,13,13,0,0,465,145,1150
+BGP4,FOS TAC,FOS/TAC,13,13,0,0,0.23,0.2,0.27
+BGP4,NH4-N,NH4-N [kg/t],13,13,0,0,2,1.3,3.3
+BGP4,Propionic acid,mg/L,13,13,0,8,0,0,535
+BGP4,TVFA,mg/L,13,12,1,0,183,75,535
+BGP4,pH,pH,13,13,0,0,7.69,7.51,8.05
+BGP5,Acetic acid,mg/L,3,3,0,0,1000,200,1100
+BGP5,FOS TAC,FOS/TAC,3,3,0,0,0.23,0.22,0.23
+BGP5,NH4-N,NH4-N [kg/t],3,3,0,0,4.6,3.3,4.6
+BGP5,Propionic acid,mg/L,3,3,0,1,180,0,200
+BGP5,TVFA,mg/L,3,3,0,0,1145.8,220,1262
+BGP5,pH,pH,3,3,0,0,8.1,7.8,8.3
+BGP6,Acetic acid,mg/L,22,22,0,0,992,71.5,2225
+BGP6,FOS TAC,FOS/TAC,22,22,0,0,0.21625,0.185,0.37
+BGP6,NH4-N,NH4-N [kg/t],22,22,0,0,5.25,2.25,6.3
+BGP6,Propionic acid,mg/L,22,22,0,1,587.5,0,1915
+BGP6,TVFA,mg/L,22,22,0,0,1423.78,71.5,4071.1
+BGP6,pH,pH,22,22,0,0,8.35,8.2,8.55
+BGP7,Acetic acid,mg/L,7,5,2,0,223,166,300
+BGP7,FOS TAC,FOS/TAC,7,7,0,0,0.18,0.16,0.2
+BGP7,NH4-N,NH4-N [kg/t],7,6,1,0,1.6,1.5,1.7
+BGP7,Propionic acid,mg/L,7,5,2,3,0,0,52
+BGP7,TVFA,mg/L,7,5,2,0,223,166,355
+BGP7,pH,pH,7,7,0,0,7.7,7.5,7.9
+BGP1,propionic_over_acetic,dimensionless (both mg/L of sludge),26,26,0,5,0.103899835796,0,0.490909090909
+BGP2,propionic_over_acetic,dimensionless (both mg/L of sludge),17,17,0,0,0.261538461538,0.185358255452,0.428571428571
+BGP3,propionic_over_acetic,dimensionless (both mg/L of sludge),3,3,0,2,0,0,0.464788732394
+BGP4,propionic_over_acetic,dimensionless (both mg/L of sludge),13,13,0,8,0,0,3.68965517241
+BGP5,propionic_over_acetic,dimensionless (both mg/L of sludge),3,3,0,1,0.18,0,0.181818181818
+BGP6,propionic_over_acetic,dimensionless (both mg/L of sludge),22,22,0,1,0.70649122807,0,2.31481481481
+BGP7,propionic_over_acetic,dimensionless (both mg/L of sludge),7,5,2,3,0,0,0.184397163121

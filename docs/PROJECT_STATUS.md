@@ -1,6 +1,6 @@
 # Project status
 
-Last reviewed: 27 September 2026 (Sanglier context and Heitkamp intake; other evidence rows retain their prior review)
+Last reviewed: 27 September 2026 (Sanglier admission decision, Sanglier context and Heitkamp intake; other evidence rows retain their prior review)
 
 ## Readiness snapshot
 
@@ -21,6 +21,7 @@ Last reviewed: 27 September 2026 (Sanglier context and Heitkamp intake; other ev
 | Pyrolysis-temperature descriptor confounding | Checked and confounded | CDU / Wang (2026) six-biochar summary table: temperature, BET, conductivity and pH correlate above the checked threshold, so `benchmark-pyrolysis-temperature` refuses to attribute a trend to any one of them |
 | Sanglier repeated-cycle methane candidate | Source hash verified, quarantined | 8,403 `AMPTShort` rows joined to 363 Inoculation bottle/batches; 64 rows carry a control-label/biochar-mass conflict and 318 rows a condition-label disagreement. 923 chemistry samples and eight events now link through a separate bottle/batch index; units and exposure scope remain unresolved. No external validation was performed. |
 | Mechanism-evidence grading | Documented | `docs/MECHANISM_EVIDENCE.md` grades every dataset Weak/Moderate/Strong (Pilarska 2026); no dataset in this repository currently reaches Strong |
+| Sanglier external-validation admission | Partially admissible; external validation blocked | Pre-registered spec, outcome-blind admission and leakage audit. 18 bottles / 166 cycles admitted for a within-study descriptive question only. Locked primary: LBE inconclusive, BRL not evaluable (horizon-rule defect); post-hoc 5.0 d deviation: BRL +10% to +15%. [Decision](SANGLIER_2022_VALIDATION_ADMISSION.md) |
 | Heitkamp industrial chemistry | Source verified, quarantined | 1,365 cells from seven plants / 91 sampling days; VS unit conflict and ten source missing tokens preserved. No gas-productivity validation. |
 
 ## What can be claimed now
@@ -62,7 +63,18 @@ Last reviewed: 27 September 2026 (Sanglier context and Heitkamp intake; other ev
   against very high doses on economic grounds alone. This *motivates* the functional
   form chosen here — it does not validate this project's specific fitted parameters.
 
+- Sanglier 2022 has a documented, pre-registered admission decision: every bottle/batch
+  is adjudicated against source records, the admission step is outcome-blind, and the
+  development artifacts are audited for leakage before any contrast is computed.
+
 ## What cannot be claimed now
+
+- That Sanglier 2022 externally validates any model in this repository. No
+  commensurate, frozen prediction exists; the admitted subset supports only a
+  within-study descriptive contrast with 2 or 3 bottles per arm (smallest attainable
+  exact p between 0.10 and 0.33).
+- That short repeated-batch cycles identify a Gompertz methane potential: fits to the
+  first 6.5 d under-predict longer cycles by a median 42% despite a nominal 2.4% SE.
 
 - That biochar causally improves anaerobic digestion across studies.
 - That the exploratory dose–temperature response generalises beyond the demonstration.
