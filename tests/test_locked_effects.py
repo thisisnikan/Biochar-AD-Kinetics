@@ -68,18 +68,52 @@ def test_variance_components_sum_to_one_and_require_balance():
         balanced_variance_decomposition(frame.iloc[1:], "y", "batch", "arm", "u")
 
 
-def test_locked_evaluation_rebuild_is_byte_identical(tmp_path):
+def _assert_json_close(a, b, path="root"):
+    if isinstance(a, dict):
+        assert a.keys() == b.keys(), path
+        for key in a:
+            _assert_json_close(a[key], b[key], f"{path}.{key}")
+    elif isinstance(a, list):
+        assert len(a) == len(b), path
+        for i, (x, y) in enumerate(zip(a, b, strict=True)):
+            _assert_json_close(x, y, f"{path}[{i}]")
+    elif isinstance(a, float) and isinstance(b, float):
+        assert a == pytest.approx(b, rel=1e-4, abs=1e-6, nan_ok=True), path
+    else:
+        assert a == b, path
+
+
+def test_locked_evaluation_rebuild_is_reproducible(tmp_path):
+    """Rebuilt outputs must match the committed ones.
+
+    Text, labels, counts and verdicts must match exactly. Floating values are
+    compared numerically: closed-form statistics can differ in the 11th digit
+    between scipy releases (t quantiles), and per-cycle Gompertz fits come from
+    an iterative optimizer (a lag pinned near its zero bound, for example).
+    """
+
     load("run_sanglier_2022_locked_evaluation").build(tmp_path)
-    for name in (
-        "sanglier_2022_locked_effects.csv",
-        "sanglier_2022_bottle_summaries.csv",
-        "sanglier_2022_variance_components.csv",
-        "sanglier_2022_cycle_kinetics.csv",
-        "sanglier_2022_truncation_extrapolation.csv",
-        "sanglier_2022_generalization_failure_partition.csv",
-        "sanglier_2022_locked_evaluation.json",
-    ):
-        assert filecmp.cmp(tmp_path / name, VALIDATION / name, shallow=False), name
+    tolerances = {
+        "sanglier_2022_locked_effects.csv": 1e-9,
+        "sanglier_2022_bottle_summaries.csv": 1e-9,
+        "sanglier_2022_variance_components.csv": 1e-9,
+        "sanglier_2022_cycle_kinetics.csv": 1e-3,
+        "sanglier_2022_truncation_extrapolation.csv": 1e-3,
+    }
+    for name, rtol in tolerances.items():
+        pd.testing.assert_frame_equal(
+            pd.read_csv(tmp_path / name),
+            pd.read_csv(VALIDATION / name),
+            check_exact=False,
+            rtol=rtol,
+            atol=1e-5 if rtol > 1e-6 else 1e-12,
+        )
+    partition = "sanglier_2022_generalization_failure_partition.csv"
+    assert filecmp.cmp(tmp_path / partition, VALIDATION / partition, shallow=False)
+    _assert_json_close(
+        json.loads((tmp_path / "sanglier_2022_locked_evaluation.json").read_text()),
+        json.loads((VALIDATION / "sanglier_2022_locked_evaluation.json").read_text()),
+    )
 
 
 def test_locked_evaluation_refuses_a_drifted_spec(tmp_path, monkeypatch):
