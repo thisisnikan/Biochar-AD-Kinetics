@@ -1,0 +1,129 @@
+dataset,item_id,status,evidence
+kozlowski_2025,reactor_level_trajectories,yes,"15 reactors in data/experimental/kozlowski_2025_reactor_observations.csv.gz, rebuilt from the hash-verified publisher supplement."
+kozlowski_2025,intact_replicates_ge3,partial,Three reactors per arm submitted; pyrolysis and torrefaction arms keep two after QC (results/intake/README.md).
+kozlowski_2025,inoculum_blanks,yes,Three inoculum-only blanks K1-K3.
+kozlowski_2025,zero_dose_substrate_control,yes,Food-waste control reactors O1-O3.
+kozlowski_2025,run_to_plateau,yes,All 15 reactors fall below 1%/day between day 10 and day 16 of a 21-day run (computed).
+kozlowski_2025,methane_unit_verified,unknown,"Columns are named in mL; gas normalization (temperature, pressure, dry basis) is not documented in the repository."
+kozlowski_2025,dose_physical_basis,partial,"g/L recorded, but a control-dose source conflict remains unresolved (docs/PROJECT_STATUS.md)."
+kozlowski_2025,dose_levels_ge3,no,"One amended dose, 5 g/L."
+kozlowski_2025,materials_ge2,yes,"Hydrochar 240 C, pyrolysis biochar 600 C, torrefaction product 240 C."
+kozlowski_2025,material_descriptors_core,partial,"Only material type and process temperature are committed; no BET, conductivity, pH or elemental data."
+kozlowski_2025,digestion_temperature,yes,37 C in every row.
+kozlowski_2025,substrate_inoculum_characterized,partial,Substrate and inoculum VS masses and ISR are committed with cell references; TS basis is not.
+kozlowski_2025,co_interventions_per_reactor,unknown,"Single-batch BMP; the committed source records no additives besides the carbon material, but absence is not documented as a checked field."
+kozlowski_2025,stability_chemistry_with_units,no,No TAN or VFA measurements committed.
+kozlowski_2025,redistributable_source,yes,CC BY 4.0 article and supplement (data/README.md).
+kozlowski_2025,temperature_levels_ge2,no,One temperature.
+valentin_bialowiec_2024,reactor_level_trajectories,no,Published Table 3 parameters only; raw cases available on request (data/README.md).
+valentin_bialowiec_2024,intact_replicates_ge3,partial,Triplicates reported; no per-reactor values or SD committed.
+valentin_bialowiec_2024,inoculum_blanks,unknown,Not represented in the committed table.
+valentin_bialowiec_2024,zero_dose_substrate_control,yes,0 g/L row with glucose.
+valentin_bialowiec_2024,run_to_plateau,unknown,No trajectories committed.
+valentin_bialowiec_2024,methane_unit_verified,unknown,Table values in mL/g VS; normalization not committed.
+valentin_bialowiec_2024,dose_physical_basis,yes,g/L.
+valentin_bialowiec_2024,dose_levels_ge3,yes,"2, 4, 6 and 8 g/L."
+valentin_bialowiec_2024,materials_ge2,no,One wheat-straw biochar.
+valentin_bialowiec_2024,material_descriptors_core,partial,Feedstock and pyrolysis temperature only.
+valentin_bialowiec_2024,digestion_temperature,yes,37 C.
+valentin_bialowiec_2024,substrate_inoculum_characterized,partial,Substrate is glucose; inoculum TS/VS and ISR are not committed.
+valentin_bialowiec_2024,co_interventions_per_reactor,unknown,Not represented.
+valentin_bialowiec_2024,stability_chemistry_with_units,no,Not committed.
+valentin_bialowiec_2024,redistributable_source,yes,CC BY 4.0 article.
+valentin_bialowiec_2024,temperature_levels_ge2,no,One temperature.
+cdu_wang_2026,reactor_level_trajectories,no,Final-yield summary table only.
+cdu_wang_2026,intact_replicates_ge3,partial,n = 3 with SD per biochar; no reactor values.
+cdu_wang_2026,inoculum_blanks,unknown,Not represented.
+cdu_wang_2026,zero_dose_substrate_control,partial,"A control existed, but its methane yield is not in the committed material (data/README.md)."
+cdu_wang_2026,run_to_plateau,unknown,No trajectories; 50-day experiment reported.
+cdu_wang_2026,methane_unit_verified,partial,Column states NmL (absolute volume per reactor); not normalized per g VS.
+cdu_wang_2026,dose_physical_basis,yes,10 g/L (1% w/v) per data/README.md.
+cdu_wang_2026,dose_levels_ge3,no,One dose.
+cdu_wang_2026,materials_ge2,yes,Six biochars (400-900 C) plus activated carbon.
+cdu_wang_2026,material_descriptors_core,partial,"Pyrolysis temperature, BET, conductivity, pH; no feedstock detail or elemental composition."
+cdu_wang_2026,digestion_temperature,yes,37 C per data/README.md (not a per-row field).
+cdu_wang_2026,substrate_inoculum_characterized,no,Not committed.
+cdu_wang_2026,co_interventions_per_reactor,unknown,Not represented.
+cdu_wang_2026,stability_chemistry_with_units,no,Not committed.
+cdu_wang_2026,redistributable_source,unknown,Thesis access terms not independently verified (data/README.md).
+cdu_wang_2026,temperature_levels_ge2,no,One temperature.
+garcia_prats_2024,reactor_level_trajectories,no,"Author-shared summary means and SD only, kept private; no reactor trajectories."
+garcia_prats_2024,intact_replicates_ge3,partial,Triplicates reported; only mean and SD available.
+garcia_prats_2024,inoculum_blanks,yes,Blank condition in data/experimental/garcia_prats_2024_treatment_design.csv.
+garcia_prats_2024,zero_dose_substrate_control,yes,Unamended OFMSW control.
+garcia_prats_2024,run_to_plateau,unknown,Not assessable from committed files.
+garcia_prats_2024,methane_unit_verified,unknown,Summary unit mL/g VS in the private workbook; normalization not committed.
+garcia_prats_2024,dose_physical_basis,yes,"%TS with biochar mass and working volume, giving nominal g/L."
+garcia_prats_2024,dose_levels_ge3,yes,"1, 5 and 10 %TS for each biochar."
+garcia_prats_2024,materials_ge2,yes,Three commercial biochars.
+garcia_prats_2024,material_descriptors_core,yes,"Feedstock, pyrolysis temperature, BET, pH, conductivity, CHNS in garcia_prats_2024_biochar_characteristics.csv."
+garcia_prats_2024,digestion_temperature,yes,37 C.
+garcia_prats_2024,substrate_inoculum_characterized,yes,"Density, TS, VS (g/L) and pH for substrate and inoculum in garcia_prats_2024_material_context.csv."
+garcia_prats_2024,co_interventions_per_reactor,partial,Second feeding of selected bottles documented; day-22 vs day-23 refeeding discrepancy unresolved.
+garcia_prats_2024,stability_chemistry_with_units,unknown,Not committed.
+garcia_prats_2024,redistributable_source,no,Methane summary is author-shared and private; only design and descriptors are public (CC BY 4.0).
+garcia_prats_2024,temperature_levels_ge2,no,One temperature.
+zhang_2022,reactor_level_trajectories,no,Original triplicates lost; private treatment means only.
+zhang_2022,intact_replicates_ge3,no,Replicate data lost (docs/PROJECT_STATUS.md).
+zhang_2022,inoculum_blanks,partial,Summaries are blank-corrected; blank data not available.
+zhang_2022,zero_dose_substrate_control,unknown,Not in committed files.
+zhang_2022,run_to_plateau,unknown,Private summary only.
+zhang_2022,methane_unit_verified,unknown,Not committed.
+zhang_2022,dose_physical_basis,yes,10 g/L per data/README.md.
+zhang_2022,dose_levels_ge3,no,One dose.
+zhang_2022,materials_ge2,yes,Five pyrolysis-temperature and duration variants.
+zhang_2022,material_descriptors_core,partial,"Pyrolysis temperature, duration, XPS O/C and bonds, Raman ID/IG; no BET, conductivity or pH in the committed table."
+zhang_2022,digestion_temperature,yes,37 C.
+zhang_2022,substrate_inoculum_characterized,unknown,Not committed.
+zhang_2022,co_interventions_per_reactor,unknown,Not committed.
+zhang_2022,stability_chemistry_with_units,unknown,Private VFA/pH summaries; units not committed.
+zhang_2022,redistributable_source,no,Methane summaries are private.
+zhang_2022,temperature_levels_ge2,no,One temperature.
+sanglier_2022,reactor_level_trajectories,yes,"8,403 bottle-level rows, 27 bottles, repeated batches."
+sanglier_2022,intact_replicates_ge3,partial,Three bottles per arm by design; after adjudication BRL control and LBE [1]/[2] keep two.
+sanglier_2022,inoculum_blanks,no,No inoculum-only bottles in the design.
+sanglier_2022,zero_dose_substrate_control,yes,MBE[0] and [0] controls.
+sanglier_2022,run_to_plateau,no,Only 23 of 348 cycles reach 1%/day (results/requirements).
+sanglier_2022,methane_unit_verified,no,Source headers carry no units; suffixes builder-asserted (results/validation/sanglier_2022_variable_dictionary.csv).
+sanglier_2022,dose_physical_basis,partial,LBE verified as 1%/2% w:w of reactor mass; BRL basis unverifiable.
+sanglier_2022,dose_levels_ge3,no,Two amended levels.
+sanglier_2022,materials_ge2,no,One biochar.
+sanglier_2022,material_descriptors_core,no,No descriptors committed.
+sanglier_2022,digestion_temperature,no,No temperature field committed.
+sanglier_2022,substrate_inoculum_characterized,partial,Substrate VS per batch committed; TS/VS bases conflict between labs.
+sanglier_2022,co_interventions_per_reactor,partial,"Inoculation records per bottle exist, but the ammonium scope, '+' meaning and II.4 grams conflict."
+sanglier_2022,stability_chemistry_with_units,partial,TAN and eight VFA species measured; units unresolved.
+sanglier_2022,redistributable_source,yes,Etalab Open License 2.0.
+sanglier_2022,temperature_levels_ge2,no,Not recorded.
+heitkamp_2021,reactor_level_trajectories,no,No methane productivity data.
+heitkamp_2021,intact_replicates_ge3,not_applicable,Seven uncontrolled industrial plants; no replicated arms.
+heitkamp_2021,inoculum_blanks,not_applicable,Continuous industrial plants.
+heitkamp_2021,zero_dose_substrate_control,no,No untreated comparator plants.
+heitkamp_2021,run_to_plateau,not_applicable,Continuous plants.
+heitkamp_2021,methane_unit_verified,no,No methane data.
+heitkamp_2021,dose_physical_basis,unknown,Biochar supply not quantified in the committed table.
+heitkamp_2021,dose_levels_ge3,no,Not a dose study.
+heitkamp_2021,materials_ge2,unknown,Not committed.
+heitkamp_2021,material_descriptors_core,no,Not committed.
+heitkamp_2021,digestion_temperature,unknown,Not committed.
+heitkamp_2021,substrate_inoculum_characterized,partial,"TS/VS as % fresh biomass, with a basis conflict against the article."
+heitkamp_2021,co_interventions_per_reactor,unknown,Feed changes not logged in the committed table.
+heitkamp_2021,stability_chemistry_with_units,yes,NH4-N (kg/t) and VFA species (mg/L) with source unit labels.
+heitkamp_2021,redistributable_source,yes,CC BY 4.0.
+heitkamp_2021,temperature_levels_ge2,unknown,Not committed.
+daskaloudis_2026,reactor_level_trajectories,partial,"One continuous reactor, 98 days of records; processed table rebuilt from source, not committed."
+daskaloudis_2026,intact_replicates_ge3,no,Single reactor.
+daskaloudis_2026,inoculum_blanks,not_applicable,Continuous reactor.
+daskaloudis_2026,zero_dose_substrate_control,no,Before/after phases in one reactor; Phase I-III meanings unresolved.
+daskaloudis_2026,run_to_plateau,not_applicable,Continuous reactor.
+daskaloudis_2026,methane_unit_verified,partial,Methane yield column is labelled Nml/gVS; normalization details not committed.
+daskaloudis_2026,dose_physical_basis,unknown,Phase intervention meanings unresolved.
+daskaloudis_2026,dose_levels_ge3,no,Not a dose study.
+daskaloudis_2026,materials_ge2,no,One intervention material at most.
+daskaloudis_2026,material_descriptors_core,unknown,Not committed.
+daskaloudis_2026,digestion_temperature,unknown,Not a committed field in the QC report.
+daskaloudis_2026,substrate_inoculum_characterized,yes,TS/VS in and out in g/L.
+daskaloudis_2026,co_interventions_per_reactor,no,Phase I-III intervention meanings unresolved.
+daskaloudis_2026,stability_chemistry_with_units,partial,TAN and alkalinity present; TAN source-unit interpretation unresolved.
+daskaloudis_2026,redistributable_source,unknown,Mendeley Data deposit 10.17632/r84yctsxx6.1; no license is recorded in data/external_source_manifest.json and the processed table is not committed.
+daskaloudis_2026,temperature_levels_ge2,no,Not a temperature study.

@@ -1,0 +1,9 @@
+dataset,reactor_level_trajectories,intact_replicates_ge3,inoculum_blanks,zero_dose_substrate_control,run_to_plateau,methane_unit_verified,dose_physical_basis,dose_levels_ge3,materials_ge2,material_descriptors_core,digestion_temperature,substrate_inoculum_characterized,co_interventions_per_reactor,stability_chemistry_with_units,redistributable_source,temperature_levels_ge2
+cdu_wang_2026,no,partial,unknown,partial,unknown,partial,yes,no,yes,partial,yes,no,unknown,no,unknown,no
+daskaloudis_2026,partial,no,not_applicable,no,not_applicable,partial,unknown,no,no,unknown,unknown,yes,no,partial,unknown,no
+garcia_prats_2024,no,partial,yes,yes,unknown,unknown,yes,yes,yes,yes,yes,yes,partial,unknown,no,no
+heitkamp_2021,no,not_applicable,not_applicable,no,not_applicable,no,unknown,no,unknown,no,unknown,partial,unknown,yes,yes,unknown
+kozlowski_2025,yes,partial,yes,yes,yes,unknown,partial,no,yes,partial,yes,partial,unknown,no,yes,no
+sanglier_2022,yes,partial,no,yes,no,no,partial,no,no,no,no,partial,partial,partial,yes,no
+valentin_bialowiec_2024,no,partial,unknown,yes,unknown,unknown,yes,yes,no,partial,yes,partial,unknown,no,yes,no
+zhang_2022,no,no,partial,unknown,unknown,unknown,yes,no,yes,partial,yes,unknown,unknown,unknown,no,no

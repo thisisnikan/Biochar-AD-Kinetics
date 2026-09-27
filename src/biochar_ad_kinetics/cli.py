@@ -103,6 +103,23 @@ def build_parser() -> argparse.ArgumentParser:
     stage_a.add_argument("--study-id")
     stage_a.add_argument("--experiment-id")
     stage_a.add_argument("--material-id")
+    evidence = commands.add_parser(
+        "check-evidence",
+        help="Grade a contribution against the minimum information for cross-study prediction",
+    )
+    evidence.add_argument("observations", type=Path)
+    evidence.add_argument("--materials", type=Path)
+    evidence.add_argument("--interventions", type=Path)
+    evidence.add_argument(
+        "--declarations",
+        type=Path,
+        help="JSON mapping declaration-only items to {status, evidence}",
+    )
+    evidence.add_argument(
+        "--items",
+        type=Path,
+        default=Path("data/requirements/minimum_information_items.json"),
+    )
     pyrolysis = commands.add_parser(
         "benchmark-pyrolysis-temperature",
         help="Descriptive temperature-response check on a published pyrolysis summary table",
@@ -250,6 +267,22 @@ def main() -> None:
         return
     if args.command == "fit-stage-a":
         _run_stage_a(args)
+        return
+    if args.command == "check-evidence":
+        from .evidence_requirements import check_evidence_package, load_items
+
+        report = check_evidence_package(
+            pd.read_csv(args.observations),
+            pd.read_csv(args.materials, dtype=str, keep_default_na=False)
+            if args.materials
+            else None,
+            pd.read_csv(args.interventions) if args.interventions else None,
+            load_items(args.items),
+            json.loads(args.declarations.read_text()) if args.declarations else None,
+        )
+        print(json.dumps(report, indent=2))
+        if report["errors"]:
+            raise SystemExit(2)
         return
     if args.command == "summarize-effects":
         effects = build_within_study_effect_table(
@@ -400,7 +433,9 @@ def main() -> None:
                     holdout_summary.iloc[0]["model"] if holdout_summary is not None else None
                 ),
                 "held_out_comparison": (
-                    holdout_summary.to_dict(orient="records") if holdout_summary is not None else None
+                    holdout_summary.to_dict(orient="records")
+                    if holdout_summary is not None
+                    else None
                 ),
                 "mean_held_out_rmse_interior_ml_g_vs": mean_held_out_rmse_interior,
                 "mean_held_out_rmse_boundary_ml_g_vs": mean_held_out_rmse_boundary,

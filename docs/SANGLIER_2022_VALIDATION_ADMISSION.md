@@ -210,6 +210,11 @@ Sanglier units. Heitkamp is not used for methane validation or causal claims.
 | Batch-to-continuous shift | Unknown due to missing data |
 | Incorrect assumptions | Supported (labels are not one dose; FAN derived; ammonium scope conflict) |
 
+Later exploratory evidence ([evidence requirements](EVIDENCE_REQUIREMENTS.md),
+section 6) revises "kinetic structural inadequacy" to contradicted as the main
+cause: every curve family fits whole long cycles within about 4%, while fits to
+the first 6.5 days miss cycle ends by 21% to 43%.
+
 ## 10. Remaining blockers
 
 1. Units of every Sanglier chemistry column and of the methane volume columns. The

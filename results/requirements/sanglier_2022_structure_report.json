@@ -1,0 +1,83 @@
+{
+  "best_extrapolating_family_at_6_5_days": "two_pool_first_order",
+  "cuts_days": [
+    6.5,
+    9.5,
+    12.5
+  ],
+  "cycle_length_to_1pct_per_day": {
+    "all_cycles": 348,
+    "all_cycles_reaching": 23,
+    "long_cycles": 102,
+    "median_days": 14.0,
+    "p90_days": 20.0,
+    "reached": 21
+  },
+  "cycles_used": 100,
+  "headline_cut_6_5_days": {
+    "first_order": {
+      "best_aicc_share": 0.0,
+      "median_abs_final_error": 0.2802,
+      "median_full_rmse_relative": 0.0318,
+      "median_signed_final_error": -0.0153
+    },
+    "gompertz_plus_linear": {
+      "best_aicc_share": 0.5227,
+      "median_abs_final_error": 0.2522,
+      "median_full_rmse_relative": 0.0173,
+      "median_signed_final_error": 0.2274
+    },
+    "logistic": {
+      "best_aicc_share": 0.0909,
+      "median_abs_final_error": 0.4254,
+      "median_full_rmse_relative": 0.0395,
+      "median_signed_final_error": -0.4254
+    },
+    "modified_gompertz": {
+      "best_aicc_share": 0.2727,
+      "median_abs_final_error": 0.2805,
+      "median_full_rmse_relative": 0.033,
+      "median_signed_final_error": -0.2275
+    },
+    "two_pool_first_order": {
+      "best_aicc_share": 0.1136,
+      "median_abs_final_error": 0.1992,
+      "median_full_rmse_relative": 0.0263,
+      "median_signed_final_error": 0.0207
+    }
+  },
+  "interpretation_rules": {
+    "identifiability": "A family that fits whole cycles but mispredicts their end from the first days shows the short record, not the equation, is limiting.",
+    "structure": "A family that cannot fit whole long cycles (high full RMSE) is structurally inadequate for them."
+  },
+  "lab_batches_used": [
+    "BRL batch 14",
+    "LBE batch 1",
+    "LBE batch 10",
+    "LBE batch 11",
+    "LBE batch 12",
+    "LBE batch 3",
+    "LBE batch 9"
+  ],
+  "prefix_sweep_for_best_family": [
+    {
+      "cut_days": 6.5,
+      "cycles": 88,
+      "median_abs_final_error": 0.1992,
+      "share_final_within_10pct": 0.2614
+    },
+    {
+      "cut_days": 9.5,
+      "cycles": 88,
+      "median_abs_final_error": 0.1417,
+      "share_final_within_10pct": 0.3977
+    },
+    {
+      "cut_days": 12.5,
+      "cycles": 88,
+      "median_abs_final_error": 0.1022,
+      "share_final_within_10pct": 0.4886
+    }
+  ],
+  "status": "EXPLORATORY_WITHIN_STUDY_STRUCTURE_TEST"
+}

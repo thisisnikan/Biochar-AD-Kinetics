@@ -29,6 +29,20 @@ release model while the public API remains experimental.
 
 ## Unreleased
 
+### 2026-09-27: Evidence requirements
+
+- Test five curve families on 100 long Sanglier cycles: all describe whole cycles
+  within about 4%, but fits to the first 6.5 d miss cycle ends by 21% to 43%;
+  short records, not the equation, limit inference (`kinetic_structure`).
+- Derive design requirements from variance components: at least 4 bottles per arm,
+  repeated batches, and runs of about 14 to 20 d for food waste
+  (`design_requirements`).
+- Grade eight repository datasets against 16 minimum-information items with
+  curated evidence cross-checked against committed data; none is ready for
+  cross-study use (`evidence_requirements`).
+- Add `biochar-ad check-evidence`, material-descriptor and intervention-log
+  templates, and declarations that cannot override data-checked items.
+
 ### 2026-09-27: Sanglier admission gate
 
 - Audit Sanglier variable semantics from committed tables: pH is the only resolved

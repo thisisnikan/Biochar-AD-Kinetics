@@ -1,0 +1,4 @@
+scenario,units,arms,batches,df_unit,df_residual,ms_unit,sigma2_unit,sigma2_residual,sigma2_batch,ms_unit_upper95
+BRL,11,4,10,7,90,0.00347487,0,0.00411713,0.0115087,0.0143941
+LBE,7,3,8,4,42,0.376098,0.0366433,0.0829515,0.0659615,3.10556
+LBE_without_IV.3,6,3,8,3,35,0.00171301,0,0.00233374,0.0853066,0.0238144
