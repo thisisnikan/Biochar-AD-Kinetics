@@ -9,8 +9,8 @@
   "chemistry": {
     "FAN_derivation_probe": {
       "anthonisen_best_matching_temperature_c": 31.86,
-      "cv_of_FAN_over_TAN": 0.5275098584643827,
-      "cv_of_FAN_over_anthonisen_prediction": 0.013099564547794776,
+      "cv_of_FAN_over_TAN": 0.5275098585,
+      "cv_of_FAN_over_anthonisen_prediction": 0.01309956455,
       "interpretation": "FAN varies with pH at fixed TAN exactly as an equilibrium transform would; after that transform the residual CV is about 1%. FAN is therefore treated as derived from TAN and pH, not as an independent measurement. The formula and temperature the source used are not documented in the repository; the matching temperature is a probe result, not a recovered operating temperature.",
       "labs": [
         "BRL"
@@ -18,29 +18,29 @@
       "rows_with_TAN_FAN_pH": 31
     },
     "TS_VS_basis": {
-      "TS_log10_max_gap": 1.7372650872189466,
-      "VS_log10_max_gap": 2.946145694414384,
+      "TS_log10_max_gap": 1.737265087,
+      "VS_log10_max_gap": 2.946145694,
       "by_lab": {
         "BRL": {
           "TS_range": [
-            5.67942785023139,
-            10.9159943046986
+            5.67942785,
+            10.9159943
           ],
           "VS_range": [
-            70.3703703703705,
-            80.5555555555556
+            70.37037037,
+            80.55555556
           ],
           "rows": 10,
           "rows_VS_greater_than_TS": 10
         },
         "LBE": {
           "TS_range": [
-            0.0401280683030954,
-            0.104001475198228
+            0.0401280683,
+            0.1040014752
           ],
           "VS_range": [
-            0.0246089278901164,
-            0.079660704407155
+            0.02460892789,
+            0.07966070441
           ],
           "rows": 134,
           "rows_VS_greater_than_TS": 0
@@ -53,7 +53,7 @@
       "labs_batches_above_10x_median": [
         "BRL batch 13 tf"
       ],
-      "log10_max_gap": 0.8013700617223893,
+      "log10_max_gap": 0.8013700617,
       "rows": 239,
       "rows_above_10x_median": 8,
       "rows_above_10x_median_source": [
@@ -128,8 +128,8 @@
     "unit_interpretation": "Source headers are 'Volume_raw', 'Volume', 'Flow' and 'Methane yield' without units. The candidate builder names them *_nml, *_nml_h and *_nml_gvs; that naming is not backed by committed source evidence. The exact identity above proves yield and volume share a volume unit per substrate-VS unit, but not which volume unit or normalization.",
     "volume_correction": {
       "corrected_over_raw_range": [
-        1.0013351423197492,
-        1.0898998445823493
+        1.001335142,
+        1.089899845
       ],
       "interpretation": "Only LBE applies a correction (factor 1.001-1.090); BRL corrected equals raw. The correction method is not documented in the repository. Within-lab ratios are unaffected; cross-lab absolute yield comparison inherits an undocumented lab-specific processing difference.",
       "rows_raw_differs_from_corrected_by_lab": {
@@ -137,7 +137,7 @@
       }
     },
     "yield_equals_corrected_volume_over_substrate_vs": {
-      "max_abs_residual": 1.1721766668415512e-07,
+      "max_abs_residual": 1.172176667e-07,
       "rows_checked": 8055,
       "rows_within_1e-6": 8055
     }

@@ -30,10 +30,32 @@ SEMANTIC_FILES = (
 )
 
 
-def test_semantics_rebuild_is_byte_identical(tmp_path):
+def _assert_json_close(a, b, path="root"):
+    if isinstance(a, dict):
+        assert a.keys() == b.keys(), path
+        for key in a:
+            _assert_json_close(a[key], b[key], f"{path}.{key}")
+    elif isinstance(a, list):
+        assert len(a) == len(b), path
+        for i, (x, y) in enumerate(zip(a, b, strict=True)):
+            _assert_json_close(x, y, f"{path}[{i}]")
+    elif isinstance(a, float) or isinstance(b, float):
+        assert a == pytest.approx(b, rel=1e-8, abs=1e-12), path
+    else:
+        assert a == b, path
+
+
+def test_semantics_rebuild_is_reproducible(tmp_path):
+    """Source-copied CSVs must be byte-identical; the QC JSON holds values computed
+    with vectorised exp/log and is compared at 1e-8 relative tolerance."""
+
     SEMANTICS.build(tmp_path)
-    for name in SEMANTIC_FILES:
+    for name in SEMANTIC_FILES[:-1]:
         assert filecmp.cmp(tmp_path / name, VALIDATION / name, shallow=False), name
+    _assert_json_close(
+        json.loads((tmp_path / SEMANTIC_FILES[-1]).read_text()),
+        json.loads((VALIDATION / SEMANTIC_FILES[-1]).read_text()),
+    )
 
 
 def test_admission_rebuild_is_byte_identical(tmp_path):

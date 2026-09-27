@@ -620,6 +620,19 @@ def adjudicate(methane: pd.DataFrame, bottle_batches: pd.DataFrame) -> pd.DataFr
     return pd.DataFrame(rows)
 
 
+def round_floats(value: object, digits: int = 10) -> object:
+    """Round computed floats so vectorised exp/log round-off (which can differ in
+    the last bit between CPUs) does not change the committed JSON."""
+
+    if isinstance(value, float):
+        return float(f"{value:.{digits}g}")
+    if isinstance(value, dict):
+        return {k: round_floats(v, digits) for k, v in value.items()}
+    if isinstance(value, list):
+        return [round_floats(v, digits) for v in value]
+    return value
+
+
 def _write_csv(frame: pd.DataFrame, path: Path) -> None:
     buffer = io.StringIO()
     frame.to_csv(buffer, index=False, lineterminator="\n")
@@ -655,7 +668,7 @@ def build(output: Path) -> dict[str, object]:
     _write_csv(events, output / "sanglier_2022_event_scope.csv")
     _write_csv(adjudication, output / "sanglier_2022_treatment_adjudication.csv")
     (output / "sanglier_2022_semantics_qc.json").write_text(
-        json.dumps(qc, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        json.dumps(round_floats(qc), indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     return qc
 
