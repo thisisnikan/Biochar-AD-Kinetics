@@ -1,0 +1,163 @@
+{
+  "spec_id": "sanglier_2022_admission_v1",
+  "spec_version": "1.0.0",
+  "frozen_on": "2026-09-27",
+  "status": "FROZEN_BEFORE_OUTCOME_CONTRASTS",
+  "study_id": "sanglier_2022",
+  "source_doi": "10.57745/BUJORT",
+  "source_md5": "282f5076857dd4f8ca38089a6d499909",
+  "scientific_question": "In an independent repeated-batch food-waste digestion study, do bottles run under a biochar regime produce a different early cumulative methane yield than same-laboratory unamended bottles, and is the direction the same in both laboratories?",
+  "prediction_target": {
+    "quantity": "cumulative methane yield at a fixed within-batch horizon",
+    "source_column": "methane_yield_nml_gvs",
+    "source_header": "Methane yield",
+    "unit_requirement": "Only within-laboratory ratios are computed. The source unit is unverified, and a log response ratio is invariant to a shared multiplicative unit, so no unit conversion is performed or needed.",
+    "effect_scale": "log response ratio of bottle-level geometric mean yields"
+  },
+  "dataset_roles": {
+    "locked_external_validation": {
+      "status": "blocked",
+      "reasons": [
+        "No model or effect estimate in the repository is commensurate with this target: Kozlowski 2025 reports fitted asymptotic potential and maximum rate from single fresh-inoculum BMP runs, not fixed-horizon yield in acclimated repeated batches.",
+        "Development doses are g/L; Sanglier doses are labels 1/2 whose gram basis differs between laboratories and whose BRL w:w basis cannot be verified.",
+        "No biochar material descriptors for Sanglier are committed, so no descriptor-conditioned model can be evaluated without refitting.",
+        "Development evidence gives no sign-unambiguous prediction for early yield: Kozlowski pyrolysis biochar shows +4.5% potential but -7.4% maximum rate."
+      ]
+    },
+    "calibration_transfer": {
+      "status": "prohibited_under_this_spec"
+    },
+    "model_updating": {
+      "status": "prohibited_under_this_spec"
+    },
+    "exploratory": {
+      "status": "admitted_for_preregistered_subset",
+      "preregistered": true,
+      "generalization_question": "A_within_study",
+      "note": "The two laboratories share one study, protocol family and author team. Agreement between them is cross-laboratory reproducibility inside one study, not cross-study generalization (question B)."
+    }
+  },
+  "unit_of_analysis": "bottle",
+  "independence_rule": "Bottles are the independent experimental units. Repeated batches of one bottle share recirculated digestate and are repeated measures, never independent replicates. AMPTShort rows are a 12-hour derivative of one continuous record and are never counted as observations for inference.",
+  "inclusion_criteria": [
+    "Cycle adjudication class is source_consistent or resolvable_from_source.",
+    "Cycle lies inside its laboratory's clean batch window (see temporal_definition).",
+    "Bottle has an admissible cycle for every batch of its laboratory window.",
+    "Arm is one of the allowable treatments for that laboratory."
+  ],
+  "exclusion_criteria": [
+    "Any cycle classed conflicting, ambiguous or excluded.",
+    "Any cycle with a recorded co-intervention rule: R3, R4, R5, R9 or R10.",
+    "A whole bottle when any cycle inside its laboratory window fails admission, because digestate carry-over propagates exposure and faults to later cycles.",
+    "A cycle without a methane yield observation exactly at the horizon (no interpolation).",
+    "Poor or failed methane production is never an exclusion criterion; outcome events (Events!6, Events!7) remain in the data."
+  ],
+  "allowable_treatments": {
+    "BRL": ["MBE[0]", "MBE[1]", "MBE[2]", "MBE[2]+"],
+    "LBE": ["[0]", "[1]", "[2]"],
+    "controls": {"BRL": "MBE[0]", "LBE": "[0]"},
+    "arms_are_never_pooled": true,
+    "excluded_arms_primary": {
+      "LBE [1]+": "Meaning of '+' before batch 11 is undocumented (rule R6, ambiguous).",
+      "LBE [2]+": "Meaning of '+' before batch 11 is undocumented (rule R6, ambiguous)."
+    }
+  },
+  "treatment_reconstruction_rules": {
+    "regime_assignment": "Bottle-level regime from the Inoculation condition label, the AMPTShort Biochar label and the recorded biochar grams, which must agree in every cycle used.",
+    "event_scope": "A laboratory event changes a bottle's exposure only when its text names that bottle or its condition (results/validation/sanglier_2022_event_scope.csv). An unspecified-subset event makes every overlapping cycle in that laboratory ambiguous.",
+    "source_values": "Original labels, grams and volumes are retained; adjudication adds classes and evidence but never overwrites a source value.",
+    "adjudication_table": "results/validation/sanglier_2022_treatment_adjudication.csv"
+  },
+  "temporal_definition": {
+    "time_origin": "First observed time of each laboratory/batch (within_batch_days).",
+    "clean_window_rule": "For each laboratory, consecutive batches from batch 1 up to, but excluding, the first batch in which any cycle triggers a laboratory-scope co-intervention or unspecified-subset rule (R4 without a named condition, R8, R9).",
+    "expected_windows": {"BRL": [1, 10], "LBE": [1, 8]},
+    "horizon_rule": "Largest multiple of 0.5 day not exceeding the shortest last-observed within-batch time among admitted cycles.",
+    "expected_horizon_days": 5.5,
+    "time_tolerance_days": 1e-06,
+    "interpolation": "prohibited"
+  },
+  "repeated_batch_handling": "Each bottle is summarised by the mean of ln(yield at horizon) over its window batches. Every admitted bottle contributes the same batches, so shared substrate-lot effects cancel between arms.",
+  "carryover_handling": "A conflicting or excluded cycle removes the whole bottle from the primary analysis (rules R1, R2, R7). Residual-ammonia carry-over (R10) is ambiguous and excluded.",
+  "co_intervention_handling": "Ammonium bicarbonate, trace-element regime changes and undocumented '+' labels are never attributed to biochar. Windows end before they begin.",
+  "normalization": "None beyond the source's own per-substrate-VS yield. No blank subtraction (the design has no inoculum-only blanks). No cross-laboratory normalization.",
+  "required_metadata": [
+    "lab", "batch_id", "bottle_id", "source_condition_inoculation", "source_condition_ampts",
+    "biochar_label_ampts", "inoculation_biochar_g", "inoculation_ammonium_bicarbonate_g",
+    "inoculation_substrate_vs_g", "within_batch_days", "source_amptshort_row", "source_inoculation_row"
+  ],
+  "leakage_prevention": {
+    "identifiers": ["sanglier", "10.57745", "BUJORT", "282f5076857dd4f8ca38089a6d499909", "34a01d5a11c22973f5106139b29ca0a62d5ac84466339187d0dea42a0b603092"],
+    "development_paths": [
+      "src/biochar_ad_kinetics",
+      "results/effects",
+      "results/experimental",
+      "results/external-dose",
+      "results/synthetic",
+      "results/pyrolysis-temperature",
+      "data/experimental",
+      "data/templates",
+      "outputs"
+    ],
+    "allowed_modules": [],
+    "admission_outcome_blindness": "The admission step receives no methane volume, flow or yield column; it fails if one is present.",
+    "on_hit": "fail_closed"
+  },
+  "transfer_rules": {
+    "parameters_allowed_to_transfer": [],
+    "parameters_not_allowed_to_refit_for_external_claims": [
+      "modified_gompertz.potential", "modified_gompertz.rate", "modified_gompertz.lag",
+      "dose_response.coefficients", "global_model.all_8_parameters",
+      "daskaloudis_segmented.level_change", "daskaloudis_segmented.slope_change"
+    ],
+    "calibration_parameters": ["intercept", "scale"],
+    "role_rule": "No refit: locked_external_validation. Only calibration parameters refit: calibration_transfer. Any structural or effect parameter refit: model_updating. Hypothesis or model chosen after viewing this data: exploratory."
+  },
+  "development_comparator": {
+    "path": "results/effects/within_study_effects.csv",
+    "sha256": "6c45660807f08a3c802a316ccd860906c024b4d23f9b6c71a79993bd183524c3",
+    "study_id": "kozlowski_2025_scientific_reports",
+    "treatment": "food_waste_pyrolysis_600c",
+    "responses": ["potential_ml_g_vs", "max_rate_ml_g_vs_day"],
+    "commensurate": false,
+    "use": "Interval overlap is reported for context and is never scored as validation."
+  },
+  "metrics": {
+    "primary": "Per laboratory and arm: log response ratio versus the same-laboratory control with a Welch 95% t interval over bottle summaries, plus an exact two-sided permutation p-value over bottle labels and its minimum attainable value.",
+    "secondary": [
+      "S1 variance decomposition of ln(yield at horizon) into batch, arm and bottle-within-arm components per laboratory.",
+      "S2 cycle plateau audit: share of admitted cycles whose final 24 h increment is below 1% of cumulative yield.",
+      "S3 exploratory per-cycle modified Gompertz fits: relative standard error of potential and potential-rate correlation.",
+      "S4 count of independent experimental units available for any machine-learning model."
+    ],
+    "sensitivity": [
+      "SA1 include LBE [1]+ and [2]+ as separate arms.",
+      "SA2 exclude control bottle IV.3 (reported failure) to show its influence; the primary analysis keeps it.",
+      "SA3 exclude IV.5 and IV.8 only in batch 1 by using LBE batches 2-8."
+    ]
+  },
+  "uncertainty_reporting": "Report n bottles per arm, Welch degrees of freedom, interval, permutation p and its floor. Arms with fewer than three bottles carry low_replication=true. No z-intervals as primary for n below 30.",
+  "decision_rule": {
+    "increase": "Welch 95% interval lower bound above 0.",
+    "decrease": "Welch 95% interval upper bound below 0.",
+    "inconclusive": "Interval contains 0.",
+    "not_evaluable": "Fewer than two bottles in either arm.",
+    "cross_laboratory_agreement": "Labels 1 and 2 agree only if both laboratories give the same non-inconclusive verdict."
+  },
+  "failure_criteria": [
+    "Spec hash differs from the hash recorded at admission: stop.",
+    "Observed clean windows or horizon differ from expected values: stop and re-register.",
+    "Leakage audit finds a Sanglier identifier in a development path: stop.",
+    "Any admitted cycle lacks a yield exactly at the horizon: report the cycle as not evaluable; if a bottle loses a window batch, drop the bottle and report it.",
+    "Directional verdicts disagree between laboratories: report as failure of cross-laboratory reproducibility, not as noise to average away.",
+    "No arm reaches a non-inconclusive verdict: report the dataset as insufficient to resolve the effect at this replication."
+  ],
+  "outcome_exposure_disclosure": "Before freezing, the analyst viewed final per-cycle yields of LBE bottles IV.1, IV.2, IV.3, IV.5 and IV.8 to check event statements, and the yield = volume / substrate VS identity. No arm-level summary or contrast was computed. Treatment of IV.3 follows the pre-existing repository rule that poor outcomes are not exclusions (docs/SANGLIER_2022_CONTEXT_AUDIT.md). The source deposit also states that biochar improved methane yield, so a directional agreement is not a blind test.",
+  "claims_prohibited_regardless_of_result": [
+    "causal biochar benefit",
+    "cross-study generalization",
+    "external validation of any kinetic, dose-response or global model",
+    "industrial or continuous-reactor translation",
+    "validated digital twin"
+  ]
+}

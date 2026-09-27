@@ -1,0 +1,349 @@
+lab,batch_id,bottle_id,source_condition_inoculation,adjudication_class,rules,last_within_batch_days,in_window,admitted_primary,exclusion_reason
+BRL,1,II.10,MBE[2],source_consistent,,6.76,True,True,
+BRL,2,II.10,MBE[2],source_consistent,,6.72,True,True,
+BRL,3,II.10,MBE[2],source_consistent,,6.76,True,True,
+BRL,4,II.10,MBE[2],source_consistent,,6.76,True,True,
+BRL,5,II.10,MBE[2],source_consistent,,6.8,True,True,
+BRL,6,II.10,MBE[2],source_consistent,,5.51,True,True,
+BRL,7,II.10,MBE[2],source_consistent,,7.42,True,True,
+BRL,8,II.10,MBE[2],source_consistent,,6.88,True,True,
+BRL,9,II.10,MBE[2],source_consistent,,6.8,True,True,
+BRL,10,II.10,MBE[2],source_consistent,,6.8,True,True,
+BRL,11,II.10,MBE[2],conflicting,R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.10,MBE[2],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.85,False,False,outside_clean_window
+BRL,13,II.10,MBE[2],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.76,False,False,outside_clean_window
+BRL,14,II.10,MBE[2],ambiguous,R10_carryover_after_disputed_ammonium_addition,27.76,False,False,outside_clean_window
+BRL,1,II.11,MBE[2],source_consistent,,6.76,True,True,
+BRL,2,II.11,MBE[2],source_consistent,,6.72,True,True,
+BRL,3,II.11,MBE[2],source_consistent,,6.76,True,True,
+BRL,4,II.11,MBE[2],source_consistent,,6.76,True,True,
+BRL,5,II.11,MBE[2],source_consistent,,6.8,True,True,
+BRL,6,II.11,MBE[2],source_consistent,,5.51,True,True,
+BRL,7,II.11,MBE[2],source_consistent,,7.42,True,True,
+BRL,8,II.11,MBE[2],source_consistent,,6.88,True,True,
+BRL,9,II.11,MBE[2],source_consistent,,6.8,True,True,
+BRL,10,II.11,MBE[2],source_consistent,,6.8,True,True,
+BRL,11,II.11,MBE[2],conflicting,R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.11,MBE[2],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.85,False,False,outside_clean_window
+BRL,13,II.11,MBE[2],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.76,False,False,outside_clean_window
+BRL,14,II.11,MBE[2],ambiguous,R10_carryover_after_disputed_ammonium_addition,27.76,False,False,outside_clean_window
+BRL,1,II.12,MBE[2],source_consistent,,6.76,True,True,
+BRL,2,II.12,MBE[2],source_consistent,,6.72,True,True,
+BRL,3,II.12,MBE[2],source_consistent,,6.76,True,True,
+BRL,4,II.12,MBE[2],source_consistent,,6.76,True,True,
+BRL,5,II.12,MBE[2],source_consistent,,6.8,True,True,
+BRL,6,II.12,MBE[2],source_consistent,,5.51,True,True,
+BRL,7,II.12,MBE[2],source_consistent,,7.42,True,True,
+BRL,8,II.12,MBE[2],source_consistent,,6.88,True,True,
+BRL,9,II.12,MBE[2],source_consistent,,6.8,True,True,
+BRL,10,II.12,MBE[2],source_consistent,,6.8,True,True,
+BRL,11,II.12,MBE[2],conflicting,R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.12,MBE[2],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.85,False,False,outside_clean_window
+BRL,13,II.12,MBE[2],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.76,False,False,outside_clean_window
+BRL,14,II.12,MBE[2],ambiguous,R10_carryover_after_disputed_ammonium_addition,27.76,False,False,outside_clean_window
+BRL,1,II.13,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.76,True,True,
+BRL,2,II.13,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.72,True,True,
+BRL,3,II.13,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.76,True,True,
+BRL,4,II.13,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.76,True,True,
+BRL,5,II.13,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.8,True,True,
+BRL,6,II.13,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,5.51,True,True,
+BRL,7,II.13,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,7.42,True,True,
+BRL,8,II.13,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.88,True,True,
+BRL,9,II.13,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.8,True,True,
+BRL,10,II.13,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.8,True,True,
+BRL,11,II.13,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.13,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,6.85,False,False,outside_clean_window
+BRL,13,II.13,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,6.76,False,False,outside_clean_window
+BRL,14,II.13,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,27.76,False,False,outside_clean_window
+BRL,1,II.14,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.76,True,True,
+BRL,2,II.14,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.72,True,True,
+BRL,3,II.14,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.76,True,True,
+BRL,4,II.14,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.76,True,True,
+BRL,5,II.14,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.8,True,True,
+BRL,6,II.14,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,5.51,True,True,
+BRL,7,II.14,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,7.42,True,True,
+BRL,8,II.14,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.88,True,True,
+BRL,9,II.14,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.8,True,True,
+BRL,10,II.14,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.8,True,True,
+BRL,11,II.14,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.14,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,6.85,False,False,outside_clean_window
+BRL,13,II.14,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,6.76,False,False,outside_clean_window
+BRL,14,II.14,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,27.76,False,False,outside_clean_window
+BRL,1,II.15,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.76,True,True,
+BRL,2,II.15,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.72,True,True,
+BRL,3,II.15,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.76,True,True,
+BRL,4,II.15,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.76,True,True,
+BRL,5,II.15,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.8,True,True,
+BRL,6,II.15,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,5.51,True,True,
+BRL,7,II.15,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,7.42,True,True,
+BRL,8,II.15,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.88,True,True,
+BRL,9,II.15,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.8,True,True,
+BRL,10,II.15,MBE[2] +,resolvable_from_source,R6_plus_label_without_recorded_difference,6.8,True,True,
+BRL,11,II.15,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.15,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,6.85,False,False,outside_clean_window
+BRL,13,II.15,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,6.76,False,False,outside_clean_window
+BRL,14,II.15,MBE[2] + N,resolvable_from_source,R3_condition_label_disagreement;R4_ammonium_bicarbonate_recorded,27.76,False,False,outside_clean_window
+BRL,1,II.4,MBE[0],source_consistent,,6.76,True,False,bottle_class_conflicting;class_excluded
+BRL,2,II.4,MBE[0],conflicting,R1_control_label_positive_biochar_mass,6.72,True,False,class_conflicting
+BRL,3,II.4,MBE[0],conflicting,R1_control_label_positive_biochar_mass,6.76,True,False,class_conflicting
+BRL,4,II.4,MBE[0],conflicting,R1_control_label_positive_biochar_mass,6.76,True,False,class_conflicting
+BRL,5,II.4,MBE[0],conflicting,R1_control_label_positive_biochar_mass,6.8,True,False,class_conflicting
+BRL,6,II.4,MBE[0],excluded,R2_carryover_after_conflicting_cycle,5.51,True,False,class_excluded
+BRL,7,II.4,MBE[0],excluded,R2_carryover_after_conflicting_cycle,7.42,True,False,class_excluded
+BRL,8,II.4,MBE[0],excluded,R2_carryover_after_conflicting_cycle,6.88,True,False,class_excluded
+BRL,9,II.4,MBE[0],excluded,R2_carryover_after_conflicting_cycle,6.8,True,False,class_excluded
+BRL,10,II.4,MBE[0],excluded,R2_carryover_after_conflicting_cycle,6.8,True,False,class_excluded
+BRL,11,II.4,MBE[0],excluded,R2_carryover_after_conflicting_cycle;R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.4,MBE[0],excluded,R2_carryover_after_conflicting_cycle;R10_carryover_after_disputed_ammonium_addition,6.85,False,False,outside_clean_window
+BRL,13,II.4,MBE[0],excluded,R2_carryover_after_conflicting_cycle;R10_carryover_after_disputed_ammonium_addition,6.76,False,False,outside_clean_window
+BRL,14,II.4,MBE[0],excluded,R2_carryover_after_conflicting_cycle;R10_carryover_after_disputed_ammonium_addition,27.55,False,False,outside_clean_window
+BRL,1,II.5,MBE[0],source_consistent,,6.76,True,True,
+BRL,2,II.5,MBE[0],source_consistent,,6.72,True,True,
+BRL,3,II.5,MBE[0],source_consistent,,6.76,True,True,
+BRL,4,II.5,MBE[0],source_consistent,,6.76,True,True,
+BRL,5,II.5,MBE[0],source_consistent,,6.8,True,True,
+BRL,6,II.5,MBE[0],source_consistent,,5.51,True,True,
+BRL,7,II.5,MBE[0],source_consistent,,7.42,True,True,
+BRL,8,II.5,MBE[0],source_consistent,,6.88,True,True,
+BRL,9,II.5,MBE[0],source_consistent,,6.8,True,True,
+BRL,10,II.5,MBE[0],source_consistent,,6.8,True,True,
+BRL,11,II.5,MBE[0],conflicting,R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.5,MBE[0],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.85,False,False,outside_clean_window
+BRL,13,II.5,MBE[0],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.76,False,False,outside_clean_window
+BRL,14,II.5,MBE[0],ambiguous,R10_carryover_after_disputed_ammonium_addition,27.55,False,False,outside_clean_window
+BRL,1,II.6,MBE[0],source_consistent,,6.76,True,True,
+BRL,2,II.6,MBE[0],source_consistent,,6.72,True,True,
+BRL,3,II.6,MBE[0],source_consistent,,6.76,True,True,
+BRL,4,II.6,MBE[0],source_consistent,,6.76,True,True,
+BRL,5,II.6,MBE[0],source_consistent,,6.8,True,True,
+BRL,6,II.6,MBE[0],source_consistent,,5.51,True,True,
+BRL,7,II.6,MBE[0],source_consistent,,7.42,True,True,
+BRL,8,II.6,MBE[0],source_consistent,,6.88,True,True,
+BRL,9,II.6,MBE[0],source_consistent,,6.8,True,True,
+BRL,10,II.6,MBE[0],source_consistent,,6.8,True,True,
+BRL,11,II.6,MBE[0],conflicting,R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.6,MBE[0],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.85,False,False,outside_clean_window
+BRL,13,II.6,MBE[0],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.76,False,False,outside_clean_window
+BRL,14,II.6,MBE[0],ambiguous,R10_carryover_after_disputed_ammonium_addition,27.55,False,False,outside_clean_window
+BRL,1,II.7,MBE[1],source_consistent,,6.76,True,True,
+BRL,2,II.7,MBE[1],source_consistent,,6.72,True,True,
+BRL,3,II.7,MBE[1],source_consistent,,6.76,True,True,
+BRL,4,II.7,MBE[1],source_consistent,,6.76,True,True,
+BRL,5,II.7,MBE[1],source_consistent,,6.8,True,True,
+BRL,6,II.7,MBE[1],source_consistent,,5.51,True,True,
+BRL,7,II.7,MBE[1],source_consistent,,7.42,True,True,
+BRL,8,II.7,MBE[1],source_consistent,,6.88,True,True,
+BRL,9,II.7,MBE[1],source_consistent,,6.8,True,True,
+BRL,10,II.7,MBE[1],source_consistent,,6.8,True,True,
+BRL,11,II.7,MBE[1],conflicting,R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.7,MBE[1],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.85,False,False,outside_clean_window
+BRL,13,II.7,MBE[1],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.76,False,False,outside_clean_window
+BRL,14,II.7,MBE[1],ambiguous,R10_carryover_after_disputed_ammonium_addition,27.05,False,False,outside_clean_window
+BRL,1,II.8,MBE[1],source_consistent,,6.76,True,True,
+BRL,2,II.8,MBE[1],source_consistent,,6.72,True,True,
+BRL,3,II.8,MBE[1],source_consistent,,6.76,True,True,
+BRL,4,II.8,MBE[1],source_consistent,,6.76,True,True,
+BRL,5,II.8,MBE[1],source_consistent,,6.8,True,True,
+BRL,6,II.8,MBE[1],source_consistent,,5.51,True,True,
+BRL,7,II.8,MBE[1],source_consistent,,7.42,True,True,
+BRL,8,II.8,MBE[1],source_consistent,,6.88,True,True,
+BRL,9,II.8,MBE[1],source_consistent,,6.8,True,True,
+BRL,10,II.8,MBE[1],source_consistent,,6.8,True,True,
+BRL,11,II.8,MBE[1],conflicting,R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.8,MBE[1],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.85,False,False,outside_clean_window
+BRL,13,II.8,MBE[1],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.76,False,False,outside_clean_window
+BRL,14,II.8,MBE[1],ambiguous,R10_carryover_after_disputed_ammonium_addition,27.05,False,False,outside_clean_window
+BRL,1,II.9,MBE[1],source_consistent,,6.76,True,True,
+BRL,2,II.9,MBE[1],source_consistent,,6.72,True,True,
+BRL,3,II.9,MBE[1],source_consistent,,6.76,True,True,
+BRL,4,II.9,MBE[1],source_consistent,,6.76,True,True,
+BRL,5,II.9,MBE[1],source_consistent,,6.8,True,True,
+BRL,6,II.9,MBE[1],source_consistent,,5.51,True,True,
+BRL,7,II.9,MBE[1],source_consistent,,7.42,True,True,
+BRL,8,II.9,MBE[1],source_consistent,,6.88,True,True,
+BRL,9,II.9,MBE[1],source_consistent,,6.8,True,True,
+BRL,10,II.9,MBE[1],source_consistent,,6.8,True,True,
+BRL,11,II.9,MBE[1],conflicting,R4_ammonium_bicarbonate_recorded,6.71,False,False,outside_clean_window
+BRL,12,II.9,MBE[1],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.85,False,False,outside_clean_window
+BRL,13,II.9,MBE[1],ambiguous,R10_carryover_after_disputed_ammonium_addition,6.76,False,False,outside_clean_window
+BRL,14,II.9,MBE[1],ambiguous,R10_carryover_after_disputed_ammonium_addition,27.05,False,False,outside_clean_window
+LBE,1,IV.1,[0],source_consistent,,13.71666667,True,True,
+LBE,2,IV.1,[0],source_consistent,,6.8,True,True,
+LBE,3,IV.1,[0],source_consistent,,20.84166666,True,True,
+LBE,4,IV.1,[0],source_consistent,,6.71666667,True,True,
+LBE,5,IV.1,[0],source_consistent,,6.84166667,True,True,
+LBE,6,IV.1,[0],source_consistent,,6.8,True,True,
+LBE,7,IV.1,[0],source_consistent,,6.84166667,True,True,
+LBE,8,IV.1,[0],source_consistent,,6.925,True,True,
+LBE,9,IV.1,[0],ambiguous,R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.1,[0],ambiguous,R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.1,[0],resolvable_from_source,R9_trace_element_regime_change,13.7583333,False,False,outside_clean_window
+LBE,12,IV.1,[0],resolvable_from_source,R9_trace_element_regime_change,20.8416667,False,False,outside_clean_window
+LBE,1,IV.10,[1]+,ambiguous,R6_plus_label_without_recorded_difference,13.71666667,True,False,arm_not_allowable
+LBE,2,IV.10,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,3,IV.10,[1]+,ambiguous,R6_plus_label_without_recorded_difference,20.84166666,True,False,arm_not_allowable
+LBE,4,IV.10,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.71666667,True,False,arm_not_allowable
+LBE,5,IV.10,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,6,IV.10,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,7,IV.10,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,8,IV.10,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.925,True,False,arm_not_allowable
+LBE,9,IV.10,[1]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.10,[1]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.10,[1]+,resolvable_from_source,R5_te_label_vs_volume,13.7583333,False,False,outside_clean_window
+LBE,12,IV.10,[1]+,resolvable_from_source,R5_te_label_vs_volume,20.8416667,False,False,outside_clean_window
+LBE,1,IV.11,[1]+,ambiguous,R6_plus_label_without_recorded_difference,13.71666667,True,False,arm_not_allowable
+LBE,2,IV.11,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,3,IV.11,[1]+,ambiguous,R6_plus_label_without_recorded_difference,20.84166666,True,False,arm_not_allowable
+LBE,4,IV.11,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.71666667,True,False,arm_not_allowable
+LBE,5,IV.11,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,6,IV.11,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,7,IV.11,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,8,IV.11,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.925,True,False,arm_not_allowable
+LBE,9,IV.11,[1]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.11,[1]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.11,[1]+,resolvable_from_source,R5_te_label_vs_volume,13.7583333,False,False,outside_clean_window
+LBE,12,IV.11,[1]+,resolvable_from_source,R5_te_label_vs_volume,20.8416667,False,False,outside_clean_window
+LBE,1,IV.12,[1]+,ambiguous,R6_plus_label_without_recorded_difference,13.71666667,True,False,arm_not_allowable
+LBE,2,IV.12,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,3,IV.12,[1]+,ambiguous,R6_plus_label_without_recorded_difference,20.84166666,True,False,arm_not_allowable
+LBE,4,IV.12,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.71666667,True,False,arm_not_allowable
+LBE,5,IV.12,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,6,IV.12,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,7,IV.12,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,8,IV.12,[1]+,ambiguous,R6_plus_label_without_recorded_difference,6.925,True,False,arm_not_allowable
+LBE,9,IV.12,[1]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.12,[1]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.12,[1]+,resolvable_from_source,R5_te_label_vs_volume,13.7583333,False,False,outside_clean_window
+LBE,12,IV.12,[1]+,resolvable_from_source,R5_te_label_vs_volume,20.8416667,False,False,outside_clean_window
+LBE,1,IV.13,[2]+,ambiguous,R6_plus_label_without_recorded_difference,13.71666667,True,False,arm_not_allowable
+LBE,2,IV.13,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,3,IV.13,[2]+,ambiguous,R6_plus_label_without_recorded_difference,20.84166666,True,False,arm_not_allowable
+LBE,4,IV.13,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.71666667,True,False,arm_not_allowable
+LBE,5,IV.13,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,6,IV.13,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,7,IV.13,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,8,IV.13,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.925,True,False,arm_not_allowable
+LBE,9,IV.13,[2]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.13,[2]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.13,[2]+,resolvable_from_source,R5_te_label_vs_volume,13.7583333,False,False,outside_clean_window
+LBE,12,IV.13,[2]+,resolvable_from_source,R5_te_label_vs_volume,20.8416667,False,False,outside_clean_window
+LBE,1,IV.14,[2]+,ambiguous,R6_plus_label_without_recorded_difference,13.71666667,True,False,arm_not_allowable
+LBE,2,IV.14,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,3,IV.14,[2]+,ambiguous,R6_plus_label_without_recorded_difference,20.84166666,True,False,arm_not_allowable
+LBE,4,IV.14,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.71666667,True,False,arm_not_allowable
+LBE,5,IV.14,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,6,IV.14,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,7,IV.14,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,8,IV.14,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.925,True,False,arm_not_allowable
+LBE,9,IV.14,[2]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.14,[2]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.14,[2]+,resolvable_from_source,R5_te_label_vs_volume,13.7583333,False,False,outside_clean_window
+LBE,12,IV.14,[2]+,resolvable_from_source,R5_te_label_vs_volume,20.8416667,False,False,outside_clean_window
+LBE,1,IV.15,[2]+,ambiguous,R6_plus_label_without_recorded_difference,13.71666667,True,False,arm_not_allowable
+LBE,2,IV.15,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,3,IV.15,[2]+,ambiguous,R6_plus_label_without_recorded_difference,20.84166666,True,False,arm_not_allowable
+LBE,4,IV.15,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.71666667,True,False,arm_not_allowable
+LBE,5,IV.15,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,6,IV.15,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.8,True,False,arm_not_allowable
+LBE,7,IV.15,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.84166667,True,False,arm_not_allowable
+LBE,8,IV.15,[2]+,ambiguous,R6_plus_label_without_recorded_difference,6.925,True,False,arm_not_allowable
+LBE,9,IV.15,[2]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.15,[2]+,ambiguous,R6_plus_label_without_recorded_difference;R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.15,[2]+,resolvable_from_source,R5_te_label_vs_volume,13.7583333,False,False,outside_clean_window
+LBE,12,IV.15,[2]+,resolvable_from_source,R5_te_label_vs_volume,20.8416667,False,False,outside_clean_window
+LBE,1,IV.2,[0],source_consistent,,13.71666667,True,True,
+LBE,2,IV.2,[0],source_consistent,,6.8,True,True,
+LBE,3,IV.2,[0],source_consistent,,20.84166666,True,True,
+LBE,4,IV.2,[0],source_consistent,,6.71666667,True,True,
+LBE,5,IV.2,[0],source_consistent,,6.84166667,True,True,
+LBE,6,IV.2,[0],source_consistent,,6.8,True,True,
+LBE,7,IV.2,[0],source_consistent,,6.84166667,True,True,
+LBE,8,IV.2,[0],source_consistent,,6.925,True,True,
+LBE,9,IV.2,[0],ambiguous,R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.2,[0],ambiguous,R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.2,[0],resolvable_from_source,R9_trace_element_regime_change,13.7583333,False,False,outside_clean_window
+LBE,12,IV.2,[0],conflicting,R4_ammonium_bicarbonate_recorded;R9_trace_element_regime_change,20.8416667,False,False,outside_clean_window
+LBE,1,IV.3,[0],source_consistent,,13.71666667,True,True,
+LBE,2,IV.3,[0],source_consistent,,6.8,True,True,
+LBE,3,IV.3,[0],source_consistent,,20.84166666,True,True,
+LBE,4,IV.3,[0],source_consistent,,6.71666667,True,True,
+LBE,5,IV.3,[0],source_consistent,,6.84166667,True,True,
+LBE,6,IV.3,[0],source_consistent,,6.8,True,True,
+LBE,7,IV.3,[0],source_consistent,,6.84166667,True,True,
+LBE,8,IV.3,[0],source_consistent,,6.925,True,True,
+LBE,9,IV.3,[0],ambiguous,R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.3,[0],ambiguous,R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.3,[0],resolvable_from_source,R9_trace_element_regime_change,13.7583333,False,False,outside_clean_window
+LBE,12,IV.3,[0],resolvable_from_source,R9_trace_element_regime_change,20.8416667,False,False,outside_clean_window
+LBE,1,IV.4,[1],source_consistent,,13.71666667,True,True,
+LBE,2,IV.4,[1],source_consistent,,6.8,True,True,
+LBE,3,IV.4,[1],source_consistent,,20.84166666,True,True,
+LBE,4,IV.4,[1],source_consistent,,6.71666667,True,True,
+LBE,5,IV.4,[1],source_consistent,,6.84166667,True,True,
+LBE,6,IV.4,[1],source_consistent,,6.8,True,True,
+LBE,7,IV.4,[1],source_consistent,,6.84166667,True,True,
+LBE,8,IV.4,[1],source_consistent,,6.925,True,True,
+LBE,9,IV.4,[1],ambiguous,R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.4,[1],ambiguous,R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.4,[1],resolvable_from_source,R9_trace_element_regime_change,13.7583333,False,False,outside_clean_window
+LBE,12,IV.4,[1],resolvable_from_source,R9_trace_element_regime_change,20.8416667,False,False,outside_clean_window
+LBE,1,IV.5,[1],excluded,R7_source_technical_exclusion,13.71666667,True,False,class_excluded
+LBE,2,IV.5,[1],source_consistent,,6.8,True,False,bottle_class_excluded
+LBE,3,IV.5,[1],source_consistent,,20.84166666,True,False,bottle_class_excluded
+LBE,4,IV.5,[1],source_consistent,,6.71666667,True,False,bottle_class_excluded
+LBE,5,IV.5,[1],source_consistent,,6.84166667,True,False,bottle_class_excluded
+LBE,6,IV.5,[1],source_consistent,,6.8,True,False,bottle_class_excluded
+LBE,7,IV.5,[1],source_consistent,,6.84166667,True,False,bottle_class_excluded
+LBE,8,IV.5,[1],source_consistent,,6.925,True,False,bottle_class_excluded
+LBE,9,IV.5,[1],ambiguous,R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.5,[1],ambiguous,R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.5,[1],resolvable_from_source,R9_trace_element_regime_change,13.7583333,False,False,outside_clean_window
+LBE,12,IV.5,[1],resolvable_from_source,R9_trace_element_regime_change,20.8416667,False,False,outside_clean_window
+LBE,1,IV.6,[1],source_consistent,,13.71666667,True,True,
+LBE,2,IV.6,[1],source_consistent,,6.8,True,True,
+LBE,3,IV.6,[1],source_consistent,,20.84166666,True,True,
+LBE,4,IV.6,[1],source_consistent,,6.71666667,True,True,
+LBE,5,IV.6,[1],source_consistent,,6.84166667,True,True,
+LBE,6,IV.6,[1],source_consistent,,6.8,True,True,
+LBE,7,IV.6,[1],source_consistent,,6.84166667,True,True,
+LBE,8,IV.6,[1],source_consistent,,6.925,True,True,
+LBE,9,IV.6,[1],ambiguous,R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.6,[1],ambiguous,R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.6,[1],resolvable_from_source,R9_trace_element_regime_change,13.7583333,False,False,outside_clean_window
+LBE,12,IV.6,[1],resolvable_from_source,R9_trace_element_regime_change,20.8416667,False,False,outside_clean_window
+LBE,1,IV.7,[2],source_consistent,,13.71666667,True,True,
+LBE,2,IV.7,[2],source_consistent,,6.8,True,True,
+LBE,3,IV.7,[2],source_consistent,,20.84166666,True,True,
+LBE,4,IV.7,[2],source_consistent,,6.71666667,True,True,
+LBE,5,IV.7,[2],source_consistent,,6.84166667,True,True,
+LBE,6,IV.7,[2],source_consistent,,6.8,True,True,
+LBE,7,IV.7,[2],source_consistent,,6.84166667,True,True,
+LBE,8,IV.7,[2],source_consistent,,6.925,True,True,
+LBE,9,IV.7,[2],ambiguous,R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.7,[2],ambiguous,R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.7,[2],resolvable_from_source,R9_trace_element_regime_change,13.7583333,False,False,outside_clean_window
+LBE,12,IV.7,[2],resolvable_from_source,R9_trace_element_regime_change,20.8416667,False,False,outside_clean_window
+LBE,1,IV.8,[2],excluded,R7_source_technical_exclusion,13.71666667,True,False,class_excluded
+LBE,2,IV.8,[2],source_consistent,,6.8,True,False,bottle_class_excluded
+LBE,3,IV.8,[2],source_consistent,,20.84166666,True,False,bottle_class_excluded
+LBE,4,IV.8,[2],source_consistent,,6.71666667,True,False,bottle_class_excluded
+LBE,5,IV.8,[2],source_consistent,,6.84166667,True,False,bottle_class_excluded
+LBE,6,IV.8,[2],source_consistent,,6.8,True,False,bottle_class_excluded
+LBE,7,IV.8,[2],source_consistent,,6.84166667,True,False,bottle_class_excluded
+LBE,8,IV.8,[2],source_consistent,,6.925,True,False,bottle_class_excluded
+LBE,9,IV.8,[2],ambiguous,R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.8,[2],ambiguous,R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.8,[2],resolvable_from_source,R9_trace_element_regime_change,13.7583333,False,False,outside_clean_window
+LBE,12,IV.8,[2],resolvable_from_source,R9_trace_element_regime_change,20.8416667,False,False,outside_clean_window
+LBE,1,IV.9,[2],source_consistent,,13.71666667,True,True,
+LBE,2,IV.9,[2],source_consistent,,6.8,True,True,
+LBE,3,IV.9,[2],source_consistent,,20.84166666,True,True,
+LBE,4,IV.9,[2],source_consistent,,6.71666667,True,True,
+LBE,5,IV.9,[2],source_consistent,,6.84166667,True,True,
+LBE,6,IV.9,[2],source_consistent,,6.8,True,True,
+LBE,7,IV.9,[2],source_consistent,,6.84166667,True,True,
+LBE,8,IV.9,[2],source_consistent,,6.925,True,True,
+LBE,9,IV.9,[2],ambiguous,R8_unspecified_subset_event_overlap,34.63333333,False,False,outside_clean_window
+LBE,10,IV.9,[2],ambiguous,R8_unspecified_subset_event_overlap,15.6333333,False,False,outside_clean_window
+LBE,11,IV.9,[2],resolvable_from_source,R9_trace_element_regime_change,13.7583333,False,False,outside_clean_window
+LBE,12,IV.9,[2],resolvable_from_source,R9_trace_element_regime_change,20.8416667,False,False,outside_clean_window
