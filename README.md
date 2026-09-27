@@ -20,6 +20,13 @@ explains the idea, the repository layout and the code path in plain language.
 [Reproducible results](results/README.md) ·
 [Presentation](presentation/README.md) · [Contributing](CONTRIBUTING.md)
 
+## Marta’s author-shared dataset
+
+The [Frontiers workbook importer](docs/GARCIA_PRATS_2024_SUMMARY_INTAKE.md) now
+links methane means and standard deviations to the existing material/dose design.
+It preserves 119 observations, separates feeding periods and flags the second
+feeding’s time-origin discrepancy. Original data and generated tables stay private.
+
 ## September 2026 data and research expansion
 
 - **Sanglier context:** 923 chemistry samples and eight operating events now link

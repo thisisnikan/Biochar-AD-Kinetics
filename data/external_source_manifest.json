@@ -136,6 +136,19 @@
         "exclude from training and external validation until the official export passes source-specific QC"
       ],
       "first_gate": "obtain the official export for BMP query records 583-594 and verify treatment mapping, units, outcomes, and provenance"
+    },
+    {
+      "study_id": "garcia_prats_2024_author_summary",
+      "doi": "10.3389/fceng.2024.1384495",
+      "expected_file": "Data Frontiers.xlsx",
+      "source_sha256": "c731306efea9f4fc8cfa77c5b4c65e68450212e3364ccc134c6dee6d5d3f9355",
+      "status": "private_summary_ingested_not_reactor_level_admitted",
+      "role": "author_shared_summary_dose_response_candidate",
+      "source_received_date": "2026-09-18",
+      "ingestion_script": "scripts/build_garcia_prats_2024_summary.py",
+      "qc_report": "results/private/garcia_prats_2024/intake_qc.json",
+      "redistribution_permission": "not_established",
+      "model_admission": false
     }
   ]
 }
