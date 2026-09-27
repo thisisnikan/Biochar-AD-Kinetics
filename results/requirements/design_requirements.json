@@ -1,0 +1,79 @@
+{
+  "caveats": [
+    "Variance components come from one study, one substrate type and one biochar.",
+    "Batch variance cancels only if every arm is run in every batch; a design that confounds arms with batches inherits the full batch variance.",
+    "Power refers to a within-study contrast; cross-study prediction additionally requires independent studies, not more bottles."
+  ],
+  "cycle_length": {
+    "long_cycles_reaching_1pct_per_day": {
+      "all_cycles": 348,
+      "all_cycles_reaching": 23,
+      "long_cycles": 102,
+      "median_days": 14.0,
+      "p90_days": 20.0,
+      "reached": 21
+    },
+    "prefix_sweep_best_family": [
+      {
+        "cut_days": 6.5,
+        "cycles": 88,
+        "median_abs_final_error": 0.1992,
+        "share_final_within_10pct": 0.2614
+      },
+      {
+        "cut_days": 9.5,
+        "cycles": 88,
+        "median_abs_final_error": 0.1417,
+        "share_final_within_10pct": 0.3977
+      },
+      {
+        "cut_days": 12.5,
+        "cycles": 88,
+        "median_abs_final_error": 0.1022,
+        "share_final_within_10pct": 0.4886
+      }
+    ]
+  },
+  "exact_permutation_rule": "At least 4 bottles per arm are needed before an exact two-sided permutation test can reach p < 0.05 (floor 0.029); 3 per arm gives 0.10.",
+  "horizon_days": 5.0,
+  "horizon_note": "Corrected-rule horizon (deviation D1 in the admission analysis).",
+  "scenarios": {
+    "BRL": {
+      "batch_sd_percent": 11.32,
+      "between_bottle_sd_percent": 0.0,
+      "bottle_by_batch_sd_percent": 6.63,
+      "bottles_per_arm_10pct_effect_pessimistic_unit_variance": 4,
+      "bottles_per_arm_for_80pct_power_10pct_effect_10_batches": 4,
+      "bottles_per_arm_for_80pct_power_10pct_effect_1_batches": 9,
+      "bottles_per_arm_for_80pct_power_20pct_effect_10_batches": 4,
+      "bottles_per_arm_for_80pct_power_20pct_effect_1_batches": 4,
+      "bottles_per_arm_for_80pct_power_5pct_effect_10_batches": 4,
+      "bottles_per_arm_for_80pct_power_5pct_effect_1_batches": 29
+    },
+    "LBE": {
+      "batch_sd_percent": 29.28,
+      "between_bottle_sd_percent": 21.1,
+      "bottle_by_batch_sd_percent": 33.38,
+      "bottles_per_arm_10pct_effect_pessimistic_unit_variance": null,
+      "bottles_per_arm_for_80pct_power_10pct_effect_1_batches": null,
+      "bottles_per_arm_for_80pct_power_10pct_effect_8_batches": 83,
+      "bottles_per_arm_for_80pct_power_20pct_effect_1_batches": 58,
+      "bottles_per_arm_for_80pct_power_20pct_effect_8_batches": 24,
+      "bottles_per_arm_for_80pct_power_5pct_effect_1_batches": null,
+      "bottles_per_arm_for_80pct_power_5pct_effect_8_batches": null
+    },
+    "LBE_without_IV.3": {
+      "batch_sd_percent": 33.92,
+      "between_bottle_sd_percent": 0.0,
+      "bottle_by_batch_sd_percent": 4.95,
+      "bottles_per_arm_10pct_effect_pessimistic_unit_variance": 7,
+      "bottles_per_arm_for_80pct_power_10pct_effect_1_batches": 6,
+      "bottles_per_arm_for_80pct_power_10pct_effect_8_batches": 4,
+      "bottles_per_arm_for_80pct_power_20pct_effect_1_batches": 4,
+      "bottles_per_arm_for_80pct_power_20pct_effect_8_batches": 4,
+      "bottles_per_arm_for_80pct_power_5pct_effect_1_batches": 17,
+      "bottles_per_arm_for_80pct_power_5pct_effect_8_batches": 4
+    }
+  },
+  "status": "DESIGN_PLANNING_FROM_ONE_STUDY"
+}

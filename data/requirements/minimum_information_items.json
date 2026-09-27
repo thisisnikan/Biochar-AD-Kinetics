@@ -1,0 +1,125 @@
+{
+  "version": "1.0.0",
+  "status_vocabulary": [
+    "yes",
+    "partial",
+    "no",
+    "unknown",
+    "not_applicable"
+  ],
+  "critical_rule": "A dataset can contribute to a cross-study prediction test only if every critical item is 'yes'. 'partial' and 'unknown' fail closed.",
+  "items": [
+    {
+      "id": "reactor_level_trajectories",
+      "group": "outcome",
+      "requirement": "Per-reactor cumulative methane time series committed or rebuildable from a public source.",
+      "addresses_failure_modes": "insufficient_independent_training_data; parameter_non_identifiability",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "intact_replicates_ge3",
+      "group": "outcome",
+      "requirement": "At least three QC-included reactors in every compared arm.",
+      "addresses_failure_modes": "biological_variability; insufficient_independent_training_data",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "inoculum_blanks",
+      "group": "outcome",
+      "requirement": "Inoculum-only blank reactors measured alongside the treatments.",
+      "addresses_failure_modes": "measurement_normalization_differences",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "zero_dose_substrate_control",
+      "group": "outcome",
+      "requirement": "Unamended reactors with the same substrate and inoculum.",
+      "addresses_failure_modes": "treatment_reconstruction_uncertainty",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "run_to_plateau",
+      "group": "outcome",
+      "requirement": "Most reactors reach a daily increment below 1% of cumulative methane.",
+      "addresses_failure_modes": "parameter_non_identifiability",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "methane_unit_verified",
+      "group": "measurement",
+      "requirement": "Methane volume unit, gas normalization and blank handling stated by the source and committed.",
+      "addresses_failure_modes": "measurement_normalization_differences",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "dose_physical_basis",
+      "group": "design",
+      "requirement": "Dose reported with a physical basis (g/L, g/g VS or %TS with conversion data).",
+      "addresses_failure_modes": "incorrect_assumptions",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "dose_levels_ge3",
+      "group": "design",
+      "requirement": "At least three amended dose levels of one material.",
+      "addresses_failure_modes": "insufficient_independent_training_data",
+      "critical_for_cross_study": false
+    },
+    {
+      "id": "materials_ge2",
+      "group": "design",
+      "requirement": "At least two distinct biochar materials in one study.",
+      "addresses_failure_modes": "missing_biochar_descriptors",
+      "critical_for_cross_study": false
+    },
+    {
+      "id": "material_descriptors_core",
+      "group": "material",
+      "requirement": "Feedstock, pyrolysis temperature, BET surface area, electrical conductivity, pH and elemental composition committed.",
+      "addresses_failure_modes": "missing_biochar_descriptors",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "digestion_temperature",
+      "group": "process",
+      "requirement": "Digestion temperature recorded per reactor.",
+      "addresses_failure_modes": "missing_operating_conditions",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "substrate_inoculum_characterized",
+      "group": "process",
+      "requirement": "TS and VS with stated basis for substrate and inoculum, and the inoculum-to-substrate ratio.",
+      "addresses_failure_modes": "missing_operating_conditions; measurement_normalization_differences",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "co_interventions_per_reactor",
+      "group": "process",
+      "requirement": "Every additive, feeding change or fault logged per reactor with time, amount and unit.",
+      "addresses_failure_modes": "treatment_reconstruction_uncertainty",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "stability_chemistry_with_units",
+      "group": "process",
+      "requirement": "TAN and individual VFA species with source-stated units.",
+      "addresses_failure_modes": "measurement_normalization_differences",
+      "critical_for_cross_study": false
+    },
+    {
+      "id": "redistributable_source",
+      "group": "access",
+      "requirement": "Source license permits committing derived observations.",
+      "addresses_failure_modes": "insufficient_independent_training_data",
+      "critical_for_cross_study": true
+    },
+    {
+      "id": "temperature_levels_ge2",
+      "group": "design",
+      "requirement": "At least two digestion temperatures with the same material.",
+      "addresses_failure_modes": "missing_operating_conditions",
+      "critical_for_cross_study": false
+    }
+  ]
+}

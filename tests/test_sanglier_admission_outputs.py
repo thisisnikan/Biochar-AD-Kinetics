@@ -58,10 +58,20 @@ def test_semantics_rebuild_is_reproducible(tmp_path):
     )
 
 
-def test_admission_rebuild_is_byte_identical(tmp_path):
+def test_admission_rebuild_is_reproducible(tmp_path):
+    """The admission table must be byte-identical. In the report, only the number
+    of files the leakage audit scanned may change as modules are added; the
+    audit must still pass and every decision field must match."""
+
     ADMISSION.build(tmp_path)
-    for name in ("sanglier_2022_admission.csv", "sanglier_2022_admission_report.json"):
-        assert filecmp.cmp(tmp_path / name, VALIDATION / name, shallow=False), name
+    name = "sanglier_2022_admission.csv"
+    assert filecmp.cmp(tmp_path / name, VALIDATION / name, shallow=False), name
+    rebuilt = json.loads((tmp_path / "sanglier_2022_admission_report.json").read_text())
+    committed = json.loads((VALIDATION / "sanglier_2022_admission_report.json").read_text())
+    assert rebuilt["leakage_audit"]["passed"] and not rebuilt["leakage_audit"]["hits"]
+    for report in (rebuilt, committed):
+        report["leakage_audit"].pop("files_scanned")
+    assert rebuilt == committed
 
 
 def test_units_are_never_guessed():

@@ -1,0 +1,2 @@
+material_id,feedstock,pyrolysis_temperature_c,residence_time_min,bet_surface_area_m2_g,electrical_conductivity_us_cm,ph,ash_pct,c_pct,h_pct,n_pct,o_pct,particle_size_um,measurement_source
+biochar_a,template_example_wood_chips,550,60,not_measured,450,9.1,not_measured,78.2,2.1,0.4,not_measured,500,template_example_lab_sheet:row2

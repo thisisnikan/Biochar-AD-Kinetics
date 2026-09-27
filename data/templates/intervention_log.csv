@@ -1,0 +1,3 @@
+study_id,experiment_id,reactor_id,time_days,intervention,amount,amount_unit,scope,source_record_id
+example_study,run_01,biochar_r1,0,biochar_addition,0.75,g,reactor,template_example_log:row2
+example_study,run_01,biochar_r2,0,biochar_addition,0.75,g,reactor,template_example_log:row3

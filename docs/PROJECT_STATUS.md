@@ -22,6 +22,7 @@ Last reviewed: 27 September 2026 (Sanglier admission decision, Sanglier context 
 | Sanglier repeated-cycle methane candidate | Source hash verified, quarantined | 8,403 `AMPTShort` rows joined to 363 Inoculation bottle/batches; 64 rows carry a control-label/biochar-mass conflict and 318 rows a condition-label disagreement. 923 chemistry samples and eight events now link through a separate bottle/batch index; units and exposure scope remain unresolved. No external validation was performed. |
 | Mechanism-evidence grading | Documented | `docs/MECHANISM_EVIDENCE.md` grades every dataset Weak/Moderate/Strong (Pilarska 2026); no dataset in this repository currently reaches Strong |
 | Sanglier external-validation admission | Partially admissible; external validation blocked | Pre-registered spec, outcome-blind admission and leakage audit. 18 bottles / 166 cycles admitted for a within-study descriptive question only. Locked primary: LBE inconclusive, BRL not evaluable (horizon-rule defect); post-hoc 5.0 d deviation: BRL +10% to +15%. [Decision](SANGLIER_2022_VALIDATION_ADMISSION.md) |
+| Evidence requirements | Documented and machine-checkable | No committed dataset meets the 12 critical items for cross-study use (best: 6). Short cycles, not the curve equation, limit kinetic inference; at least 4 bottles per arm and runs of about 14 to 20 d are required. `biochar-ad check-evidence` grades new contributions. [Requirements](EVIDENCE_REQUIREMENTS.md) |
 | Heitkamp industrial chemistry | Source verified, quarantined | 1,365 cells from seven plants / 91 sampling days; VS unit conflict and ten source missing tokens preserved. No gas-productivity validation. |
 
 ## What can be claimed now
@@ -66,6 +67,9 @@ Last reviewed: 27 September 2026 (Sanglier admission decision, Sanglier context 
 - Sanglier 2022 has a documented, pre-registered admission decision: every bottle/batch
   is adjudicated against source records, the admission step is outcome-blind, and the
   development artifacts are audited for leakage before any contrast is computed.
+
+- The repository states, per dataset and per item, which measurements are missing
+  for cross-study prediction, and checks new contributions against the same list.
 
 ## What cannot be claimed now
 

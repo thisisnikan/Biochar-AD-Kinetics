@@ -1,0 +1,135 @@
+{
+  "automatic_checks": 21,
+  "automatic_checks_agreeing": 20,
+  "critical_items": 12,
+  "curated_more_conservative_than_automatic": {
+    "kozlowski_2025:dose_physical_basis": {
+      "automatic": "yes",
+      "curated": "partial"
+    }
+  },
+  "datasets": 8,
+  "datasets_ready_for_cross_study_use": [],
+  "item_status_counts": {
+    "co_interventions_per_reactor": {
+      "no": 1,
+      "not_applicable": 0,
+      "partial": 2,
+      "unknown": 5,
+      "yes": 0
+    },
+    "digestion_temperature": {
+      "no": 1,
+      "not_applicable": 0,
+      "partial": 0,
+      "unknown": 2,
+      "yes": 5
+    },
+    "dose_levels_ge3": {
+      "no": 6,
+      "not_applicable": 0,
+      "partial": 0,
+      "unknown": 0,
+      "yes": 2
+    },
+    "dose_physical_basis": {
+      "no": 0,
+      "not_applicable": 0,
+      "partial": 2,
+      "unknown": 2,
+      "yes": 4
+    },
+    "inoculum_blanks": {
+      "no": 1,
+      "not_applicable": 2,
+      "partial": 1,
+      "unknown": 2,
+      "yes": 2
+    },
+    "intact_replicates_ge3": {
+      "no": 2,
+      "not_applicable": 1,
+      "partial": 5,
+      "unknown": 0,
+      "yes": 0
+    },
+    "material_descriptors_core": {
+      "no": 2,
+      "not_applicable": 0,
+      "partial": 4,
+      "unknown": 1,
+      "yes": 1
+    },
+    "materials_ge2": {
+      "no": 3,
+      "not_applicable": 0,
+      "partial": 0,
+      "unknown": 1,
+      "yes": 4
+    },
+    "methane_unit_verified": {
+      "no": 2,
+      "not_applicable": 0,
+      "partial": 2,
+      "unknown": 4,
+      "yes": 0
+    },
+    "reactor_level_trajectories": {
+      "no": 5,
+      "not_applicable": 0,
+      "partial": 1,
+      "unknown": 0,
+      "yes": 2
+    },
+    "redistributable_source": {
+      "no": 2,
+      "not_applicable": 0,
+      "partial": 0,
+      "unknown": 2,
+      "yes": 4
+    },
+    "run_to_plateau": {
+      "no": 1,
+      "not_applicable": 2,
+      "partial": 0,
+      "unknown": 4,
+      "yes": 1
+    },
+    "stability_chemistry_with_units": {
+      "no": 3,
+      "not_applicable": 0,
+      "partial": 2,
+      "unknown": 2,
+      "yes": 1
+    },
+    "substrate_inoculum_characterized": {
+      "no": 1,
+      "not_applicable": 0,
+      "partial": 4,
+      "unknown": 1,
+      "yes": 2
+    },
+    "temperature_levels_ge2": {
+      "no": 7,
+      "not_applicable": 0,
+      "partial": 0,
+      "unknown": 1,
+      "yes": 0
+    },
+    "zero_dose_substrate_control": {
+      "no": 2,
+      "not_applicable": 0,
+      "partial": 1,
+      "unknown": 1,
+      "yes": 4
+    }
+  },
+  "items": 16,
+  "items_satisfied_by_no_dataset": [
+    "intact_replicates_ge3",
+    "methane_unit_verified",
+    "co_interventions_per_reactor",
+    "temperature_levels_ge2"
+  ],
+  "max_critical_yes": 6
+}
