@@ -1,6 +1,6 @@
 # Project status
 
-Last reviewed: 9 September 2026
+Last reviewed: 25 September 2026 (Sanglier candidate intake; other evidence rows retain their prior review)
 
 ## Readiness snapshot
 
@@ -19,6 +19,7 @@ Last reviewed: 9 September 2026
 | Parameter identifiability | Checked, and currently failing on the demo | `fit_global` reports parameter correlation and condition number; the 8-parameter model is already confounded (correlation ≈ 0.96) on the bundled synthetic demo |
 | Effect-size uncertainty | Partially reported | Reactor-level percent-change effects now carry a 95% CI and a `low_replication` flag; published-table effects still carry no uncertainty at all |
 | Pyrolysis-temperature descriptor confounding | Checked and confounded | CDU / Wang (2026) six-biochar summary table: temperature, BET, conductivity and pH correlate above the checked threshold, so `benchmark-pyrolysis-temperature` refuses to attribute a trend to any one of them |
+| Sanglier repeated-cycle methane candidate | Source hash verified, quarantined | 8,403 `AMPTShort` rows joined to 363 Inoculation bottle/batches; 64 rows carry a control-label/biochar-mass conflict and 318 rows a condition-label disagreement. `Analyses` and `Events` are not yet joined; no external validation was performed. |
 | Mechanism-evidence grading | Documented | `docs/MECHANISM_EVIDENCE.md` grades every dataset Weak/Moderate/Strong (Pilarska 2026); no dataset in this repository currently reaches Strong |
 
 ## What can be claimed now

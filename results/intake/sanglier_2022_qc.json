@@ -1,0 +1,201 @@
+{
+  "amptshort_rows": 8403,
+  "duplicate_methane_keys": 0,
+  "flagged_bottle_batches": [
+    {
+      "batch": 2,
+      "bottle": "II.4",
+      "flags": [
+        "control_label_positive_inoculation_biochar"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 3,
+      "bottle": "II.4",
+      "flags": [
+        "control_label_positive_inoculation_biochar"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 4,
+      "bottle": "II.4",
+      "flags": [
+        "control_label_positive_inoculation_biochar"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 5,
+      "bottle": "II.4",
+      "flags": [
+        "control_label_positive_inoculation_biochar"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 11,
+      "bottle": "II.13",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 11,
+      "bottle": "II.14",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 11,
+      "bottle": "II.15",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 12,
+      "bottle": "II.13",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 12,
+      "bottle": "II.14",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 12,
+      "bottle": "II.15",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 13,
+      "bottle": "II.13",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 13,
+      "bottle": "II.14",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 13,
+      "bottle": "II.15",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 14,
+      "bottle": "II.13",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 14,
+      "bottle": "II.14",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    },
+    {
+      "batch": 14,
+      "bottle": "II.15",
+      "flags": [
+        "condition_label_disagreement"
+      ],
+      "lab": "BRL"
+    }
+  ],
+  "inoculation_bottle_batch_rows": 363,
+  "joined_rows": 8403,
+  "missing_counts": {
+    "flow_nml_h": 483,
+    "methane_yield_nml_gvs": 348,
+    "volume_corrected_nml": 348,
+    "volume_raw_nml": 348
+  },
+  "notes": [
+    "AMPTShort is the source's 12-hour derivative of AMPTS, not independent observations.",
+    "Days is absolute within each lab; within_batch_days subtracts that lab/batch's minimum.",
+    "Numeric zero and missing cells are preserved distinctly; no blank correction is applied.",
+    "Analyses and Events sheets are inventoried but not joined; VFA/TAN validation is pending.",
+    "Biochar labels 0/1/2 and inoculation biochar grams are separate source fields; no g/L dose is inferred.",
+    "Trace-element and other co-interventions preclude biochar-only causal attribution."
+  ],
+  "qc_flag_row_counts": {
+    "condition_label_disagreement": 318,
+    "control_label_positive_inoculation_biochar": 64
+  },
+  "sheet_inventory": {
+    "AMPTS": {
+      "columns": 16,
+      "rows_including_header": 91177,
+      "state": "visible"
+    },
+    "AMPTShort": {
+      "columns": 19,
+      "rows_including_header": 8404,
+      "state": "visible"
+    },
+    "Analyses": {
+      "columns": 34,
+      "rows_including_header": 924,
+      "state": "visible"
+    },
+    "Bottles": {
+      "columns": 4,
+      "rows_including_header": 28,
+      "state": "visible"
+    },
+    "Events": {
+      "columns": 6,
+      "rows_including_header": 794,
+      "state": "visible"
+    },
+    "Inoculation": {
+      "columns": 33,
+      "rows_including_header": 365,
+      "state": "visible"
+    },
+    "README": {
+      "columns": 4,
+      "rows_including_header": 64,
+      "state": "visible"
+    }
+  },
+  "source_doi": "10.57745/BUJORT",
+  "source_file_id": 152903,
+  "source_md5": "282f5076857dd4f8ca38089a6d499909",
+  "status": "CANDIDATE_QC_ONLY_NOT_ADMITTED_FOR_FITTING_OR_VALIDATION",
+  "zero_counts": {
+    "flow_nml_h": 599,
+    "methane_yield_nml_gvs": 348,
+    "volume_corrected_nml": 348,
+    "volume_raw_nml": 348
+  }
+}
