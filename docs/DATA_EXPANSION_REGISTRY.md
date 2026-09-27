@@ -34,16 +34,12 @@ This registry separates datasets that are already modelling-ready from datasets 
 - Design: successive lab-scale AD batches with digestate recirculation; trace-element interventions plus biochar at 1% and 2% w/w.
 - Valuable endpoints: methane trajectory/yield, VFA re-consumption, TAN/acidosis response, microbial-community changes.
 - Critical confounder: trace elements and biochar interventions must be reconstructed separately.
-- Status: `SOURCE_HASH_VERIFIED_METHANE_CANDIDATE_QUARANTINED`.
-- `AMPTShort` and `Inoculation` now join into a source-traceable methane candidate
-  table with 8,403 time points. This is a 12-hour derivative of `AMPTS`, not a
-  second independent experiment. The intake flags four BRL bottle/cycles whose
-  control label conflicts with positive inoculation biochar mass, plus a condition
-  label disagreement in 12 later bottle/cycles.
-- Rule: keep completely outside model fitting and external validation until
-  the source conflicts and co-interventions are resolved and `Analyses` / `Events`
-  are joined with a predeclared validation target. See the ingestion gate and
-  `results/intake/sanglier_2022_candidate.csv.gz`.
+- Status: `SOURCE_VERIFIED_METHANE_CHEMISTRY_EVENTS_QUARANTINED`.
+- 8,403 methane rows now have a separate linked chemistry table (923 samples),
+  eight source events, and a 363-row bottle/batch index. This adds context, not an
+  independent study. No chemistry interpolation or exposure assignment is performed.
+- Remaining gates: units, bottle-specific interventions/carry-over, control-label
+  mass conflicts, and a frozen external protocol. See [context audit](SANGLIER_2022_CONTEXT_AUDIT.md).
 
 ### Wambugu et al. 2019 — paired continuous UASB reactors
 - Paper DOI: `10.3389/fenrg.2019.00014`
@@ -65,7 +61,11 @@ This registry separates datasets that are already modelling-ready from datasets 
 - Main useful variables: acetate, propionate, butyrate / TVFA. The paper also reports pH, NH4-N, FOS/TAC, TS and VS observations.
 - Important limitation: authors explicitly state that reliable biogas-productivity data were unavailable.
 - Value to this repository: external process-stability validation across seven real industrial reactors, not methane-productivity validation.
-- Status: `PUBLIC_RAW_SUPPLEMENT_FILENAME_CONFIRMED_BINARY_NOT_YET_MATERIALIZED`
+- Status: `SOURCE_VERIFIED_CHEMISTRY_CANDIDATE_QUARANTINED`.
+- Publisher workbook acquired: 1,365 source-cell records, 91 plant/sampling days,
+  15 chemical variables. Ten `n.a` tokens and 402 zeros are preserved.
+- VS denominator conflicts between workbook and article caption; source TVFA
+  totals are not recomputed. See [intake gate](HEITKAMP_2021_INGESTION_GATE.md).
 
 ## Adjacent mechanistic comparator — do not pool as biochar
 

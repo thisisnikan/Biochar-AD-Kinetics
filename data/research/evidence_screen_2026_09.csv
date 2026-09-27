@@ -1,0 +1,8 @@
+study_id,doi,source_url,inspection_depth,acquisition_status,independence,next_gate,screen_date,model_admission
+sanglier_2022,10.57745/BUJORT,https://doi.org/10.57745/BUJORT,source_workbook_inspected,chemistry_and_events_ingested_quarantined,same_study_as_existing_methane,units_event_scope_label_conflicts,2026-09-27,False
+heitkamp_2021,10.1186/s13068-021-02034-5,https://link.springer.com/article/10.1186/s13068-021-02034-5,paper_and_workbook_inspected,chemistry_ingested_quarantined,new_study_seven_plants,VS_basis_timing_no_gas_data,2026-09-27,False
+zhang_2025_loop,10.1007/s44246-025-00226-4,https://link.springer.com/article/10.1007/s44246-025-00226-4,full_text_methods_data_statement,raw_data_on_request_not_obtained,unverified_overlap_with_prior_literature,study_ids_replicates_material_dose_confounding,2026-09-27,False
+huaraca_2026,10.1016/j.biortech.2026.135652,https://pubmed.ncbi.nlm.nih.gov/42607778/,author_abstract,published_analysis_only_no_raw_file,107_reported_studies_overlap_unaudited,obtain_source_table_and_study_ids,2026-09-27,False
+vayena_2024,10.1016/j.renene.2024.121569,https://zenodo.org/records/15222075,repository_file_inventory,article_pdf_and_supplement_link_only,not_yet_audited,inspect_supplement_and_license,2026-09-27,False
+shao_2025,10.1016/j.cej.2025.163050,https://www.sciencedirect.com/science/article/pii/S1385894725038847,publisher_discovery_excerpts,raw_file_not_confirmed,not_yet_audited,modified_material_CN_and_recovery_protocol,2026-09-27,False
+stacking_2025,10.1021/acs.est.5c05051,https://pubs.acs.org/doi/10.1021/acs.est.5c05051,publisher_discovery_excerpts,methods_lead_no_data_acquired,literature_overlap_unaudited,audit_augmentation_study_grouping_and_data_lineage,2026-09-27,False

@@ -1,0 +1,54 @@
+{
+  "counts_by_analyte": {
+    "Acetic acid": 91,
+    "Butyric acid": 91,
+    "Caproic": 91,
+    "FOS": 91,
+    "FOS TAC": 91,
+    "Iso-butyric": 91,
+    "Iso-valeric": 91,
+    "NH4-N": 91,
+    "Propionic acid": 91,
+    "TAC": 91,
+    "TS": 91,
+    "TVFA": 91,
+    "VS": 91,
+    "Valeric": 91,
+    "pH": 91
+  },
+  "forbidden_uses": [
+    "methane_productivity_validation",
+    "causal_biochar_effect",
+    "treat_timepoints_as_independent_reactor_replicates"
+  ],
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "max_sampling_day": 367,
+  "measurement_rows": 1365,
+  "min_sampling_day": 0,
+  "missing": 0,
+  "nonnumeric": 10,
+  "notes": [
+    "Wide worksheet blocks transposed without resampling, imputation or normalization.",
+    "Workbook values may already aggregate measurements; no replicate identity invented.",
+    "Source unit labels retained; NH4-N kg/t is not converted to g/L.",
+    "VS source header says fresh biomass; article figure caption says percent TS.",
+    "TVFA source totals retained; analytical-equivalent basis not independently verified.",
+    "Day zero is the workbook origin, not an independently verified dosing timestamp."
+  ],
+  "plant_sampling_days": 91,
+  "plants": [
+    "BGP1",
+    "BGP2",
+    "BGP3",
+    "BGP4",
+    "BGP5",
+    "BGP6",
+    "BGP7"
+  ],
+  "source_doi": "10.1186/s13068-021-02034-5",
+  "source_license": "CC-BY-4.0",
+  "source_sha256": "c60a45ab498d3fbbb25ece27d6cd338b348742f8f03ca8bd126d4a5ffd0ded00",
+  "source_url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1186%2Fs13068-021-02034-5/MediaObjects/13068_2021_2034_MOESM1_ESM.xlsx",
+  "status": "SOURCE_VERIFIED_CHEMISTRY_CANDIDATE_NOT_ADMITTED_FOR_VALIDATION",
+  "zeros": 402
+}

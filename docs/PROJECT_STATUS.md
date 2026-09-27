@@ -1,6 +1,6 @@
 # Project status
 
-Last reviewed: 25 September 2026 (Sanglier candidate intake; other evidence rows retain their prior review)
+Last reviewed: 27 September 2026 (Sanglier context and Heitkamp intake; other evidence rows retain their prior review)
 
 ## Readiness snapshot
 
@@ -19,8 +19,9 @@ Last reviewed: 25 September 2026 (Sanglier candidate intake; other evidence rows
 | Parameter identifiability | Checked, and currently failing on the demo | `fit_global` reports parameter correlation and condition number; the 8-parameter model is already confounded (correlation ≈ 0.96) on the bundled synthetic demo |
 | Effect-size uncertainty | Partially reported | Reactor-level percent-change effects now carry a 95% CI and a `low_replication` flag; published-table effects still carry no uncertainty at all |
 | Pyrolysis-temperature descriptor confounding | Checked and confounded | CDU / Wang (2026) six-biochar summary table: temperature, BET, conductivity and pH correlate above the checked threshold, so `benchmark-pyrolysis-temperature` refuses to attribute a trend to any one of them |
-| Sanglier repeated-cycle methane candidate | Source hash verified, quarantined | 8,403 `AMPTShort` rows joined to 363 Inoculation bottle/batches; 64 rows carry a control-label/biochar-mass conflict and 318 rows a condition-label disagreement. `Analyses` and `Events` are not yet joined; no external validation was performed. |
+| Sanglier repeated-cycle methane candidate | Source hash verified, quarantined | 8,403 `AMPTShort` rows joined to 363 Inoculation bottle/batches; 64 rows carry a control-label/biochar-mass conflict and 318 rows a condition-label disagreement. 923 chemistry samples and eight events now link through a separate bottle/batch index; units and exposure scope remain unresolved. No external validation was performed. |
 | Mechanism-evidence grading | Documented | `docs/MECHANISM_EVIDENCE.md` grades every dataset Weak/Moderate/Strong (Pilarska 2026); no dataset in this repository currently reaches Strong |
+| Heitkamp industrial chemistry | Source verified, quarantined | 1,365 cells from seven plants / 91 sampling days; VS unit conflict and ten source missing tokens preserved. No gas-productivity validation. |
 
 ## What can be claimed now
 
@@ -117,7 +118,7 @@ criteria and the remaining acquisition work.
 The Valentin & Białowiec table remains a parameter-level challenge, not Stage A
 reactor validation. The 15-reactor Kozłowski intake adds no independent study,
 dose or temperature. Its blank QC and control-dose source conflicts remain
-unresolved. No new independent raw dataset was acquired in this update.
+unresolved. Heitkamp industrial chemistry was acquired on 27 September, but it does not satisfy the reactor-level dose-response methane gate.
 
 All three model candidates now share whole-batch folds, robust loss and common
 parameter bounds. Mean fold RMSE is primary; AICc is descriptive. At one training

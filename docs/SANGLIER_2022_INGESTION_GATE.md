@@ -4,7 +4,10 @@ Dataset: Sanglier et al. (2022), *Supplementation of biochar and trace elements 
 
 Persistent identifier: `10.57745/BUJORT`
 
-Status: **source hash verified; methane candidate ingested and quarantined**.
+Status: **source hash verified; methane plus chemistry/event context ingested and quarantined**.
+
+27 September follow-up: [chemistry/event context audit](SANGLIER_2022_CONTEXT_AUDIT.md).
+The section below records the original 25 September methane-only intake.
 
 ## Reproducible candidate intake (25 September 2026)
 

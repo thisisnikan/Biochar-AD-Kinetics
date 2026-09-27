@@ -108,3 +108,13 @@ historical CSV rounded it to eight decimals. It is not used as modelling time.
 
 The initial rebuild was also checked against the committed historical CSV byte for
 byte, and a second rebuild reproduced the compressed intake and JSON identically.
+
+
+## 27 September 2026 source expansion
+
+Sanglier chemistry/events and the independent Heitkamp industrial chemistry
+candidate are documented in `docs/RESEARCH_EVIDENCE_2026_09.md`. Both remain
+outside fitting and validation. Derived source data retain their source licenses
+(Sanglier: Etalab Open License 2.0; Heitkamp: CC BY 4.0), not the software MIT license.
+Rebuild with `scripts/build_sanglier_2022_context.py` and
+`scripts/build_heitkamp_2021_candidate.py`; both verify the audited source hash.
