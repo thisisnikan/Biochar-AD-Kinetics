@@ -29,7 +29,9 @@ It is **not a true continuously fed single-reactor time series**. It is a sequen
 
 ### Readiness status
 
-`candidate_found_public_data_not_yet_ingested`
+`partially_admissible_external_validation_blocked` (27 September 2026). See the
+[admission decision](SANGLIER_2022_VALIDATION_ADMISSION.md). The checklist below is
+kept as the original acquisition record.
 
 Before using it for external validation:
 

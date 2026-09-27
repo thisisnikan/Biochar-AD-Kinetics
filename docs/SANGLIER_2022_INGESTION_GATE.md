@@ -6,7 +6,14 @@ Persistent identifier: `10.57745/BUJORT`
 
 Status: **source hash verified; methane plus chemistry/event context ingested and quarantined**.
 
-27 September follow-up: [chemistry/event context audit](SANGLIER_2022_CONTEXT_AUDIT.md).
+27 September follow-up: [chemistry/event context audit](SANGLIER_2022_CONTEXT_AUDIT.md)
+and [admission decision](SANGLIER_2022_VALIDATION_ADMISSION.md) (partially admissible;
+external validation blocked).
+
+Unit note: the source methane headers (`Volume_raw`, `Volume`, `Flow`,
+`Methane yield`) carry no units. The `_nml`, `_nml_h` and `_nml_gvs` suffixes in
+the candidate table were chosen by the builder and are not backed by committed
+source evidence; treat them as names, not verified units.
 The section below records the original 25 September methane-only intake.
 
 ## Reproducible candidate intake (25 September 2026)

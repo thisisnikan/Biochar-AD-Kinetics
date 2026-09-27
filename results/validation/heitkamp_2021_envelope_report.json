@@ -1,0 +1,115 @@
+{
+  "blocked_cross_source_comparisons": {
+    "C2": "Sanglier C2 unit_status=unresolved; admission_use=context_only.",
+    "C3": "Sanglier C3 unit_status=unresolved; admission_use=context_only.",
+    "C3/C2 vs propionic/acetic": "Heitkamp ratio is mass/mass; Sanglier acid basis (molar, mass or COD) is unresolved, which changes the ratio by a species-specific factor.",
+    "TAN": "Sanglier TAN unit_status=unresolved; admission_use=context_only.",
+    "TS": "Sanglier TS unit_status=unresolved; admission_use=blocked_basis_conflict.",
+    "VS": "Sanglier VS unit_status=unresolved; admission_use=blocked_basis_conflict.",
+    "VS (Heitkamp internal)": "Workbook says % fresh biomass, article says % TS; conflict preserved.",
+    "sCOD": "Sanglier sCOD unit_status=unresolved; admission_use=blocked_scale_discontinuity."
+  },
+  "forbidden_uses": [
+    "methane_productivity_validation",
+    "causal_biochar_effect",
+    "treat_sampling_days_as_independent_replicates"
+  ],
+  "industrial_pH_observed_range": [
+    7.5,
+    8.55
+  ],
+  "industrial_pH_plant_median_range": [
+    7.69,
+    8.350000000000001
+  ],
+  "input_sha256": {
+    "results/intake/heitkamp_2021_chemistry.csv": "93ab17199dd907dcddb4d6626e733dcf8cd41e9e1bcb89ba15005ac77555aef8",
+    "results/intake/sanglier_2022_chemistry.csv": "eb91469a94d4a16ab0e94bc0b04b3a8f1a63f1856d8d250c3790ca4d8aa70cf5",
+    "results/validation/sanglier_2022_variable_dictionary.csv": "b60e708e8d5d4e847d4445596963305ee80b2642394860a3b54290a0d8e4fd6b"
+  },
+  "interpretation": "The industrial plants operate in a narrow alkaline pH band. BRL samples sit mostly inside it; LBE samples extend well below it (acidifying bottles), so part of the LBE lab record lies outside the industrial operating envelope. pH overlap does not show kinetic or productivity transfer. Association of pH and NH4-N within a plant is descriptive and confounded by feed changes and time.",
+  "plants": 7,
+  "sampling_days_by_plant": {
+    "BGP1": 26,
+    "BGP2": 17,
+    "BGP3": 3,
+    "BGP4": 13,
+    "BGP5": 3,
+    "BGP6": 22,
+    "BGP7": 7
+  },
+  "sanglier_pH_by_lab": {
+    "BRL": {
+      "bottle_median_range": [
+        7.65,
+        7.95
+      ],
+      "bottles": 12,
+      "sample_range": [
+        7.4,
+        8.4
+      ],
+      "samples": 88,
+      "share_samples_within_industrial_observed_range": 0.955,
+      "share_samples_within_industrial_plant_median_range": 0.852
+    },
+    "LBE": {
+      "bottle_median_range": [
+        6.58,
+        7.92
+      ],
+      "bottles": 15,
+      "sample_range": [
+        5.24,
+        8.67
+      ],
+      "samples": 585,
+      "share_samples_within_industrial_observed_range": 0.726,
+      "share_samples_within_industrial_plant_median_range": 0.446
+    }
+  },
+  "status": "PROCESS_STABILITY_CONTEXT_ONLY",
+  "tvfa_internal_consistency": {
+    "note": "A total below one of its own components means TVFA is not a sum of the reported acids on one basis; the cause (method, sampling or transcription) is not documented. TVFA is kept as reported and not compared across sources.",
+    "plant_days_tvfa_below_acetic": 9,
+    "plant_days_with_tvfa_and_acetic": 88,
+    "plants_affected": [
+      "BGP3",
+      "BGP4"
+    ]
+  },
+  "unit_of_analysis": "plant",
+  "within_heitkamp_pH_vs_NH4N_spearman_by_plant": {
+    "BGP1": {
+      "sampling_days": 26,
+      "spearman_rho": 0.04
+    },
+    "BGP2": {
+      "sampling_days": 17,
+      "spearman_rho": 0.316
+    },
+    "BGP3": {
+      "note": "too few days",
+      "sampling_days": 3,
+      "spearman_rho": null
+    },
+    "BGP4": {
+      "sampling_days": 13,
+      "spearman_rho": 0.525
+    },
+    "BGP5": {
+      "note": "too few days",
+      "sampling_days": 3,
+      "spearman_rho": null
+    },
+    "BGP6": {
+      "sampling_days": 22,
+      "spearman_rho": -0.175
+    },
+    "BGP7": {
+      "note": "too few days",
+      "sampling_days": 6,
+      "spearman_rho": null
+    }
+  }
+}

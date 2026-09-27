@@ -29,6 +29,25 @@ release model while the public API remains experimental.
 
 ## Unreleased
 
+### 2026-09-27: Sanglier admission gate
+
+- Audit Sanglier variable semantics from committed tables: pH is the only resolved
+  unit; FAN is shown to be derived from TAN and pH; TS/VS bases and one sCOD occasion
+  conflict; methane unit suffixes are builder-asserted.
+- Classify event scope and adjudicate all 348 bottle/batch cycles
+  (source-consistent, resolvable, ambiguous, conflicting, excluded) without
+  overwriting source values; add carry-over rules.
+- Add a frozen machine-readable validation spec, an outcome-blind admission step,
+  a fail-closed leakage audit and a role classifier that never calls refitted
+  results external validation (`biochar_ad_kinetics.validation_admission`).
+- Run the pre-registered analysis with bottle-level Welch intervals and exact
+  permutation floors (`biochar_ad_kinetics.locked_effects`); report the BRL
+  horizon-rule defect and a clearly labelled post-hoc deviation.
+- Add exploratory kinetics (plateau audit, truncation extrapolation), variance
+  components, an evidence-graded generalization failure partition and a
+  plant-level Heitkamp pH/VFA envelope.
+- Decision: Sanglier is partially admissible; external validation stays blocked.
+
 - Connected the reactor-level intake contract to the kinetic model with
   `biochar-ad fit-stage-a`, preserving physical-reactor identity and source hashes.
 - Split Stage A validation into explicit whole-reactor and whole-dose holdouts; the

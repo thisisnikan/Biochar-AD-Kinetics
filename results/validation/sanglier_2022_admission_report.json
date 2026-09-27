@@ -1,0 +1,88 @@
+{
+  "admitted_bottles_by_arm": {
+    "BRL MBE[0]": [
+      "II.5",
+      "II.6"
+    ],
+    "BRL MBE[1]": [
+      "II.7",
+      "II.8",
+      "II.9"
+    ],
+    "BRL MBE[2]": [
+      "II.10",
+      "II.11",
+      "II.12"
+    ],
+    "BRL MBE[2]+": [
+      "II.13",
+      "II.14",
+      "II.15"
+    ],
+    "LBE [0]": [
+      "IV.1",
+      "IV.2",
+      "IV.3"
+    ],
+    "LBE [1]": [
+      "IV.4",
+      "IV.6"
+    ],
+    "LBE [2]": [
+      "IV.7",
+      "IV.9"
+    ]
+  },
+  "admitted_cycles": 166,
+  "dataset_role_decision": {
+    "admitted_category": "exploratory (preregistered, within-study question A)",
+    "locked_external_validation": "blocked",
+    "overall": "partially_admissible"
+  },
+  "excluded_bottles": {
+    "BRL II.4": "bottle_class_conflicting;class_excluded",
+    "LBE IV.10": "bottle_arm_not_allowable",
+    "LBE IV.11": "bottle_arm_not_allowable",
+    "LBE IV.12": "bottle_arm_not_allowable",
+    "LBE IV.13": "bottle_arm_not_allowable",
+    "LBE IV.14": "bottle_arm_not_allowable",
+    "LBE IV.15": "bottle_arm_not_allowable",
+    "LBE IV.5": "bottle_class_excluded",
+    "LBE IV.8": "bottle_class_excluded"
+  },
+  "horizon_days": 5.5,
+  "input_sha256": {
+    "results/intake/sanglier_2022_candidate.csv.gz": "d25f36603fff774765f517459ff38dfdde7890d2dfe091f8f770070dfe723911",
+    "results/validation/sanglier_2022_treatment_adjudication.csv": "0d412081938e5abe5a0fc236efc2d92ddc38738732362b2d1b3498913211aaa9"
+  },
+  "leakage_audit": {
+    "development_paths": [
+      "src/biochar_ad_kinetics",
+      "results/effects",
+      "results/experimental",
+      "results/external-dose",
+      "results/synthetic",
+      "results/pyrolysis-temperature",
+      "data/experimental",
+      "data/templates",
+      "outputs"
+    ],
+    "files_scanned": 34,
+    "hits": [],
+    "passed": true
+  },
+  "spec_path": "data/validation/sanglier_2022_validation_spec.json",
+  "spec_sha256": "697e4996f8aaf8e49ac6ebf3f94d91b94854e04d4d9b254c437d6fc39efb4cd5",
+  "status": "ADMISSION_FROZEN_BEFORE_OUTCOME_CONTRASTS",
+  "total_cycles": 348,
+  "windows": {
+    "BRL": [
+      1,
+      10
+    ],
+    "LBE": [
+      1,
+      8
+    ]
+  }
+}

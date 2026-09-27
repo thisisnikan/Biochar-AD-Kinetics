@@ -5,9 +5,9 @@ This file is the operational source of truth for unfinished dynamic-data work. A
 | Study | Source acquired | QC builder | QC report | Processed table reproducible | Dynamic analysis | External-validation eligible | Current blocker |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Daskaloudis 2026 | yes | complete | complete | complete locally, deterministic rebuild verified | complete for Phase III→IV sensitivity | development dataset only | Phase I–III meanings unresolved; processed CSV still generated from source rather than committed as a large static artifact |
-| Sanglier 2022 | public source confirmed | not started | not started | no | no | no | `Process.xlsx` binary must be acquired and intervention/cycle structure reconstructed |
+| Sanglier 2022 | yes (hash verified) | complete | complete | yes (methane, chemistry, events, adjudication) | pre-registered within-study contrast only | no: partially admissible, external validation blocked | units unresolved; ammonium scope and `+` label semantics; no commensurate frozen prediction ([decision](SANGLIER_2022_VALIDATION_ADMISSION.md)) |
 | Wambugu 2019 | paper/source design confirmed | not started | not started | no | no | potentially strong | raw machine-readable daily UASB time series not yet located |
-| Heitkamp 2021 | public supplementary XLSX confirmed | not started | not started | no | no | process-stability only | supplementary binary download currently unresolved in this environment |
+| Heitkamp 2021 | yes (hash verified) | complete | complete | yes | plant-level pH/VFA envelope only | process-stability only | VS basis conflict; TVFA below acetic on 9 plant-days; no productivity data |
 
 ## Daskaloudis closure achieved on 2026-09-10
 

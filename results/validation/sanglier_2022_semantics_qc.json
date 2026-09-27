@@ -1,0 +1,164 @@
+{
+  "adjudication_class_counts": {
+    "ambiguous": 102,
+    "conflicting": 13,
+    "excluded": 11,
+    "resolvable_from_source": 71,
+    "source_consistent": 151
+  },
+  "chemistry": {
+    "FAN_derivation_probe": {
+      "anthonisen_best_matching_temperature_c": 31.86,
+      "cv_of_FAN_over_TAN": 0.5275098585,
+      "cv_of_FAN_over_anthonisen_prediction": 0.01309956455,
+      "interpretation": "FAN varies with pH at fixed TAN exactly as an equilibrium transform would; after that transform the residual CV is about 1%. FAN is therefore treated as derived from TAN and pH, not as an independent measurement. The formula and temperature the source used are not documented in the repository; the matching temperature is a probe result, not a recovered operating temperature.",
+      "labs": [
+        "BRL"
+      ],
+      "rows_with_TAN_FAN_pH": 31
+    },
+    "TS_VS_basis": {
+      "TS_log10_max_gap": 1.737265087,
+      "VS_log10_max_gap": 2.946145694,
+      "by_lab": {
+        "BRL": {
+          "TS_range": [
+            5.67942785,
+            10.9159943
+          ],
+          "VS_range": [
+            70.37037037,
+            80.55555556
+          ],
+          "rows": 10,
+          "rows_VS_greater_than_TS": 10
+        },
+        "LBE": {
+          "TS_range": [
+            0.0401280683,
+            0.1040014752
+          ],
+          "VS_range": [
+            0.02460892789,
+            0.07966070441
+          ],
+          "rows": 134,
+          "rows_VS_greater_than_TS": 0
+        }
+      },
+      "interpretation": "BRL rows have VS greater than TS in every row, which is impossible if both columns share one basis; LBE rows have VS below TS and values two orders of magnitude smaller. TS and VS therefore use different bases between labs (and possibly between TS and VS within BRL). No conversion is applied; cross-lab TS/VS comparison is blocked."
+    },
+    "sCOD_scale": {
+      "interpretation": "One sampling occasion sits one to two orders of magnitude above every other sCOD value. This is consistent with a different unit or dilution basis for that occasion, but the repository cannot establish which; those rows are flagged, not converted.",
+      "labs_batches_above_10x_median": [
+        "BRL batch 13 tf"
+      ],
+      "log10_max_gap": 0.8013700617,
+      "rows": 239,
+      "rows_above_10x_median": 8,
+      "rows_above_10x_median_source": [
+        "Analyses!122",
+        "Analyses!123",
+        "Analyses!124",
+        "Analyses!125",
+        "Analyses!126",
+        "Analyses!127",
+        "Analyses!128",
+        "Analyses!129"
+      ]
+    }
+  },
+  "dose": {
+    "BRL_reactor_mass_recorded": false,
+    "LBE_batch1_biochar_percent_of_recorded_reactor_mass": {
+      "[0]": [
+        0.0,
+        0.0
+      ],
+      "[1]": [
+        0.988,
+        0.994
+      ],
+      "[1]+": [
+        0.994,
+        0.998
+      ],
+      "[2]": [
+        1.968,
+        1.974
+      ],
+      "[2]+": [
+        1.975,
+        1.979
+      ]
+    },
+    "batch1_biochar_g_by_lab_label": {
+      "BRL label 0": [
+        0.0
+      ],
+      "BRL label 1": [
+        4.0
+      ],
+      "BRL label 2": [
+        8.0
+      ],
+      "LBE label 0": [
+        0.0
+      ],
+      "LBE label 1": [
+        2.5
+      ],
+      "LBE label 2": [
+        5.0
+      ]
+    },
+    "interpretation": "LBE batch-1 grams equal 1% and 2% of the recorded reactor mass, matching the deposit's w:w description. BRL used 4 g and 8 g but no BRL reactor mass is recorded, so BRL's w:w basis is unverifiable here. Later batches add smaller top-up masses whose purpose is not documented; the label-2/label-1 ratio stays about 2. Labels 1 and 2 are therefore not interchangeable g/L doses across labs.",
+    "topup_ratio_label2_over_label1": {
+      "max": 2.027,
+      "min": 1.9773
+    }
+  },
+  "input_sha256": {
+    "results/intake/sanglier_2022_bottle_batches.csv": "15b657d8c8a709a6492416c1de9acc7b4aba526019d400ffa8b40db33cfde7b8",
+    "results/intake/sanglier_2022_candidate.csv.gz": "d25f36603fff774765f517459ff38dfdde7890d2dfe091f8f770070dfe723911",
+    "results/intake/sanglier_2022_chemistry.csv": "eb91469a94d4a16ab0e94bc0b04b3a8f1a63f1856d8d250c3790ca4d8aa70cf5",
+    "results/intake/sanglier_2022_events.csv": "034cd2d14eb50e4c2897df613cf95da1f45e4b0230b134330a00741654e92880"
+  },
+  "methane": {
+    "unit_interpretation": "Source headers are 'Volume_raw', 'Volume', 'Flow' and 'Methane yield' without units. The candidate builder names them *_nml, *_nml_h and *_nml_gvs; that naming is not backed by committed source evidence. The exact identity above proves yield and volume share a volume unit per substrate-VS unit, but not which volume unit or normalization.",
+    "volume_correction": {
+      "corrected_over_raw_range": [
+        1.001335142,
+        1.089899845
+      ],
+      "interpretation": "Only LBE applies a correction (factor 1.001-1.090); BRL corrected equals raw. The correction method is not documented in the repository. Within-lab ratios are unaffected; cross-lab absolute yield comparison inherits an undocumented lab-specific processing difference.",
+      "rows_raw_differs_from_corrected_by_lab": {
+        "LBE": 3547
+      }
+    },
+    "yield_equals_corrected_volume_over_substrate_vs": {
+      "max_abs_residual": 1.172176667e-07,
+      "rows_checked": 8055,
+      "rows_within_1e-6": 8055
+    }
+  },
+  "rule_counts": {
+    "R10_carryover_after_disputed_ammonium_addition": 27,
+    "R1_control_label_positive_biochar_mass": 4,
+    "R2_carryover_after_conflicting_cycle": 9,
+    "R3_condition_label_disagreement": 12,
+    "R4_ammonium_bicarbonate_recorded": 22,
+    "R5_te_label_vs_volume": 12,
+    "R6_plus_label_without_recorded_difference": 90,
+    "R7_source_technical_exclusion": 2,
+    "R8_unspecified_subset_event_overlap": 30,
+    "R9_trace_element_regime_change": 18
+  },
+  "status": "SEMANTICS_AUDIT_NO_OUTCOME_CONTRASTS",
+  "unit_status_counts": {
+    "builder_asserted_unverified": 3,
+    "relation_verified_unit_unverified": 1,
+    "resolved_by_definition": 1,
+    "unresolved": 13
+  }
+}
