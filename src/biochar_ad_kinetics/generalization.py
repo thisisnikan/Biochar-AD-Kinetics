@@ -30,28 +30,37 @@ REQUIRED_COLUMNS = {
 }
 
 
+def _evidence_flags(values: pd.Series) -> pd.Series:
+    """Parse only explicit booleans, including the CSV strings True/False.
+
+    Numeric and arbitrary string truthiness are not evidence. Never mutate
+    the supplied table or infer an admission from a missing value.
+    """
+
+    def parse(value: object) -> bool:
+        if isinstance(value, (bool, np.bool_)):
+            return bool(value)
+        if isinstance(value, str) and value.strip().lower() in {"true", "false"}:
+            return value.strip().lower() == "true"
+        raise ValueError(f"{values.name} must be complete explicit True/False values")
+
+    return values.map(parse).astype(bool)
+
+
 def _validate_effect_table(frame: pd.DataFrame) -> None:
     missing = REQUIRED_COLUMNS.difference(frame.columns)
     if missing:
-        raise ValueError(
-            f"Missing generalization-audit columns: {', '.join(sorted(missing))}"
-        )
+        raise ValueError(f"Missing generalization-audit columns: {', '.join(sorted(missing))}")
     if frame.empty:
         raise ValueError("Generalization audit needs at least one effect row")
-    if frame["study_id"].isna().any() or frame["response"].isna().any():
-        raise ValueError("study_id and response must be complete")
-    if frame["dose_g_l"].isna().any() or (frame["dose_g_l"] < 0).any():
-        raise ValueError("dose_g_l must be complete and non-negative")
-    if frame["replicate_level_available"].isna().any():
-        raise ValueError(
-            "replicate_level_available must be complete: a missing value is not "
-            "the same as False and must not be silently coerced by astype(bool)"
-        )
-    if frame["supports_cross_study_pooling"].isna().any():
-        raise ValueError(
-            "supports_cross_study_pooling must be complete: a missing value is not "
-            "the same as False and must not be silently coerced by astype(bool)"
-        )
+    for column in ("study_id", "response"):
+        if frame[column].isna().any() or frame[column].astype(str).str.strip().eq("").any():
+            raise ValueError("study_id and response must be complete and non-blank")
+    doses = pd.to_numeric(frame["dose_g_l"], errors="coerce")
+    if not np.isfinite(doses).all() or (doses < 0).any():
+        raise ValueError("dose_g_l must be finite and non-negative")
+    for column in ("replicate_level_available", "supports_cross_study_pooling"):
+        _evidence_flags(frame[column])
 
 
 def _dose_overlap_fraction(a: pd.Series, b: pd.Series) -> float:
@@ -62,8 +71,8 @@ def _dose_overlap_fraction(a: pd.Series, b: pd.Series) -> float:
     range of the other study.
     """
 
-    a_min, a_max = float(a.min()), float(a.max())
-    b_min, b_max = float(b.min()), float(b.max())
+    a_min, a_max = float(a.astype(float).min()), float(a.astype(float).max())
+    b_min, b_max = float(b.astype(float).min()), float(b.astype(float).max())
     union_min, union_max = min(a_min, b_min), max(a_max, b_max)
     if union_max == union_min:
         return 1.0
@@ -108,13 +117,22 @@ def pairwise_study_support(frame: pd.DataFrame) -> pd.DataFrame:
                         )
                     ),
                     "shared_material": bool(materials_a.intersection(materials_b)),
-                    "shared_temperature": bool(
-                        temperatures_a.intersection(temperatures_b)
-                    ),
+                    "shared_temperature": bool(temperatures_a.intersection(temperatures_b)),
                 }
             )
 
-    return pd.DataFrame(rows)
+    return pd.DataFrame(
+        rows,
+        columns=[
+            "response",
+            "study_a",
+            "study_b",
+            "dose_range_overlap_fraction",
+            "shared_exact_doses",
+            "shared_material",
+            "shared_temperature",
+        ],
+    )
 
 
 def audit_generalization_readiness(frame: pd.DataFrame) -> pd.DataFrame:
@@ -134,11 +152,13 @@ def audit_generalization_readiness(frame: pd.DataFrame) -> pd.DataFrame:
 
     for response, group in frame.groupby("response", sort=True):
         n_studies = int(group["study_id"].nunique())
-        uncertainty_complete = bool(
-            np.isfinite(group["log_response_ratio_se"].astype(float)).all()
+        standard_errors = pd.to_numeric(group["log_response_ratio_se"], errors="coerce")
+        uncertainty_complete = bool((np.isfinite(standard_errors) & (standard_errors > 0)).all())
+        effects_finite = bool(
+            np.isfinite(pd.to_numeric(group["log_response_ratio"], errors="coerce")).all()
         )
-        replicate_level_complete = bool(group["replicate_level_available"].astype(bool).all())
-        pooling_admitted = bool(group["supports_cross_study_pooling"].astype(bool).all())
+        replicate_level_complete = bool(_evidence_flags(group["replicate_level_available"]).all())
+        pooling_admitted = bool(_evidence_flags(group["supports_cross_study_pooling"]).all())
         support = pairwise.loc[pairwise["response"] == response]
         minimum_dose_overlap = (
             float(support["dose_range_overlap_fraction"].min()) if not support.empty else np.nan
@@ -155,6 +175,8 @@ def audit_generalization_readiness(frame: pd.DataFrame) -> pd.DataFrame:
             blockers.append("fewer_than_three_independent_studies")
         if not uncertainty_complete:
             blockers.append("incomplete_effect_uncertainty")
+        if not effects_finite:
+            blockers.append("non_finite_effect_estimate")
         if not replicate_level_complete:
             blockers.append("non_replicate_level_evidence_present")
         if not pooling_admitted:
@@ -168,6 +190,7 @@ def audit_generalization_readiness(frame: pd.DataFrame) -> pd.DataFrame:
                 "n_materials": int(group["material"].dropna().nunique()),
                 "n_temperatures": int(group["temperature_c"].dropna().nunique()),
                 "uncertainty_complete": uncertainty_complete,
+                "effects_finite": effects_finite,
                 "replicate_level_complete": replicate_level_complete,
                 "pooling_admitted": pooling_admitted,
                 "minimum_pairwise_dose_overlap_fraction": minimum_dose_overlap,

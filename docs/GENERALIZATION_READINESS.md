@@ -15,6 +15,18 @@ For each response, LOSO modelling is blocked unless all of the following are tru
 3. Every effect row is based on replicate-level evidence.
 4. Every effect row has been explicitly admitted for cross-study pooling.
 
+Admission flags must be native booleans or explicit CSV `True`/`False` strings;
+missing, numeric and ambiguous values are rejected. Standard errors must be
+finite and strictly positive, and effect estimates finite. A single-study table
+returns a blocked audit rather than requiring pairwise support to exist.
+
+This gate does not make same-study effect rows independent: comparisons sharing
+a control carry covariance. See the [effect credibility audit](../results/effect-credibility/README.md)
+for the conditional covariance blocks and reactor-deletion sensitivity.
+Before any future pooled model, specify how this dependence, shared correction
+uncertainty and repeated experimental units will be handled. Distinct `study_id`
+labels alone do not prove independent experiments.
+
 These conditions are deliberately stricter than what is required to fit a numerical model. They are intended to prevent a statistically neat result from being mistaken for biological generalization.
 
 ## Domain-shift diagnostics
