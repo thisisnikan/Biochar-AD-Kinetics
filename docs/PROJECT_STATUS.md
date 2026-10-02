@@ -1,6 +1,6 @@
 # Project status
 
-Last reviewed: 27 September 2026 (Sanglier admission decision, Sanglier context and Heitkamp intake; other evidence rows retain their prior review)
+Last reviewed: 2 October 2026 (effect credibility and generalization gate; other evidence rows retain their prior review)
 
 ## Readiness snapshot
 
@@ -18,6 +18,8 @@ Last reviewed: 27 September 2026 (Sanglier admission decision, Sanglier context 
 | Global dose–temperature hypothesis | Not independently validated | Requires multi-dose, multi-temperature reactor trajectories; the dose-response *form* is now externally challenged (see above) |
 | Parameter identifiability | Checked, and currently failing on the demo | `fit_global` reports parameter correlation and condition number; the 8-parameter model is already confounded (correlation ≈ 0.96) on the bundled synthetic demo |
 | Effect-size uncertainty | Partially reported | Reactor-level percent-change effects now carry a 95% CI and a `low_replication` flag; published-table effects still carry no uncertainty at all |
+| Shared-control dependence and reactor influence | Audited conditionally | Same-response Kozlowski effects have shared-control correlations of 0.864–0.992. Torrefaction rate changes sign under reactor deletion. Covariance excludes correction/fit uncertainty; [reproducible audit](../results/effect-credibility/README.md) |
+| Executable cross-study gate | Hardened and blocked on current effects | Explicit boolean parsing, finite effects and positive SE required; both responses in the two-study effect table remain blocked |
 | Pyrolysis-temperature descriptor confounding | Checked and confounded | CDU / Wang (2026) six-biochar summary table: temperature, BET, conductivity and pH correlate above the checked threshold, so `benchmark-pyrolysis-temperature` refuses to attribute a trend to any one of them |
 | Sanglier repeated-cycle methane candidate | Source hash verified, quarantined | 8,403 `AMPTShort` rows joined to 363 Inoculation bottle/batches; 64 rows carry a control-label/biochar-mass conflict and 318 rows a condition-label disagreement. 923 chemistry samples and eight events now link through a separate bottle/batch index; units and exposure scope remain unresolved. No external validation was performed. |
 | Mechanism-evidence grading | Documented | `docs/MECHANISM_EVIDENCE.md` grades every dataset Weak/Moderate/Strong (Pilarska 2026); no dataset in this repository currently reaches Strong |
@@ -72,6 +74,12 @@ Last reviewed: 27 September 2026 (Sanglier admission decision, Sanglier context 
   for cross-study prediction, and checks new contributions against the same list.
 
 ## What cannot be claimed now
+
+- That same-study treatment effects are independent when they share a control.
+  The conditional covariance audit reports substantial dependence.
+- That the torrefaction maximum-rate effect has a robust direction: its
+  reactor-deletion range spans −2.74% to +0.46%. This range is a sensitivity
+  diagnostic, not a confidence interval or external validation result.
 
 - That Sanglier 2022 externally validates any model in this repository. No
   commensurate, frozen prediction exists; the admitted subset supports only a
