@@ -1,0 +1,31 @@
+{
+  "bootstrap_draws": 5000,
+  "input_sha256": {
+    "methane": "d25f36603fff774765f517459ff38dfdde7890d2dfe091f8f770070dfe723911",
+    "structure": "94cf29389e6334cc0e21e514cf01e05958e7e8c1b03cb0817005d2a49622a5a9"
+  },
+  "limitations": [
+    "Existing kinetic endpoint errors have six significant digits; no model refit.",
+    "Long-cycle selection and final-time horizons are retrospective and outcome-aware.",
+    "All methods use identical cycles within a cutoff; cutoff populations may differ.",
+    "Equal-bottle summaries average absolute relative errors within bottle first.",
+    "Bootstrap retains repeated cycles and stratifies by lab, but omits shared batch shocks.",
+    "Conditional intervals omit source-unit, optimizer and model-selection uncertainty.",
+    "Kinetic forecasts include parameter-bound fits; predictive error does not establish parameter identifiability.",
+    "Source unit conflicts remain unresolved; no causal or cross-study validation claim.",
+    "Failing-control exclusion is a sensitivity analysis; primary results retain them."
+  ],
+  "method_sha256": {
+    "scripts/analyze_sanglier_2022_kinetic_structure.py": "968e64f8d07331d3c1335511af732a71f0857f21f677e448f4ed9ac660db6549",
+    "scripts/benchmark_sanglier_forecasts.py": "de052308eaadb56220e54f21348ccf4a5fdcb9caed4cdd342f180c297c21269f",
+    "src/biochar_ad_kinetics/forecast_benchmark.py": "aeb4e2be5ffc98383343187167a5e17eec7b638a4ca4f70d274492e5dbdaade7",
+    "src/biochar_ad_kinetics/kinetic_structure.py": "026507de57738124a00e82c4093f02ad829633eb4d4b6e4b1505b01bd8d52465"
+  },
+  "output_sha256": {
+    "scores.csv": "5aad5bca343ec8321258ac9828b5304974b1724ed06309162fcd8b9f99544adc",
+    "summary.csv": "e4fd238e4b571b55cc0c460b4dd31601e5f2caff5a11abb9b053e72dfec7b07d"
+  },
+  "score_rows": 2100,
+  "seed": 20261006,
+  "status": "EXPLORATORY_WITHIN_STUDY_PAIRED_FORECAST_BENCHMARK"
+}
