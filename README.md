@@ -20,6 +20,11 @@ paired uncertainty. With 12.5 days observed, the recent-rate baseline has 8.4%
 mean absolute relative endpoint error versus 13.7% for the two-pool model.
 This is an exploratory within-study result; cross-study prediction remains blocked.
 
+**Next experiment:** the [fixed day-21 forecast workflow](docs/FUTURE_BATCH_FORECAST.md)
+saves day-12.5 prefix predictions before reading endpoints, preserves the registered
+bottle roster and scores all bottles against frozen baselines. It awaits genuinely
+new measurements and independent verification of pre-outcome registration.
+
 **Then:** [Scientific status](docs/PROJECT_STATUS.md) ·
 [Data contract](docs/DATA_CONTRACT.md) · [Data provenance](data/README.md) ·
 [Mechanism-evidence grading](docs/MECHANISM_EVIDENCE.md) ·
