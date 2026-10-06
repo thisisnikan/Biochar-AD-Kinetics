@@ -1,0 +1,27 @@
+{
+  "cut_days": 12.5,
+  "eligible_collection_start_on_or_after": "2026-10-07",
+  "endpoint_rule": "one exact day-21 measurement per registered bottle; no interpolation",
+  "gas_basis": "dry_methane",
+  "gas_reference_pressure_kpa": 101.325,
+  "gas_reference_temperature_k": 273.15,
+  "id": "future-batch-endpoint-v1",
+  "independence_scope": "one lab and one new batch; no cross-study inference",
+  "max_prefix_age_days": 0.5,
+  "methods": [
+    "recent_rate",
+    "persistence",
+    "first_order"
+  ],
+  "minimum_bottles": 4,
+  "minimum_prefix_readings": 6,
+  "primary_comparator": "persistence",
+  "primary_method": "recent_rate",
+  "primary_metric": "equal_bottle_mean_absolute_endpoint_error",
+  "secondary_metric": "mean_absolute_relative_endpoint_error_if_all_endpoints_positive",
+  "selection_rule": "all registered bottles retained; incomplete endpoints block evaluation",
+  "status": "AWAITING_NEW_DATA_AND_PRE_OUTCOME_REGISTRATION",
+  "target_day": 21.0,
+  "yield_correction": "inoculum_blank_corrected",
+  "yield_unit": "mL_CH4_STP_per_g_substrate_VS"
+}
