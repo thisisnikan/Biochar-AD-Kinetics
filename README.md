@@ -14,6 +14,12 @@ comparison, uncertainty and leakage-safe validation.
 **New to this project? Start with the map:** [Architecture and glossary](docs/ARCHITECTURE.md)
 explains the idea, the repository layout and the code path in plain language.
 
+**October forecasting benchmark:** [Do kinetic forecasts beat simple baselines?](docs/FORECAST_BENCHMARK.md)
+compares seven methods on identical long cycles with equal bottle weights and
+paired uncertainty. With 12.5 days observed, the recent-rate baseline has 8.4%
+mean absolute relative endpoint error versus 13.7% for the two-pool model.
+This is an exploratory within-study result; cross-study prediction remains blocked.
+
 **Then:** [Scientific status](docs/PROJECT_STATUS.md) ·
 [Data contract](docs/DATA_CONTRACT.md) · [Data provenance](data/README.md) ·
 [Mechanism-evidence grading](docs/MECHANISM_EVIDENCE.md) ·
