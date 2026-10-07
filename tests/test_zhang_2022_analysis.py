@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pytest
 
 SCRIPT = Path("scripts/analyze_zhang_2022_summary.py")
 if not SCRIPT.exists():
@@ -106,6 +107,3 @@ def test_information_criteria_penalizes_extra_parameters() -> None:
     two = MODULE._information_criteria(observed, predicted, 2)
     three = MODULE._information_criteria(observed, predicted, 3)
     assert three["aicc"] > two["aicc"]
-
-
-import pytest
