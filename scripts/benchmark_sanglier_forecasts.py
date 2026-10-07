@@ -70,7 +70,8 @@ def build(output: Path = OUTPUT) -> dict:
     output.mkdir(parents=True, exist_ok=True)
     for name, frame in (("scores.csv", scores), ("summary.csv", summary)):
         frame.to_csv(output / name, index=False, float_format="%.9g", lineterminator="\n")
-    hash_file = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+    def hash_file(p):
+        return hashlib.sha256(p.read_bytes()).hexdigest()
     report = {
         "status": "EXPLORATORY_WITHIN_STUDY_PAIRED_FORECAST_BENCHMARK",
         "seed": 20261006,
