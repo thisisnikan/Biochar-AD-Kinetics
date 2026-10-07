@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "scope": "conditional_within_study_diagnostics_only",
+  "input_sha256": {
+    "data/experimental/kozlowski_2025_bmp.csv": "fb6501b276f3ad4c06af912bdc1ea04d5997ef4b1df76d204da8823efb9885fd",
+    "data/experimental/valentin_bialowiec_2024_parameters.csv": "7e5a42af653e70b28ff41703b94fa0e616bf113ad8f03d6ac9ae968e0c32c32d"
+  },
+  "method_sha256": {
+    "scripts/audit_effect_credibility.py": "4652b7973d923344fcd8dcd44a403d36d0b708b6048f69858067ac4d0376966b",
+    "src/biochar_ad_kinetics/effect_diagnostics.py": "d5de9e45a350a7faa0929c057eb748ab76a87dc1a09846bd5ef41256a84882c0",
+    "src/biochar_ad_kinetics/effects.py": "f71c741c0952fc14290181cb4338bfad2498e3c46d060aff05bad347a0b64110",
+    "src/biochar_ad_kinetics/generalization.py": "9f234e4f6760632343e885e2d3ce0bf26863e3db1c6665994ad4df2cb829a2c7",
+    "src/biochar_ad_kinetics/baselines.py": "53605458d8679461fc1fd9a617570c58c743b7b753aa445399d79826ab7d6b50"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.17.0"
+  },
+  "output_sha256": {
+    "within_study_effects.csv": "6c45660807f08a3c802a316ccd860906c024b4d23f9b6c71a79993bd183524c3",
+    "shared_control_covariance.csv": "7da836a879c22fdac4c46768b936f3d76f32dab0f8d48ec543de4626991aa297",
+    "leave_one_reactor_out.csv": "638039a06a5e8c56647911990df359623f73e5e96b944fc1328fd37b5d37e75c",
+    "reactor_influence_summary.csv": "931a528104e4fa50afa07c2075bb14de0063ff9591f9dc16877c7ebc02da9fc2",
+    "generalization_readiness.csv": "a35dba3734058e6691d35cf43d974ccfc20ccfbd224da9a962e32053ab1c5daa"
+  },
+  "n_studies": 2,
+  "n_effect_rows": 14,
+  "n_effect_rows_with_uncertainty": 6,
+  "n_reactor_deletion_cases": 32,
+  "n_contrasts_with_sign_change": 1,
+  "shared_control_correlation_range": [
+    0.8636959791430945,
+    0.9920399745616985
+  ],
+  "any_response_ready_for_loso": false,
+  "limitations": [
+    "Known Kozlowski blank-decrease and control-dose conflicts are unresolved.",
+    "Covariance is conditional on fitted estimates and independent disjoint arms.",
+    "Shared blank-correction uncertainty and cross-response covariance are omitted.",
+    "Deletion ranges are influence diagnostics, not confidence intervals or validation.",
+    "Some deletion cases leave one treatment reactor; they are descriptive only.",
+    "Published parameter-table uncertainty is unavailable; no values are imputed.",
+    "No new data, cross-study pooling, causal inference or transfer test is performed."
+  ]
+}

@@ -31,6 +31,15 @@ new measurements and independent verification of pre-outcome registration.
 [Reproducible results](results/README.md) ·
 [Presentation](presentation/README.md) · [Contributing](CONTRIBUTING.md)
 
+## October 2026 scientific credibility audit
+
+The [reproducible effect audit](results/effect-credibility/README.md) now reports
+shared-control covariance and whole-reactor deletion sensitivity. One kinetic
+contrast changes point-estimate direction under deletion, and both responses
+remain blocked for cross-study generalization. The admission gate rejects
+ambiguous flags and invalid numerical evidence. These diagnostics strengthen
+the audit trail; they do not supply independent validation or new experiments.
+
 ## Marta’s author-shared dataset
 
 The [Frontiers workbook importer](docs/GARCIA_PRATS_2024_SUMMARY_INTAKE.md) now
