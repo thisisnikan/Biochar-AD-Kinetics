@@ -1,33 +1,56 @@
 # Changelog
 
-## 2026-09-05
-
-- Compare constant, log-linear and log-quadratic candidates on identical batch
-  holdouts, with shared fitting settings and per-model summaries.
-- Fix Q10 at one training temperature, reject unsupported temperature holdouts,
-  and surface failed optimizer convergence.
-- Document dose-first, temperature-second validation and public-source access;
-  independent raw data acquisition remains pending.
-- Added a hash-verified real-data intake export for all 15 Kozłowski reactors,
-  including individual blanks, cell references, VS denominators and source-dose conflicts.
-- Added the deterministic compressed CSV, validation JSON and remaining-evidence report;
-  preserved the original benchmark CSV and exclusions.
-- Hardened the experimental intake gate against empty files, non-finite numeric values,
-  missing dose units and positive doses without a physical unit.
-- Compare parsed times and metadata consistently while preserving source values.
-- Distinguish substrate controls from inoculum blanks and count only QC-included
-  reactors for control and replication warnings, retaining all submitted records.
-
-## 2026-09-03
-
-- Added a minimum experimental record for reactor-level Biochar–AD contributions.
-- Added `biochar-ad validate-intake` with machine-readable errors and scientific-limit warnings.
-- Added a worked CSV template and tests for duplicate keys, changing reactor metadata and missing blanks.
-
 All notable project changes are documented here. The project follows a research-prototype
-release model while the public API remains experimental.
+release model while the public API remains experimental. Entries are listed newest first.
 
 ## Unreleased
+
+### 2026-10-20: Repository presentation
+
+- Rewrote the README as a concise landing page: scientific-status notice first, an evidence
+  overview, a neutral "Latest results" section, a command reference and a documentation
+  index. Dated announcements moved to this changelog.
+- Moved the staged long-term vision to `docs/ROADMAP.md` and added `docs/README.md`, an
+  index of every document grouped by purpose.
+- Replaced informal first-name references to a data contributor with formal citations.
+- Added argument help text and a descriptive summary to `biochar-ad --help`.
+- Reordered this changelog so the newest entries come first.
+
+### 2026-10-07: Lint fixes
+
+- Fixed ruff findings: reformatted a minified script, removed a lambda assignment and
+  relocated a misplaced import.
+
+### 2026-10-06: Forecast benchmark and frozen forecast protocol
+
+- Benchmarked kinetic endpoint forecasts against paired prefix-only baselines on identical
+  long Sanglier cycles with equal bottle weights and paired uncertainty. With 12.5 days
+  observed, the recent-rate baseline has 8.4% mean absolute relative endpoint error versus
+  13.7% for the two-pool model; this is an exploratory within-study result
+  (`docs/FORECAST_BENCHMARK.md`).
+- Froze a day-21 forecast protocol that saves day-12.5 prefix predictions before endpoints
+  are read, preserves the registered bottle roster and separates predictions from outcome
+  evaluation (`docs/FUTURE_BATCH_FORECAST.md`). It awaits genuinely new measurements.
+
+### 2026-10-02: Effect-credibility audit
+
+- Audited effect credibility with strict admission, shared-control covariance and
+  whole-reactor deletion sensitivity. One kinetic contrast changes point-estimate direction
+  under deletion; both responses remain blocked for cross-study generalization
+  (`results/effect-credibility/`).
+
+### 2026-09-27: Research expansion and author-shared summary workbook
+
+- Linked 923 Sanglier chemistry samples and eight operating events to the existing 8,403
+  methane records through 363 bottle/batch identities.
+- Ingested 1,365 chemistry measurements from seven Heitkamp industrial plants (91 sampling
+  occasions, 15 variables) as a quarantined candidate.
+- Screened seven source records with DOI, access status, inspection depth and next
+  acquisition gate (`docs/RESEARCH_EVIDENCE_2026_09.md`).
+- Added a private, hash-verified importer for the author-shared García-Prats, González and
+  Sánchez (2024) Frontiers workbook: 119 methane mean/SD observations linked to the public
+  material/dose design, with feeding periods separated and the second feeding's time-origin
+  discrepancy flagged. Source data and generated tables remain private.
 
 ### 2026-09-27: Evidence requirements
 
@@ -61,6 +84,43 @@ release model while the public API remains experimental.
   components, an evidence-graded generalization failure partition and a
   plant-level Heitkamp pH/VFA envelope.
 - Decision: Sanglier is partially admissible; external validation stays blocked.
+
+### 2026-09-25: Sanglier methane candidate
+
+- Ingested the Sanglier et al. (2022) methane data as a quarantined candidate with source QC.
+
+### 2026-09-10 to 2026-09-11: Generalization gate, Cai and continuous-data candidates
+
+- Added a cross-study generalization readiness audit; missing pooling or replicate evidence
+  flags are rejected instead of silently passing.
+- Registered the Cai BMP candidate records with an explicit admission boundary.
+- Added the Daskaloudis (2026) continuous-reactor builder and transition sensitivity analysis.
+
+### 2026-09-05: Batch-holdout comparison and Kozłowski intake
+
+- Compare constant, log-linear and log-quadratic candidates on identical batch
+  holdouts, with shared fitting settings and per-model summaries.
+- Fix Q10 at one training temperature, reject unsupported temperature holdouts,
+  and surface failed optimizer convergence.
+- Document dose-first, temperature-second validation and public-source access;
+  independent raw data acquisition remains pending.
+- Added a hash-verified real-data intake export for all 15 Kozłowski reactors,
+  including individual blanks, cell references, VS denominators and source-dose conflicts.
+- Added the deterministic compressed CSV, validation JSON and remaining-evidence report;
+  preserved the original benchmark CSV and exclusions.
+- Hardened the experimental intake gate against empty files, non-finite numeric values,
+  missing dose units and positive doses without a physical unit.
+- Compare parsed times and metadata consistently while preserving source values.
+- Distinguish substrate controls from inoculum blanks and count only QC-included
+  reactors for control and replication warnings, retaining all submitted records.
+
+### 2026-09-03: Reactor-level data contract
+
+- Added a minimum experimental record for reactor-level Biochar–AD contributions.
+- Added `biochar-ad validate-intake` with machine-readable errors and scientific-limit warnings.
+- Added a worked CSV template and tests for duplicate keys, changing reactor metadata and missing blanks.
+
+### Other changes since 0.1.0 (not individually dated)
 
 - Connected the reactor-level intake contract to the kinetic model with
   `biochar-ad fit-stage-a`, preserving physical-reactor identity and source hashes.

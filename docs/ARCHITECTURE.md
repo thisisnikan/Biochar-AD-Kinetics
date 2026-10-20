@@ -61,7 +61,7 @@ scripts/                 standalone scripts that build/ingest datasets from thei
 results/                 committed, reproducible output tables and their interpretation
 results/private/         NOT in this repository — outputs derived from private data
 presentation/            the animated project-overview slide deck (index.html)
-docs/                    this map, plus the honest project-status page
+docs/                    this map, project status, methods, decision records and roadmap
 outputs/                 default local scratch folder for `biochar-ad` command output (git-ignored)
 ```
 
@@ -164,6 +164,8 @@ their source units until a documented measured conversion is available.
 
 - Never touched the code? Run the quick start in the [main README](../README.md#quick-start).
 - Want the honest scientific bottom line? Read [`PROJECT_STATUS.md`](PROJECT_STATUS.md).
+- Looking for a specific method, dataset or decision record? See the
+  [documentation index](README.md).
 - Want the narrative version? Open [`../presentation/index.html`](../presentation/index.html)
   in a browser.
 - Want to contribute? Read [`../CONTRIBUTING.md`](../CONTRIBUTING.md).
