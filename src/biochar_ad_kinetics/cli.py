@@ -1,4 +1,9 @@
-"""Command-line interface."""
+"""Reproducible kinetic modelling and evidence audits for biochar-amended anaerobic digestion.
+
+Every subcommand writes deterministic CSV/JSON outputs and prints a JSON summary.
+Held-out error is the primary model-selection criterion; information criteria are
+descriptive. Run "biochar-ad <command> --help" for the arguments of one command.
+"""
 
 import argparse
 import hashlib
@@ -35,16 +40,33 @@ from .pyrolysis_response import (
 )
 from .report import save_report
 
+_OUTPUT_HELP = "Directory for generated outputs (created if missing)"
+
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description=__doc__)
-    commands = parser.add_subparsers(dest="command", required=True)
+    parser = argparse.ArgumentParser(
+        prog="biochar-ad",
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    commands = parser.add_subparsers(dest="command", required=True, metavar="<command>")
     demo = commands.add_parser("demo", help="Generate synthetic data and run the full workflow")
-    demo.add_argument("--output", type=Path, default=Path("outputs"))
-    demo.add_argument("--bootstrap", type=int, default=30)
-    fit = commands.add_parser("fit", help="Fit a CSV dataset")
-    fit.add_argument("csv", type=Path)
-    fit.add_argument("--output", type=Path, default=Path("outputs"))
+    demo.add_argument("--output", type=Path, default=Path("outputs"), help=_OUTPUT_HELP)
+    demo.add_argument(
+        "--bootstrap",
+        type=int,
+        default=30,
+        help="Residual-bootstrap iterations for parameter uncertainty (default: 30)",
+    )
+    fit = commands.add_parser(
+        "fit", help="Fit the global dose-temperature model to a BMP CSV dataset"
+    )
+    fit.add_argument(
+        "csv",
+        type=Path,
+        help="CSV with batch_id, time_days, dose_g_l, temperature_c and methane_ml_g_vs",
+    )
+    fit.add_argument("--output", type=Path, default=Path("outputs"), help=_OUTPUT_HELP)
     fit.add_argument(
         "--bootstrap",
         type=int,
@@ -61,8 +83,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         nargs="?",
         default=Path("data/experimental/kozlowski_2025_bmp.csv"),
+        help="Reactor-level BMP CSV (default: the Kozłowski et al. 2025 benchmark)",
     )
-    benchmark.add_argument("--output", type=Path, default=Path("outputs/experimental"))
+    benchmark.add_argument(
+        "--output", type=Path, default=Path("outputs/experimental"), help=_OUTPUT_HELP
+    )
     external = commands.add_parser(
         "benchmark-external-dose",
         help="Challenge dose-response forms with independent published kinetic parameters",
@@ -72,8 +97,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         nargs="?",
         default=Path("data/experimental/valentin_bialowiec_2024_parameters.csv"),
+        help="Published per-dose kinetic parameters (default: Valentin & Białowiec 2024)",
     )
-    external.add_argument("--output", type=Path, default=Path("outputs/external-dose"))
+    external.add_argument(
+        "--output", type=Path, default=Path("outputs/external-dose"), help=_OUTPUT_HELP
+    )
     effects = commands.add_parser(
         "summarize-effects",
         help="Normalize public treatment estimates to controls within each study",
@@ -82,34 +110,50 @@ def build_parser() -> argparse.ArgumentParser:
         "--reactor-csv",
         type=Path,
         default=Path("data/experimental/kozlowski_2025_bmp.csv"),
+        help="Reactor-level BMP CSV (default: Kozłowski et al. 2025)",
     )
     effects.add_argument(
         "--parameter-csv",
         type=Path,
         default=Path("data/experimental/valentin_bialowiec_2024_parameters.csv"),
+        help="Published treatment-level parameters (default: Valentin & Białowiec 2024)",
     )
-    effects.add_argument("--output", type=Path, default=Path("outputs/effects"))
+    effects.add_argument("--output", type=Path, default=Path("outputs/effects"), help=_OUTPUT_HELP)
     intake = commands.add_parser(
         "validate-intake",
         help="Validate a reactor-level contribution before modelling or publication",
     )
-    intake.add_argument("csv", type=Path)
+    intake.add_argument(
+        "csv", type=Path, help="Reactor observations following docs/DATA_CONTRACT.md"
+    )
     stage_a = commands.add_parser(
         "fit-stage-a",
         help="Fit one ready reactor-level dose series with leakage-safe validation splits",
     )
-    stage_a.add_argument("csv", type=Path)
-    stage_a.add_argument("--output", type=Path, default=Path("outputs/stage-a"))
-    stage_a.add_argument("--study-id")
-    stage_a.add_argument("--experiment-id")
-    stage_a.add_argument("--material-id")
+    stage_a.add_argument(
+        "csv", type=Path, help="Reactor observations that pass validate-intake"
+    )
+    stage_a.add_argument(
+        "--output", type=Path, default=Path("outputs/stage-a"), help=_OUTPUT_HELP
+    )
+    for selector in ("study", "experiment", "material"):
+        stage_a.add_argument(
+            f"--{selector}-id",
+            help=f"Select one ready series by {selector}_id when several pass the gate",
+        )
     evidence = commands.add_parser(
         "check-evidence",
         help="Grade a contribution against the minimum information for cross-study prediction",
     )
-    evidence.add_argument("observations", type=Path)
-    evidence.add_argument("--materials", type=Path)
-    evidence.add_argument("--interventions", type=Path)
+    evidence.add_argument(
+        "observations", type=Path, help="Reactor observations following docs/DATA_CONTRACT.md"
+    )
+    evidence.add_argument(
+        "--materials", type=Path, help="Optional material-descriptor CSV (see data/templates/)"
+    )
+    evidence.add_argument(
+        "--interventions", type=Path, help="Optional intervention-log CSV (see data/templates/)"
+    )
     evidence.add_argument(
         "--declarations",
         type=Path,
@@ -119,6 +163,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--items",
         type=Path,
         default=Path("data/requirements/minimum_information_items.json"),
+        help="Minimum-information item definitions (default: the repository checklist)",
     )
     pyrolysis = commands.add_parser(
         "benchmark-pyrolysis-temperature",
@@ -129,8 +174,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         nargs="?",
         default=Path("data/experimental/cdu_wang_2026_pyrolysis_temperature.csv"),
+        help="Pyrolysis-temperature summary table (default: CDU / Wang 2026)",
     )
-    pyrolysis.add_argument("--output", type=Path, default=Path("outputs/pyrolysis-temperature"))
+    pyrolysis.add_argument(
+        "--output", type=Path, default=Path("outputs/pyrolysis-temperature"), help=_OUTPUT_HELP
+    )
     return parser
 
 

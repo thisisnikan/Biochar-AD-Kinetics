@@ -1,4 +1,4 @@
-"""Ingest Marta's private Frontiers workbook as summary data, never raw replicates.
+"""Ingest the author-shared García-Prats et al. (2024) workbook as summary data only.
 
 Outputs default to ignored results/private/. The second feeding is kept separate;
 its recorded day-23 zero conflicts with the article's day-22 feeding origin.
