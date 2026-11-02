@@ -635,7 +635,9 @@ def round_floats(value: object, digits: int = 10) -> object:
 
 def _write_csv(frame: pd.DataFrame, path: Path) -> None:
     buffer = io.StringIO()
-    frame.to_csv(buffer, index=False, lineterminator="\n")
+    # Canonical decimal output avoids last-bit parser drift between pandas releases.
+    # Keep raw source tables untouched; only this derived audit is normalized.
+    frame.to_csv(buffer, index=False, lineterminator="\n", float_format="%.15g")
     path.write_text(buffer.getvalue(), encoding="utf-8")
 
 

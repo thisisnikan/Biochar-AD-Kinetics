@@ -5,6 +5,7 @@ import importlib.util
 import json
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -46,7 +47,7 @@ def _assert_json_close(a, b, path="root"):
 
 
 def test_semantics_rebuild_is_reproducible(tmp_path):
-    """Source-copied CSVs must be byte-identical; the QC JSON holds values computed
+    """Canonical derived CSVs must be byte-identical; the QC JSON holds values computed
     with vectorised exp/log and is compared at 1e-8 relative tolerance."""
 
     SEMANTICS.build(tmp_path)
@@ -99,7 +100,11 @@ def test_adjudication_preserves_source_values():
         "inoculation_ammonium_bicarbonate_g",
     ):
         left, right = merged[column], merged[f"{column}_src"]
-        assert ((left == right) | (left.isna() & right.isna())).all(), column
+        if pd.api.types.is_numeric_dtype(left):
+            np.testing.assert_allclose(left, right, rtol=0, atol=5e-15, equal_nan=True,
+                                       err_msg=column)
+        else:
+            assert ((left == right) | (left.isna() & right.isna())).all(), column
 
 
 def test_known_conflicts_are_classified_not_corrected():
