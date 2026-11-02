@@ -53,7 +53,7 @@
   "horizon_days": 5.5,
   "input_sha256": {
     "results/intake/sanglier_2022_candidate.csv.gz": "d25f36603fff774765f517459ff38dfdde7890d2dfe091f8f770070dfe723911",
-    "results/validation/sanglier_2022_treatment_adjudication.csv": "0d412081938e5abe5a0fc236efc2d92ddc38738732362b2d1b3498913211aaa9"
+    "results/validation/sanglier_2022_treatment_adjudication.csv": "f3dd93cd5ebcc2b1ec411c5eb8d525737c5502e33e99217a1b35329a93ce4fd7"
   },
   "leakage_audit": {
     "development_paths": [
@@ -67,7 +67,7 @@
       "data/templates",
       "outputs"
     ],
-    "files_scanned": 39,
+    "files_scanned": 46,
     "hits": [],
     "passed": true
   },

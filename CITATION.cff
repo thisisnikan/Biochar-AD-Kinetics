@@ -6,6 +6,12 @@ authors:
   - family-names: "Haghighatjue"
     given-names: "Nikan"
 version: 0.1.0
-date-released: 2026-08-20
+repository-code: "https://github.com/thisisnikan/Biochar-AD-Kinetics"
+url: "https://github.com/thisisnikan/Biochar-AD-Kinetics"
+keywords:
+  - biochar
+  - anaerobic digestion
+  - kinetic modelling
+  - reproducibility
 license: MIT
 
