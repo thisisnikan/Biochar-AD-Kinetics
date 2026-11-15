@@ -1,0 +1,46 @@
+{
+  "id": "stage_a_dose_v1",
+  "status": "FROZEN_BEFORE_ANY_STAGE_A_DATA",
+  "frozen_on": "2026-11-15",
+  "question": "At one digestion temperature, does a dose-response term improve prediction of cumulative methane at a dose the model has not seen?",
+  "eligibility": {
+    "zero_dose_substrate_control": true,
+    "minimum_amended_doses_same_material": 3,
+    "minimum_replicate_reactors_per_dose": 3,
+    "inoculum_blanks_required": true,
+    "dose_unit": "g_l (other bases only with a documented measured conversion)",
+    "readiness_check": "biochar-ad validate-intake; biochar-ad fit-stage-a"
+  },
+  "candidates": [
+    "constant_gompertz",
+    "log_linear_dose_temperature",
+    "global_dose_temperature"
+  ],
+  "split": "whole-dose holdout: every replicate at the held-out dose is removed together",
+  "primary_metric": "mean whole-dose-held-out RMSE (mL CH4 per g VS), each dose weighted equally",
+  "decision_rule": {
+    "folds": "all",
+    "parsimony_margin": 0.1,
+    "order": "simplest to most complex",
+    "text": "Select the simplest candidate unless a more complex candidate lowers the primary metric by more than 10% of the current candidate's value."
+  },
+  "interpretation": {
+    "constant_gompertz": "No dose-response term is supported at this design.",
+    "log_linear_dose_temperature": "A monotone dose response is supported within the tested range.",
+    "global_dose_temperature": "A curved dose response is supported within the tested range.",
+    "always": "A within-study result. It is not held-out-study transfer, not evidence of mechanism, and says nothing beyond the tested dose range."
+  },
+  "design_adequacy": "Report the simulated recovery of the acquired dose grid (scripts/simulate_stage_a_power.py) next to the result. A grid without doses well beyond the expected optimum cannot reliably detect curvature.",
+  "secondary_reports": [
+    "mean RMSE on interior doses only",
+    "leave-one-reactor-out RMSE",
+    "parameter identifiability diagnostics",
+    "per-fold errors for every candidate"
+  ],
+  "prior_outcome_exposure": "The Valentin & Białowiec (2024) parameter table and the Kozłowski (2025) trajectories were analysed before this specification was frozen. The rule was chosen from simulation only.",
+  "amendments": "Any change requires a new specification id. Deviations after outcomes are seen must be labelled post hoc.",
+  "evidence_sha256": {
+    "results/stage-a-power/recovery.csv": "fa41a8e2ef5fa4207e3de0d4b99cc02c865f7bfe889dcc0b27df2ad3c0abd788",
+    "results/stage-a-power/simulations.csv": "4cee1a76cabc8f50c03d2884ddc79d9f54e521fe9d78b3b3676a643613618753"
+  }
+}

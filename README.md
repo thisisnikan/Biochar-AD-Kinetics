@@ -36,7 +36,9 @@ held-out prediction error, not goodness of fit.
 2. **Dose response.** The project's own log-quadratic dose hypothesis is not supported
    by independent data. On five published doses (Valentin & Białowiec, 2024), a simpler
    log-linear form predicts a held-out dose with 11.1% error in methane potential, the
-   log-quadratic form with 31.6% (`biochar-ad benchmark-external-dose`).
+   log-quadratic form with 31.6% (`biochar-ad benchmark-external-dose`). A
+   [simulation of the test](results/stage-a-power/README.md) shows that this 0 to 8 g/L
+   grid cannot exclude a dose optimum at or above 8 g/L.
 3. **Forecasting.** With the first 12.5 days observed, a recent-rate baseline forecasts
    the end-of-cycle methane yield with 8.4% mean absolute relative error. The best
    kinetic model reaches 13.7% (100 long cycles from 27 bottles, Sanglier et al., 2022;

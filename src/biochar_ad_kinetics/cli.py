@@ -39,6 +39,7 @@ from .pyrolysis_response import (
     max_descriptor_collinearity,
 )
 from .report import save_report
+from .stage_a_power import stage_a_decision
 
 _OUTPUT_HELP = "Directory for generated outputs (created if missing)"
 
@@ -286,6 +287,9 @@ def _run_stage_a(args: argparse.Namespace) -> None:
                 ),
                 "best_model_by_reactor_holdout_rmse": reactor_summary.iloc[0]["model"],
                 "best_model_by_dose_holdout_rmse": dose_summary.iloc[0]["model"],
+                "stage_a_decision": stage_a_decision(
+                    dose_summary.set_index("model")["mean_held_out_rmse_ml_g_vs"].to_dict()
+                ),
                 "primary_stage_a_metric": "mean whole-dose-held-out RMSE",
             },
             indent=2,

@@ -5,7 +5,7 @@ release model while the public API remains experimental. Entries are listed newe
 
 ## Unreleased
 
-### 2026-11-15: Blank-correction sensitivity, open-data screen and Stage A simulation code
+### 2026-11-15: Blank-correction sensitivity, open-data screen and frozen Stage A test
 
 - Ran the blank-correction sensitivity analysis required by the validation plan for the
   Kozłowski (2025) benchmark (`blank_sensitivity`, `results/blank-sensitivity/`). Under
@@ -16,7 +16,14 @@ release model while the public API remains experimental. Entries are listed newe
   openly downloadable dataset meets the gate; one new on-request candidate identified.
 - Added a simulation of the Stage A dose-holdout test (`stage_a_power`,
   `scripts/simulate_stage_a_power.py`) that scores simulated designs with the unmodified
-  `leave_one_dose_out` routine. Its results are not committed yet.
+  `leave_one_dose_out` routine. 576 simulated experiments (`results/stage-a-power/`):
+  the plain lowest-RMSE rule selects a dose effect that is not there in up to 8 of 24
+  simulations; the minimum gate recovers a curved response in at most 7 of 24; a grid
+  reaching 70 g/L recovers it in 18 to 24 of 24.
+- Froze the Stage A analysis before any Stage A data exist
+  (`data/validation/stage_a_dose_v1.json`): 10% parsimony margin, reported by
+  `biochar-ad fit-stage-a` as `stage_a_decision`.
+- README: the 0 to 8 g/L dose challenge cannot exclude an optimum at or above 8 g/L.
 
 ### 2026-11-15: Key findings and release notes
 

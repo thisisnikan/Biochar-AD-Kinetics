@@ -10,6 +10,7 @@ Last reviewed: 2 October 2026 (effect credibility and generalization gate; other
 | Automated quality | Working | Ruff plus automated tests on Python 3.10 and 3.12 in GitHub Actions |
 | Data contribution gate | Working | Minimum reactor-time-point contract plus machine-readable Stage A dose-series readiness assessment; source-level review remains mandatory |
 | Intake-to-model path | Working, awaiting qualifying data | `fit-stage-a` preserves reactor identity and separates whole-reactor from whole-dose holdouts; dose units other than g/L require documented conversion before fitting |
+| Stage A decision rule and test power | Frozen before data; power simulated | 10% parsimony margin frozen in `data/validation/stage_a_dose_v1.json`. Simulated recovery of a curved response: 18 to 24 of 24 with a 70 g/L arm, at most 7 of 24 at the minimum gate. [Result](../results/stage-a-power/README.md) |
 | Real-data contract import | Reproducible, source conflict flagged | 7,575 observations from 15 Kozłowski reactors, including individual blanks; [validation and gaps](../results/intake/README.md) |
 | Blank-correction sensitivity | Checked, conclusions stable | Five blank corrections give the same curve-family ranking; final yields move by at most 1.64% and no effect changes sign. [Result](../results/blank-sensitivity/README.md) |
 | Synthetic workflow | Reproducible | Labelled synthetic input and deterministic reporting pipeline |

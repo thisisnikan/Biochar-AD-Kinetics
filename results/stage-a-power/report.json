@@ -1,0 +1,82 @@
+{
+  "status": "SIMULATION_ONLY_NOT_EXPERIMENTAL_VALIDATION",
+  "base_seed": 20261115,
+  "simulations_per_scenario": 24,
+  "effect_on_methane_potential_at_reference_dose": 0.15,
+  "reference_dose_g_l": 8.0,
+  "reactor_log_sd": [
+    0.03,
+    0.07
+  ],
+  "designs": {
+    "minimum_gate": {
+      "doses_g_l": [
+        0,
+        5,
+        10,
+        20
+      ],
+      "replicates": 3,
+      "note": "Smallest design that passes the Stage A gate"
+    },
+    "narrow_five_dose": {
+      "doses_g_l": [
+        0,
+        2,
+        4,
+        6,
+        8
+      ],
+      "replicates": 3,
+      "note": "Dose grid of Valentin & Bia\u0142owiec (2024)"
+    },
+    "wide_six_dose": {
+      "doses_g_l": [
+        0,
+        2,
+        4,
+        8,
+        30,
+        70
+      ],
+      "replicates": 3,
+      "note": "Wide grid with a high-dose arm"
+    },
+    "dense_eight_dose": {
+      "doses_g_l": [
+        0,
+        5,
+        10,
+        15,
+        20,
+        25,
+        30,
+        40
+      ],
+      "replicates": 3,
+      "note": "Dense grid to 40 g/L"
+    }
+  },
+  "rules": {
+    "lowest_rmse_all_doses": {
+      "folds": "all",
+      "margin": 0.0
+    },
+    "parsimony_10pct_all_doses": {
+      "folds": "all",
+      "margin": 0.1
+    },
+    "parsimony_20pct_all_doses": {
+      "folds": "all",
+      "margin": 0.2
+    },
+    "lowest_rmse_interior_doses": {
+      "folds": "interior",
+      "margin": 0.0
+    },
+    "parsimony_10pct_interior_doses": {
+      "folds": "interior",
+      "margin": 0.1
+    }
+  }
+}

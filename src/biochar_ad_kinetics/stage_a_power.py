@@ -25,6 +25,8 @@ TRUTH_TO_MODEL = {
     "log_quadratic": "global_dose_temperature",
 }
 REFERENCE_DOSE_G_L = 8.0
+STAGE_A_DECISION_FOLDS = "all"
+STAGE_A_PARSIMONY_MARGIN = 0.10
 BASELINE = KineticParameters(
     potential_0=350.0,
     rate_0=65.0,
@@ -175,3 +177,24 @@ def recovery_table(
                 }
             )
     return pd.DataFrame(rows)
+
+
+def stage_a_decision(mean_rmse_by_model: dict[str, float]) -> dict[str, object]:
+    """Apply the frozen Stage A decision rule to mean whole-dose-held-out RMSEs."""
+    missing = set(MODEL_ORDER).difference(mean_rmse_by_model)
+    if missing:
+        raise ValueError(f"Missing Stage A candidates: {', '.join(sorted(missing))}")
+    scores = {
+        f"{STAGE_A_DECISION_FOLDS}__{model}": float(mean_rmse_by_model[model])
+        for model in MODEL_ORDER
+    }
+    return {
+        "rule": "simplest candidate unless a more complex one lowers mean "
+        "whole-dose-held-out RMSE by more than the parsimony margin",
+        "parsimony_margin": STAGE_A_PARSIMONY_MARGIN,
+        "selected_model": select_model(
+            scores, STAGE_A_DECISION_FOLDS, STAGE_A_PARSIMONY_MARGIN
+        ),
+        "lowest_rmse_model": min(MODEL_ORDER, key=lambda model: mean_rmse_by_model[model]),
+        "specification": "data/validation/stage_a_dose_v1.json",
+    }

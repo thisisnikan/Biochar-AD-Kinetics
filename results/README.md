@@ -98,3 +98,9 @@ corrections. Rankings are identical and no effect changes sign; see its
 ```bash
 python scripts/analyze_kozlowski_blank_sensitivity.py
 ```
+
+## Stage A test power (simulation)
+
+`stage-a-power/` reports how often the Stage A dose-holdout test recovers a known
+dose-response form for four dose grids, and justifies the frozen decision rule; see
+its [README](stage-a-power/README.md). Simulation only.

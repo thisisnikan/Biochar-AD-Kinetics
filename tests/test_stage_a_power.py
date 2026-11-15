@@ -10,10 +10,12 @@ from biochar_ad_kinetics.stage_a_power import (
     DESIGNS,
     MODEL_ORDER,
     REFERENCE_DOSE_G_L,
+    STAGE_A_PARSIMONY_MARGIN,
     TRUTH_TO_MODEL,
     recovery_table,
     select_model,
     simulate_design,
+    stage_a_decision,
     truth_parameters,
 )
 
@@ -90,9 +92,6 @@ def test_recovery_table_counts_selections():
     assert table.loc[0, "simulations"] == 4
 
 
-@pytest.mark.skipif(
-    not (RESULTS / "recovery.csv").exists(), reason="simulation results not committed yet"
-)
 def test_committed_recovery_table_matches_committed_simulations():
     simulations = pd.read_csv(RESULTS / "simulations.csv")
     report = json.loads((RESULTS / "report.json").read_text())
@@ -104,3 +103,36 @@ def test_committed_recovery_table_matches_committed_simulations():
     assert set(simulations["truth"]) == set(TRUTH_TO_MODEL)
     counts = simulations.groupby(["design", "truth", "reactor_log_sd"]).size()
     assert counts.eq(report["simulations_per_scenario"]).all()
+
+
+def test_frozen_specification_matches_code_and_committed_evidence():
+    import hashlib
+
+    spec = json.loads((ROOT / "data" / "validation" / "stage_a_dose_v1.json").read_text())
+    assert spec["status"] == "FROZEN_BEFORE_ANY_STAGE_A_DATA"
+    assert spec["decision_rule"]["parsimony_margin"] == STAGE_A_PARSIMONY_MARGIN
+    assert spec["candidates"] == list(MODEL_ORDER)
+    for relative, expected in spec["evidence_sha256"].items():
+        assert hashlib.sha256((ROOT / relative).read_bytes()).hexdigest() == expected
+
+
+def test_frozen_rule_limits_false_dose_effects_in_committed_simulations():
+    recovery = pd.read_csv(RESULTS / "recovery.csv")
+    frozen = recovery[
+        (recovery["rule"] == "parsimony_10pct_all_doses") & (recovery["truth"] == "no_dose_effect")
+    ]
+    plain = recovery[
+        (recovery["rule"] == "lowest_rmse_all_doses") & (recovery["truth"] == "no_dose_effect")
+    ]
+    assert frozen["share_correct"].min() >= 0.8
+    assert frozen["share_correct"].min() > plain["share_correct"].min()
+
+
+def test_stage_a_decision_applies_the_margin():
+    decision = stage_a_decision(
+        {MODEL_ORDER[0]: 10.0, MODEL_ORDER[1]: 9.5, MODEL_ORDER[2]: 9.4}
+    )
+    assert decision["selected_model"] == MODEL_ORDER[0]
+    assert decision["lowest_rmse_model"] == MODEL_ORDER[2]
+    with pytest.raises(ValueError, match="Missing Stage A candidates"):
+        stage_a_decision({MODEL_ORDER[0]: 1.0})

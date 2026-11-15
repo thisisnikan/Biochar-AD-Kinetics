@@ -29,9 +29,10 @@ Inspection depth is the landing page and its file list only. No file was downloa
 | --- | --- | --- | --- |
 | Galván, Badin, Becker & Bruno (2026), [preprint](https://www.researchsquare.com/article/rs-10373863/v1), digestate-derived biochar in agro-industrial co-digestion | Control without biochar plus 0.25, 0.5, 1, 1.5 and 2% w/w; triplicates; 38 °C; 30 d; daily biogas by water displacement with GC composition | Candidate, not acquired | Per-bottle time series and blanks from the authors; a measured basis to convert % w/w to g/L; peer-review status. Biogas volume with separate composition must be converted to methane before use |
 
-The design as reported has six dose levels with a zero-dose control. The Stage A
-simulation (`scripts/simulate_stage_a_power.py`) can assess such a design before any
-outcome is seen.
+The design as reported has six dose levels with a zero-dose control. Its top dose
+is low, so the [Stage A simulation](../results/stage-a-power/README.md) suggests it
+could detect a dose effect but probably not curvature; rerun the simulation on the
+converted g/L grid before any outcome is seen.
 
 ## Limits of this screen
 

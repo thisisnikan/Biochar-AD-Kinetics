@@ -68,6 +68,21 @@ allowed, declare a separate calibrated-transfer experiment and exclude its
 control from final scoring. Report all candidate errors and paired differences;
 do not invent independent samples from time points or treatment means.
 
+### Frozen Stage A specification (15 November 2026)
+
+The Stage A analysis is frozen in
+[`data/validation/stage_a_dose_v1.json`](../data/validation/stage_a_dose_v1.json),
+before any Stage A dataset has been acquired. The decision rule selects the simplest
+candidate unless a more complex one lowers mean whole-dose-held-out RMSE by more than
+10%. It was chosen from [simulation](../results/stage-a-power/README.md) only: the
+plain lowest-RMSE rule selects a dose-response model in up to 8 of 24 simulations with
+no true dose effect, the frozen rule in at most 4 of 24. `biochar-ad fit-stage-a`
+reports the frozen decision as `stage_a_decision`.
+
+The same simulation shows that passing the Stage A gate is not enough to detect a
+curved response. Prefer designs with a high-dose arm well beyond the expected optimum,
+and report the simulated recovery of the acquired dose grid next to the result.
+
 ### Stage B: digestion temperature
 
 After Stage A, seek replicated designs crossing doses with multiple digestion
