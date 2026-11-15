@@ -52,3 +52,10 @@ The documents below are grouped by purpose. New readers should start with
 Data provenance and the private-data boundary are documented in
 [`../data/README.md`](../data/README.md); reproducible reference outputs are described in
 [`../results/README.md`](../results/README.md).
+
+## Release
+
+| Document | Purpose |
+| --- | --- |
+| [Release checklist](RELEASING.md) | Steps and conditions for the first citable release |
+| [Release notes, 0.1.0 (draft)](RELEASE_NOTES_0.1.0.md) | Scope, limits and the verified build and test record |

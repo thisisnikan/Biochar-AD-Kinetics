@@ -17,12 +17,38 @@ records, for every dataset, what the evidence can and cannot support.
 > the minimum information required for cross-study prediction, and the software is not
 > an operational digital twin. See [Project status](docs/PROJECT_STATUS.md).
 
-**Contents:** [Motivation](#motivation) · [Current evidence](#current-evidence) ·
+**Contents:** [Key findings](#key-findings) · [Motivation](#motivation) · [Current evidence](#current-evidence) ·
 [Latest results](#latest-results) · [Quick start](#quick-start) ·
 [Command reference](#command-reference) · [Using your own data](#using-your-own-data) ·
 [Data access and privacy](#data-access-and-privacy) ·
 [Repository layout](#repository-layout) · [Documentation](#documentation) ·
 [Citation](#citation)
+
+## Key findings
+
+Three results, each reproducible from committed data with one command. All use
+held-out prediction error, not goodness of fit.
+
+1. **Curve family.** On 12 food-waste reactors (Kozłowski et al., 2025), the modified
+   Gompertz curve has the lowest leave-one-reactor-out RMSE in all four treatments:
+   5.8 to 12.8 mL CH₄ per g VS, against 7.4 to 14.3 for the logistic curve and 10.3 to
+   15.6 for first order (`biochar-ad benchmark-experimental`).
+2. **Dose response.** The project's own log-quadratic dose hypothesis is not supported
+   by independent data. On five published doses (Valentin & Białowiec, 2024), a simpler
+   log-linear form predicts a held-out dose with 11.1% error in methane potential, the
+   log-quadratic form with 31.6% (`biochar-ad benchmark-external-dose`).
+3. **Forecasting.** With the first 12.5 days observed, a recent-rate baseline forecasts
+   the end-of-cycle methane yield with 8.4% mean absolute relative error. The best
+   kinetic model reaches 13.7% (100 long cycles from 27 bottles, Sanglier et al., 2022;
+   [benchmark](docs/FORECAST_BENCHMARK.md)).
+
+![Held-out error for curve families, dose-response forms and forecasting methods](docs/figures/key_findings.png)
+
+Two of the three results count against the more complex model. They are reported
+because the purpose of the project is to find out what the available data can support.
+The figure is redrawn from the committed result tables by
+`python scripts/make_summary_figure.py`. These are retrospective results on small
+datasets, and none establishes cross-study prediction.
 
 ## Motivation
 

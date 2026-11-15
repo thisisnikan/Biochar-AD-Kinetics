@@ -5,6 +5,16 @@ release model while the public API remains experimental. Entries are listed newe
 
 ## Unreleased
 
+### 2026-11-15: Key findings and release notes
+
+- Added a "Key findings" section to the README with one figure,
+  `docs/figures/key_findings.png`, redrawn from committed result tables by
+  `scripts/make_summary_figure.py`. No model is refitted and no result file changes.
+- Brought the landing-page README up to date with the release preparation on `main`.
+- Added draft release notes for 0.1.0 (`docs/RELEASE_NOTES_0.1.0.md`) recording the
+  verified build and test environments.
+- Declared the licence as an SPDX expression in `pyproject.toml`.
+
 ### 2026-11-02: Release preparation and numerical reproducibility
 
 - Canonicalize derived Sanglier CSV floats to 15 significant digits and retain
@@ -130,7 +140,7 @@ release model while the public API remains experimental. Entries are listed newe
 - Added `biochar-ad validate-intake` with machine-readable errors and scientific-limit warnings.
 - Added a worked CSV template and tests for duplicate keys, changing reactor metadata and missing blanks.
 
-### Other changes since 0.1.0 (not individually dated)
+### Other changes since the initial prototype (not individually dated)
 
 - Connected the reactor-level intake contract to the kinetic model with
   `biochar-ad fit-stage-a`, preserving physical-reactor identity and source hashes.
@@ -181,7 +191,7 @@ release model while the public API remains experimental. Entries are listed newe
 - Added the open Kozłowski et al. (2025) reactor-level kinetic benchmark.
 - Added private, hash-verified Zhang et al. (2022) ingestion and summary-analysis workflows.
 
-## 0.1.0 — 2026-08-20
+## Initial prototype, 2026-08-20 (never tagged or published)
 
-- Released the initial global dose–temperature BMP modelling workflow.
+- First version of the global dose–temperature BMP modelling workflow.
 - Added model comparison, batch-aware bootstrap uncertainty and held-out-batch validation.
