@@ -11,6 +11,7 @@ Last reviewed: 2 October 2026 (effect credibility and generalization gate; other
 | Data contribution gate | Working | Minimum reactor-time-point contract plus machine-readable Stage A dose-series readiness assessment; source-level review remains mandatory |
 | Intake-to-model path | Working, awaiting qualifying data | `fit-stage-a` preserves reactor identity and separates whole-reactor from whole-dose holdouts; dose units other than g/L require documented conversion before fitting |
 | Real-data contract import | Reproducible, source conflict flagged | 7,575 observations from 15 Kozłowski reactors, including individual blanks; [validation and gaps](../results/intake/README.md) |
+| Blank-correction sensitivity | Checked, conclusions stable | Five blank corrections give the same curve-family ranking; final yields move by at most 1.64% and no effect changes sign. [Result](../results/blank-sensitivity/README.md) |
 | Synthetic workflow | Reproducible | Labelled synthetic input and deterministic reporting pipeline |
 | Open experimental benchmark | Reproducible | Kozłowski et al. (2025) reactor-level trajectories and reference output |
 | Zhang integration | Limited by source | Hash-verified private ingestion and summary analysis; original triplicates were lost |
@@ -141,8 +142,9 @@ criteria and the remaining acquisition work.
 
 The Valentin & Białowiec table remains a parameter-level challenge, not Stage A
 reactor validation. The 15-reactor Kozłowski intake adds no independent study,
-dose or temperature. Its blank QC and control-dose source conflicts remain
-unresolved. Heitkamp industrial chemistry was acquired on 27 September, but it does not satisfy the reactor-level dose-response methane gate.
+dose or temperature. Its control-dose source conflict and the cause of the K1
+blank readings remain author questions; the benchmark conclusions do not depend on
+the blank correction. Heitkamp industrial chemistry was acquired on 27 September, but it does not satisfy the reactor-level dose-response methane gate.
 
 All three model candidates now share whole-batch folds, robust loss and common
 parameter bounds. Mean fold RMSE is primary; AICc is descriptive. At one training

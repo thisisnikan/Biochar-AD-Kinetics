@@ -81,7 +81,7 @@ CC BY 4.0. Full file provenance is in [data/README.md](../../data/README.md).
 
 | Gap | Current evidence | Next action |
 | --- | --- | --- |
-| Blank trajectory QC | K1 decreases at hours 469 and 484 | Check source readings E487 and E502 before revising blank correction |
+| Blank trajectory QC | K1 decreases at hours 469 and 484; benchmark conclusions are insensitive to it ([sensitivity analysis](../blank-sensitivity/README.md)) | Ask the authors about readings E487 and E502; keep the published correction |
 | Temperature response | Only 37 °C | Obtain reactor curves at additional digestion temperatures |
 | Within-material dose response | Only one amended dose, 5 g/L, for each material | Obtain several doses of the same material with matched controls and replicates |
 | External reactor-level validation | One study in this import | Obtain an independent study and specify held-out comparisons before fitting |

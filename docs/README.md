@@ -40,6 +40,7 @@ The documents below are grouped by purpose. New readers should start with
 | [Cai BMP ingestion gate](CAI_BMP_INGESTION_GATE.md) | BMP database records 583–594 (candidate) |
 | [García-Prats et al. (2024) summary intake](GARCIA_PRATS_2024_SUMMARY_INTAKE.md) | Author-shared methane summary workbook (private; importer only) |
 | [Research and acquisition update, September 2026](RESEARCH_EVIDENCE_2026_09.md) | Targeted screen of candidate sources and their acquisition status |
+| [Open-data screen for Stage A, November 2026](RESEARCH_EVIDENCE_2026_11.md) | Inspected open records, why each is unusable, and one new candidate |
 
 ## Continuous-reactor work
 

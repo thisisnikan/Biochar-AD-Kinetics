@@ -13,6 +13,13 @@ and conflicting control dose entries. Neither issue is author-resolved.
 Before changing the correction, compare the published three-blank calculation
 with a clearly labelled sensitivity analysis; never silently repair the source.
 
+That sensitivity analysis was run on 15 November 2026
+([result](../results/blank-sensitivity/README.md)). Under the published correction,
+a running-maximum repair of K1 and each leave-one-blank-out alternative, the
+curve-family ranking is identical, final yields move by at most 1.64% and no
+within-study effect changes sign. The published correction stays the reference.
+The cause of the K1 behaviour and the control dose entries remain author questions.
+
 ## 2. Comparable prediction tests
 
 `biochar-ad demo` and `biochar-ad fit` now compare constant Gompertz, log-linear

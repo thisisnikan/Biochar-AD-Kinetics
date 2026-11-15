@@ -5,6 +5,19 @@ release model while the public API remains experimental. Entries are listed newe
 
 ## Unreleased
 
+### 2026-11-15: Blank-correction sensitivity, open-data screen and Stage A simulation code
+
+- Ran the blank-correction sensitivity analysis required by the validation plan for the
+  Kozłowski (2025) benchmark (`blank_sensitivity`, `results/blank-sensitivity/`). Under
+  five corrections the curve-family ranking is identical, final yields move by at most
+  1.64% and no within-study effect changes sign. The published correction stays the
+  reference.
+- Recorded an open-data screen for Stage A (`docs/RESEARCH_EVIDENCE_2026_11.md`): no
+  openly downloadable dataset meets the gate; one new on-request candidate identified.
+- Added a simulation of the Stage A dose-holdout test (`stage_a_power`,
+  `scripts/simulate_stage_a_power.py`) that scores simulated designs with the unmodified
+  `leave_one_dose_out` routine. Its results are not committed yet.
+
 ### 2026-11-15: Key findings and release notes
 
 - Added a "Key findings" section to the README with one figure,
