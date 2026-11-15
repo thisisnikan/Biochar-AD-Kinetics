@@ -1,4 +1,4 @@
-# Marta's Frontiers workbook: private summary-data integration
+# García-Prats et al. (2024) Frontiers workbook: private summary-data integration
 
 Author-shared file: `Data Frontiers.xlsx`, received 18 September 2026.
 Article: [García-Prats, González and Sánchez (2024)](https://doi.org/10.3389/fceng.2024.1384495).

@@ -248,6 +248,8 @@ def test_cli_fit_stage_a_writes_leakage_safe_holdouts(tmp_path, monkeypatch, cap
     dose_holdouts = pd.read_csv(output_dir / "leave_one_dose_out.csv")
     reactor_holdouts = pd.read_csv(output_dir / "leave_one_reactor_out.csv")
     assert payload["primary_stage_a_metric"] == "mean whole-dose-held-out RMSE"
+    assert payload["stage_a_decision"]["parsimony_margin"] == 0.10
+    assert payload["stage_a_decision"]["selected_model"] in set(dose_holdouts["model"])
     assert not payload["held_out_study_transfer_performed"]
     assert dose_holdouts["held_out_group"].nunique() == 4
     assert dose_holdouts["held_out_reactors"].eq(2).all()

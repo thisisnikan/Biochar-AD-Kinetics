@@ -13,6 +13,13 @@ and conflicting control dose entries. Neither issue is author-resolved.
 Before changing the correction, compare the published three-blank calculation
 with a clearly labelled sensitivity analysis; never silently repair the source.
 
+That sensitivity analysis was run on 15 November 2026
+([result](../results/blank-sensitivity/README.md)). Under the published correction,
+a running-maximum repair of K1 and each leave-one-blank-out alternative, the
+curve-family ranking is identical, final yields move by at most 1.64% and no
+within-study effect changes sign. The published correction stays the reference.
+The cause of the K1 behaviour and the control dose entries remain author questions.
+
 ## 2. Comparable prediction tests
 
 `biochar-ad demo` and `biochar-ad fit` now compare constant Gompertz, log-linear
@@ -60,6 +67,21 @@ untouched study with no parameter refitting. If zero-dose recalibration is
 allowed, declare a separate calibrated-transfer experiment and exclude its
 control from final scoring. Report all candidate errors and paired differences;
 do not invent independent samples from time points or treatment means.
+
+### Frozen Stage A specification (15 November 2026)
+
+The Stage A analysis is frozen in
+[`data/validation/stage_a_dose_v1.json`](../data/validation/stage_a_dose_v1.json),
+before any Stage A dataset has been acquired. The decision rule selects the simplest
+candidate unless a more complex one lowers mean whole-dose-held-out RMSE by more than
+10%. It was chosen from [simulation](../results/stage-a-power/README.md) only: the
+plain lowest-RMSE rule selects a dose-response model in up to 8 of 24 simulations with
+no true dose effect, the frozen rule in at most 4 of 24. `biochar-ad fit-stage-a`
+reports the frozen decision as `stage_a_decision`.
+
+The same simulation shows that passing the Stage A gate is not enough to detect a
+curved response. Prefer designs with a high-dose arm well beyond the expected optimum,
+and report the simulated recovery of the acquired dose grid next to the result.
 
 ### Stage B: digestion temperature
 

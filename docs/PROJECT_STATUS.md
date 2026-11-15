@@ -10,7 +10,9 @@ Last reviewed: 2 October 2026 (effect credibility and generalization gate; other
 | Automated quality | Working | Ruff plus automated tests on Python 3.10 and 3.12 in GitHub Actions |
 | Data contribution gate | Working | Minimum reactor-time-point contract plus machine-readable Stage A dose-series readiness assessment; source-level review remains mandatory |
 | Intake-to-model path | Working, awaiting qualifying data | `fit-stage-a` preserves reactor identity and separates whole-reactor from whole-dose holdouts; dose units other than g/L require documented conversion before fitting |
+| Stage A decision rule and test power | Frozen before data; power simulated | 10% parsimony margin frozen in `data/validation/stage_a_dose_v1.json`. Simulated recovery of a curved response: 18 to 24 of 24 with a 70 g/L arm, at most 7 of 24 at the minimum gate. [Result](../results/stage-a-power/README.md) |
 | Real-data contract import | Reproducible, source conflict flagged | 7,575 observations from 15 Kozłowski reactors, including individual blanks; [validation and gaps](../results/intake/README.md) |
+| Blank-correction sensitivity | Checked, conclusions stable | Five blank corrections give the same curve-family ranking; final yields move by at most 1.64% and no effect changes sign. [Result](../results/blank-sensitivity/README.md) |
 | Synthetic workflow | Reproducible | Labelled synthetic input and deterministic reporting pipeline |
 | Open experimental benchmark | Reproducible | Kozłowski et al. (2025) reactor-level trajectories and reference output |
 | Zhang integration | Limited by source | Hash-verified private ingestion and summary analysis; original triplicates were lost |
@@ -97,7 +99,7 @@ Last reviewed: 2 October 2026 (effect credibility and generalization gate; other
   parameter-level challenge only; the paper's raw reactor time series were not obtained.
 - That summary-curve residuals replace biological replicate uncertainty.
 - That this research prototype is already an operational plant digital twin (see
-  [README § What this project can become](../README.md#what-this-project-can-become)): there is no
+  [Roadmap](ROADMAP.md)): there is no
   mass/energy balance, reactor hydrodynamics, or live data-assimilation loop here.
 - That the 8-parameter global model's individual parameter values are meaningful on their
   own — on the bundled synthetic demo dataset itself, the identifiability diagnostic already
@@ -141,8 +143,9 @@ criteria and the remaining acquisition work.
 
 The Valentin & Białowiec table remains a parameter-level challenge, not Stage A
 reactor validation. The 15-reactor Kozłowski intake adds no independent study,
-dose or temperature. Its blank QC and control-dose source conflicts remain
-unresolved. Heitkamp industrial chemistry was acquired on 27 September, but it does not satisfy the reactor-level dose-response methane gate.
+dose or temperature. Its control-dose source conflict and the cause of the K1
+blank readings remain author questions; the benchmark conclusions do not depend on
+the blank correction. Heitkamp industrial chemistry was acquired on 27 September, but it does not satisfy the reactor-level dose-response methane gate.
 
 All three model candidates now share whole-batch folds, robust loss and common
 parameter bounds. Mean fold RMSE is primary; AICc is descriptive. At one training

@@ -1,0 +1,41 @@
+{
+  "scenarios": {
+    "published_three_blank_mean": "Mean of K1, K2 and K3 at each reading, as published.",
+    "k1_running_maximum": "K1 replaced by its running maximum so cumulative methane never decreases.",
+    "exclude_k1": "Mean of K2 and K3 only.",
+    "exclude_k2": "Mean of K1 and K3 only.",
+    "exclude_k3": "Mean of K1 and K2 only."
+  },
+  "best_model_by_scenario": {
+    "exclude_k1": [
+      "modified_gompertz"
+    ],
+    "exclude_k2": [
+      "modified_gompertz"
+    ],
+    "exclude_k3": [
+      "modified_gompertz"
+    ],
+    "k1_running_maximum": [
+      "modified_gompertz"
+    ],
+    "published_three_blank_mean": [
+      "modified_gompertz"
+    ]
+  },
+  "full_ranking_identical_to_published": {
+    "exclude_k1": true,
+    "exclude_k2": true,
+    "exclude_k3": true,
+    "k1_running_maximum": true,
+    "published_three_blank_mean": true
+  },
+  "max_abs_final_yield_change_percent": 1.636,
+  "max_abs_effect_shift_percentage_points": 1.444,
+  "effect_sign_changes": [],
+  "interpretation_boundary": "Sensitivity analysis only. The published three-blank correction remains the reference; no source value is repaired and no blank is removed from the dataset.",
+  "input_sha256": {
+    "kozlowski_2025_bmp.csv": "fb6501b276f3ad4c06af912bdc1ea04d5997ef4b1df76d204da8823efb9885fd",
+    "kozlowski_2025_reactor_observations.csv.gz": "0312de9af001fc47e48736eeffc8ac4c697df87ad54c94f3a02f7252508bc662"
+  }
+}

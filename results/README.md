@@ -88,3 +88,19 @@ is smooth, not which material property (if any) drives it. See
 cannot support a DIET claim, and `data/README.md` for why the control's own
 methane yield and the thesis's ~128% enhancement figure are deliberately not
 transcribed here.
+
+## Blank-correction sensitivity
+
+`blank-sensitivity/` reruns the Kozłowski benchmark under five inoculum-blank
+corrections. Rankings are identical and no effect changes sign; see its
+[README](blank-sensitivity/README.md).
+
+```bash
+python scripts/analyze_kozlowski_blank_sensitivity.py
+```
+
+## Stage A test power (simulation)
+
+`stage-a-power/` reports how often the Stage A dose-holdout test recovers a known
+dose-response form for four dose grids, and justifies the frozen decision rule; see
+its [README](stage-a-power/README.md). Simulation only.
