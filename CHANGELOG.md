@@ -5,6 +5,16 @@ release model while the public API remains experimental. Entries are listed newe
 
 ## Unreleased
 
+### 2026-11-02: Release preparation and numerical reproducibility
+
+- Canonicalize derived Sanglier CSV floats to 15 significant digits and retain
+  exact text/decision checks with a strict numeric source-preservation tolerance.
+- Test pandas 3.0.6 and 3.1.0 explicitly; build and smoke-test the wheel outside
+  the checkout so editable installs cannot mask packaging problems.
+- Remove an unverified release date from citation metadata and add repository
+  links and scientific keywords. Version 0.1.0 remains unreleased until the
+  release checklist in `docs/RELEASING.md` is completed.
+
 ### 2026-10-20: Repository presentation
 
 - Rewrote the README as a concise landing page: scientific-status notice first, an evidence
