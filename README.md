@@ -29,7 +29,9 @@ records, for every dataset, what the evidence can and cannot support.
 Three results, each reproducible from committed data with one command. All use
 held-out prediction error, not goodness of fit.
 
-1. **Curve family.** On 12 food-waste reactors (Kozłowski et al., 2025), the modified
+1. **Curve family.** On the 10 benchmark-eligible food-waste reactors of 12 (Kozłowski
+   et al., 2025; two reactors are excluded as in the source workbook, and including them
+   does not change the ranking), the modified
    Gompertz curve has the lowest leave-one-reactor-out RMSE in all four treatments:
    5.8 to 12.8 mL CH₄ per g VS, against 7.4 to 14.3 for the logistic curve and 10.3 to
    15.6 for first order (`biochar-ad benchmark-experimental`).
@@ -99,7 +101,7 @@ kept in separate tables so that the two are not read as equally strong.
 | Evidence layer | Dataset | What it supports | What it does not support |
 | --- | --- | --- | --- |
 | Software demonstration | Labelled synthetic BMP curves | End-to-end fitting, uncertainty and held-out-batch workflow | Scientific validation |
-| Reactor-level benchmark | Kozłowski et al. (2025), 12 trajectories | Reproducible kinetic-family comparison | A universal biochar mechanism |
+| Reactor-level benchmark | Kozłowski et al. (2025), 12 trajectories (10 benchmark-eligible) | Reproducible kinetic-family comparison | A universal biochar mechanism |
 | Author-shared summary analysis | Zhang et al. (2022), treatment means and SDs | Kinetic/VFA analysis with explicit limitations | Replicate-held-out validation or new significance tests |
 | Independent dose challenge | Valentin & Białowiec (2024), five fitted-dose endpoints | Falsifies the log-quadratic form as tested | Full reactor-trajectory validation |
 | Published pyrolysis-temperature summary | CDU / Wang (2026) thesis, six biochars (400–900 °C) | Descriptive temperature-response check, with pyrolysis temperature/BET/conductivity/pH collinearity reported explicitly | Attributing any trend to one material property, a causal claim, or DIET evidence (see [mechanism grading](docs/MECHANISM_EVIDENCE.md)) |

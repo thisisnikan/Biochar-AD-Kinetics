@@ -147,7 +147,7 @@ def build_figure(results: dict[str, pd.DataFrame]) -> plt.Figure:
     _style(
         ax,
         "1. Modified Gompertz predicts unseen reactors best in every treatment",
-        "Kozłowski et al. (2025): 12 food-waste reactors, 21 d, 37 °C",
+        "Kozłowski et al. (2025): 10 of 12 food-waste reactors, 21 d, 37 °C",
         "Leave-one-reactor-out RMSE (mL CH4 per g VS)",
     )
     ax.set_xlim(0, 18)
