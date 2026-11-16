@@ -19,6 +19,7 @@ The documents below are grouped by purpose. New readers should start with
 | [Validation plan](VALIDATION_PLAN.md) | Staged, leakage-safe validation protocol (dose first, temperature second) |
 | [Evidence requirements](EVIDENCE_REQUIREMENTS.md) | Minimum information for cross-study prediction, checked by `biochar-ad check-evidence` |
 | [Generalization readiness](GENERALIZATION_READINESS.md) | Gate that must pass before any leave-one-study-out result is interpreted |
+| [Loading regime and dose-basis evidence](REGIME_DOSE_EVIDENCE.md) | Experimental-context preflight checking ISR/OLR/HRT and original biochar dose denominators before any proposed cross-study comparison |
 | [Mechanism-evidence grading](MECHANISM_EVIDENCE.md) | Rubric limiting mechanistic language (for example DIET) to what measurements support |
 
 ## Results and decision records
