@@ -1,0 +1,7 @@
+study_id,experiment_id,regime_id,arm_id,response,digestion_mode,is_control,dose_value,dose_unit,dose_denominator,isr_vs,olr_g_vs_l_d,hrt_days,stress_status,stress_evidence,substrate_id,inoculum_id,material_id,source_record_id
+synthetic_a,run_1,regime_1,control,final_methane_yield,batch,true,0,none,none,0.5,,,overloaded,synthetic_example_only,substrate_1,inoculum_1,none,synthetic_a:control
+synthetic_a,run_1,regime_1,low_dose,final_methane_yield,batch,false,10,pct_substrate_vs,substrate_vs_g,0.5,,,overloaded,synthetic_example_only,substrate_1,inoculum_1,grass_biochar_750,synthetic_a:low_dose
+synthetic_a,run_1,regime_1,high_dose,final_methane_yield,batch,false,25,pct_substrate_vs,substrate_vs_g,0.5,,,overloaded,synthetic_example_only,substrate_1,inoculum_1,grass_biochar_750,synthetic_a:high_dose
+synthetic_b,run_1,regime_1,control,final_methane_yield,batch,true,0,none,none,2,,,normal,synthetic_example_only,substrate_2,inoculum_2,none,synthetic_b:control
+synthetic_b,run_1,regime_1,low_dose,final_methane_yield,batch,false,5,g_l,working_volume_l,2,,,normal,synthetic_example_only,substrate_2,inoculum_2,wood_biochar_600,synthetic_b:low_dose
+synthetic_b,run_1,regime_1,high_dose,final_methane_yield,batch,false,15,g_l,working_volume_l,2,,,normal,synthetic_example_only,substrate_2,inoculum_2,wood_biochar_600,synthetic_b:high_dose
