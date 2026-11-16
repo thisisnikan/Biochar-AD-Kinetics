@@ -165,6 +165,7 @@ def test_csv_boolean_strings_remain_valid() -> None:
 
 def test_nonnumeric_dose_fails_closed() -> None:
     frame = pd.DataFrame(_arms("a"))
+    frame["dose_value"] = frame["dose_value"].astype(object)
     frame.loc[1, "dose_value"] = "unverified"
     with pytest.raises(ValueError, match="dose_value"):
         audit_regime_dose_context(frame)
