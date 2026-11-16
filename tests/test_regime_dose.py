@@ -183,3 +183,33 @@ def test_missing_material_id_blocks_amended_arm() -> None:
     frame.loc[1, "material_id"] = "not_measured"
     audit = audit_regime_dose_context(frame)
     assert "amended_material_identity_missing" in audit["regimes"][0]["context_blockers"]
+
+
+def test_documented_synthetic_example_is_blocked_without_silent_conversion() -> None:
+    from pathlib import Path
+
+    sample = Path("data/templates/regime_dose_context_example.csv")
+    audit = audit_regime_dose_context(pd.read_csv(sample))
+    assert len(audit["regimes"]) == 2
+    assert audit["n_context_documented"] == 2
+    assert audit["n_pairs_not_blocked_by_context"] == 0
+    assert "dose_basis_mismatch_no_conversion" in (
+        audit["cross_study_pairs"][0]["blocking_reasons"]
+    )
+
+
+def test_cli_prints_and_writes_report(tmp_path, monkeypatch, capsys) -> None:
+    import json
+    import sys
+
+    from biochar_ad_kinetics.cli import main
+
+    sample = "data/templates/regime_dose_context_example.csv"
+    output = tmp_path / "report.json"
+    monkeypatch.setattr(
+        sys, "argv", ["biochar-ad", "audit-regime-dose", sample, "--output", str(output)]
+    )
+    main()
+    report = json.loads(output.read_text(encoding="utf-8"))
+    assert report["n_context_documented"] == 2
+    assert "cross_study_pooling_performed" in capsys.readouterr().out
