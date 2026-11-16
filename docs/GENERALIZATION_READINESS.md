@@ -29,6 +29,8 @@ labels alone do not prove independent experiments.
 
 These conditions are deliberately stricter than what is required to fit a numerical model. They are intended to prevent a statistically neat result from being mistaken for biological generalization.
 
+A separate [regime/dose-basis context preflight](REGIME_DOSE_EVIDENCE.md) documents source-backed batch ISR, continuous OLR/HRT, loading stress, original dose denominator and endpoint. It does not alter this minimum gate or certify exchangeability. Use it before claiming any pair of studies is comparable.
+
 ## Domain-shift diagnostics
 
 The audit also records pairwise differences between studies:
