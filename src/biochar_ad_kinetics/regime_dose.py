@@ -221,7 +221,7 @@ def audit_regime_dose_context(frame: pd.DataFrame) -> dict:
                 "dose_unit": unit,
                 "dose_denominator": denominator,
                 "amended_dose_range": list(dose_range) if dose_range else None,
-                "n_arms": int(len(group)),
+                "n_arms": len(group),
                 "n_amended_doses": int(positive["dose_value"].nunique()),
                 "material_ids": sorted(
                     set(positive["material_id"].dropna().astype(str))
