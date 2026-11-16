@@ -31,6 +31,7 @@ REQUIRED_COLUMNS = (
     "olr_g_vs_l_d",
     "hrt_days",
     "stress_status",
+    "stress_evidence",
     "substrate_id",
     "inoculum_id",
     "material_id",
@@ -151,6 +152,8 @@ def audit_regime_dose_context(frame: pd.DataFrame) -> dict:
             blockers.append("mixed_stress_status")
         if "unknown" in statuses:
             blockers.append("stress_status_undocumented")
+        if not _nonblank(group["stress_evidence"]):
+            blockers.append("stress_evidence_missing")
         if group["substrate_id"].nunique() != 1:
             blockers.append("unmatched_substrate_context")
         if group["inoculum_id"].nunique() != 1:
@@ -188,6 +191,10 @@ def audit_regime_dose_context(frame: pd.DataFrame) -> dict:
             if group["isr_vs"].notna().any():
                 blockers.append("batch_isr_misapplied_to_continuous_mode")
 
+        if positive["material_id"].fillna("").astype(str).str.strip().isin(
+            {"", "none", "not_measured"}
+        ).any():
+            blockers.append("amended_material_identity_missing")
         if positive.empty:
             dose_range = None
             unit = None
