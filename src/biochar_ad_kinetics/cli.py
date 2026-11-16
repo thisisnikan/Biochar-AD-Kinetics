@@ -166,6 +166,21 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("data/requirements/minimum_information_items.json"),
         help="Minimum-information item definitions (default: the repository checklist)",
     )
+    regime = commands.add_parser(
+        "audit-regime-dose",
+        help="Fail-closed audit of loading regime and biochar dose bases before cross-study comparison",
+    )
+    regime.add_argument(
+        "csv",
+        type=Path,
+        help="One source-documented arm/response per row (docs/REGIME_DOSE_EVIDENCE.md)",
+    )
+    regime.add_argument(
+        "--output",
+        type=Path,
+        default=None,
+        help="Optional path for the machine-readable audit JSON",
+    )
     pyrolysis = commands.add_parser(
         "benchmark-pyrolysis-temperature",
         help="Descriptive temperature-response check on a published pyrolysis summary table",
@@ -299,6 +314,16 @@ def _run_stage_a(args: argparse.Namespace) -> None:
 
 def main() -> None:
     args = build_parser().parse_args()
+    if args.command == "audit-regime-dose":
+        from .regime_dose import audit_regime_dose_context
+
+        report = audit_regime_dose_context(pd.read_csv(args.csv, dtype={"source_record_id": str}))
+        payload = json.dumps(report, indent=2)
+        if args.output is not None:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(payload + "\n", encoding="utf-8")
+        print(payload)
+        return
     if args.command == "validate-intake":
         frame = pd.read_csv(args.csv)
         report = validate_reactor_observations(frame)
