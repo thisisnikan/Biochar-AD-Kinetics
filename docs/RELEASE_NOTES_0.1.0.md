@@ -14,7 +14,8 @@ and decision records in this repository.
 ## What it shows
 
 1. Modified Gompertz has the lowest leave-one-reactor-out RMSE in all four treatments
-   of the Kozłowski et al. (2025) benchmark (12 reactors).
+   of the Kozłowski et al. (2025) benchmark (10 benchmark-eligible reactors of 12;
+   the ranking is unchanged when the two source-excluded reactors are included).
 2. The project's log-quadratic dose-response form is not supported on the independent
    Valentin & Białowiec (2024) table: a log-linear form has lower leave-one-dose-out
    error for methane potential (11.1% against 31.6%) and for maximum rate.
@@ -40,20 +41,26 @@ and decision records in this repository.
 
 ## Verification record
 
-Built and tested on 15 November 2026 from the release-preparation branch.
+Rebuilt and retested on 16 November 2026 from `main` at `b35ad1e` plus the
+release-candidate branch. Full record: [reproduction audit](REPRODUCTION_AUDIT_2026_11.md).
 
 | Check | Result |
 | --- | --- |
 | `ruff check .` | passed |
-| `python -m build` | wheel and sdist built (setuptools ≥ 77, SPDX licence field) |
+| `python -m build` | wheel and sdist built; no author-shared source file in either |
 | Wheel installed outside the checkout, `import` and `biochar-ad --help` | passed |
-| Full suite, Python 3.12.3, pandas 3.0.6, numpy 2.5.4, scipy 1.18.1, matplotlib 3.11.2 | 262 passed |
-| Full suite, Python 3.12.3, pandas 3.1.0, numpy 2.5.4, scipy 1.18.1, matplotlib 3.11.2 | 262 passed |
-| Full suite, Python 3.13.18, pandas 3.1.1 (editable install) | 262 passed |
+| Full suite, Python 3.10.20, pandas 2.3.3, numpy 2.2.6, scipy 1.15.3 (wheel) | 300 passed |
+| Full suite, Python 3.12, pandas 3.0.6, numpy 2.5.4, scipy 1.18.1 (wheel) | 300 passed |
+| Full suite, Python 3.13.18, pandas 3.1.1, numpy 2.5.5, scipy 1.18.1 (editable) | 300 passed |
+| Curve-family, dose-response, forecasting and blank-sensitivity outputs | byte-identical to the committed files |
 
-Both Python 3.12 runs imported the package from the installed wheel, not from the
-source tree. The exact release commit and the CI run for it are to be added here when
-the tag is created.
+Known reproducibility limits, described in the audit: the Sanglier prefix-fit audit is
+not bit-reproducible across machines (the forecasting conclusion is unchanged), effect
+tables agree to about nine significant digits, and the benchmark commands need a
+repository checkout because the datasets are not packaged.
+
+The exact release commit and the CI run for it are to be added here when the tag is
+created.
 
 ## Remaining steps before publication
 

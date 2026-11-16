@@ -1,6 +1,6 @@
 # Project status
 
-Last reviewed: 2 October 2026 (effect credibility and generalization gate; other evidence rows retain their prior review)
+Last reviewed: 16 November 2026 (independent reproduction audit of the reference benchmarks; see [audit](REPRODUCTION_AUDIT_2026_11.md). Other evidence rows retain their prior review)
 
 ## Readiness snapshot
 
