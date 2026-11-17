@@ -54,6 +54,22 @@ The figure is redrawn from the committed result tables by
 `python scripts/make_summary_figure.py`. These are retrospective results on small
 datasets, and none establishes cross-study prediction.
 
+## Research extensions (after v0.1.0)
+
+Two further questions, each with a protocol committed before its analysis. Neither is
+part of the v0.1.0 release.
+
+- **[Calibrated early stopping](docs/EARLY_STOPPING.md).** On 100 retrospective cycles,
+  a stopping rule with a conformal error bound stopped 91 cycles early, saved 7.3 days
+  per cycle on average and held the end yield within its interval in 96% of bottles
+  (leave one bottle out). It did not transfer usefully between the two laboratories.
+- **[Dose-experiment design](docs/DOSE_DESIGN.md).** A simulation of 396 designs shows that
+  dose range, log spacing and replicates matter more than the number of dose levels, and
+  that most realistic budgets cannot reliably detect an optimum unless the peak effect is
+  about 15% and replicate variability about 3%.
+
+New users: start with the [user guide](docs/GUIDE.md).
+
 ## Motivation
 
 Biochar-assisted anaerobic digestion has a translation problem, not only a

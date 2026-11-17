@@ -10,6 +10,9 @@ The documents below are grouped by purpose. New readers should start with
 | [Architecture and glossary](ARCHITECTURE.md) | Plain-language map of the idea, repository layout, code path and terminology |
 | [Project status](PROJECT_STATUS.md) | Current readiness, what can and cannot be claimed, and the next validation gate |
 | [Roadmap](ROADMAP.md) | Staged long-term direction and the evidence each stage requires |
+| [User guide](GUIDE.md) | How to reproduce every result, run your own data, stop a test early and plan a dose experiment |
+| [Calibrated early stopping](EARLY_STOPPING.md) | Retrospective stopping rule with a checked error bound (protocol frozen before analysis) |
+| [Dose-experiment design](DOSE_DESIGN.md) | Simulation of 396 designs for detecting a dose optimum (protocol frozen before analysis) |
 | [Technical report](report/report.pdf) | Five-page research report on the three reference benchmarks ([LaTeX source](report/report.tex)); not peer reviewed |
 | [Reproduction audit, November 2026](REPRODUCTION_AUDIT_2026_11.md) | Independent rerun of every reference benchmark, with discrepancies and limits |
 

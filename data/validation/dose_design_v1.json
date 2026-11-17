@@ -1,0 +1,43 @@
+{
+  "spec_id": "dose_design_map_v1",
+  "spec_version": "1.0.0",
+  "frozen_on": "2026-11-17",
+  "status": "FROZEN_BEFORE_ANALYSIS",
+  "evidence_role": "Simulation only. Says which experiment to run; says nothing about how biochar behaves.",
+  "question": "For a fixed number of reactors, which choice of number of doses, replicates per dose, highest dose and dose spacing gives the highest worst-case probability that a whole-dose-held-out test selects the true dose-response form of methane potential, when the location of any optimum is unknown?",
+  "surrogate": {
+    "description": "Two-stage surrogate of the Stage A rule. Each reactor's methane potential is drawn as ln P = f(x) + e, x = ln(1 + dose in g/L), e ~ Normal(0, sd). Candidate forms constant, linear and quadratic in x are fitted by ordinary least squares to the reactor values of all doses but one and scored by RMSE of ln P over the replicates of the held-out dose; scores are averaged over doses with equal weight. The simplest form is kept unless a more complex one lowers that mean by more than 10% (the stage_a_dose_v1 parsimony margin).",
+    "why": "The trajectory-level Stage A simulation takes about 15 s per run on the development machine, too slow for a design search. The surrogate ignores curve-fitting error and the rate parameter.",
+    "agreement_check": "For the four designs in results/stage-a-power, report surrogate and trajectory-level share correct side by side at sd 0.03 and 0.07, gain 0.15, optimum at 8 g/L. No threshold; the comparison is reported as is."
+  },
+  "design_space": {
+    "budgets_reactors": [18, 24, 36, 48],
+    "doses_including_zero": "4 to 12",
+    "replicates": "the largest integer r >= 2 with doses * r <= budget",
+    "highest_dose_g_l": [8, 15, 30, 50, 70, 100],
+    "spacing": {
+      "log": "doses evenly spaced in ln(1 + d) from 0 to ln(1 + highest dose)",
+      "linear": "doses evenly spaced in d from 0 to highest dose"
+    }
+  },
+  "truths": {
+    "constant": "no dose effect",
+    "monotone": "ln P = ln P0 + ln(1 + gain) * x / ln(9), i.e. the stated gain at 8 g/L",
+    "optimum_5": "quadratic in x with its maximum ln(1 + gain) above baseline at 5 g/L",
+    "optimum_10": "same, maximum at 10 g/L",
+    "optimum_20": "same, maximum at 20 g/L",
+    "optimum_40": "same, maximum at 40 g/L"
+  },
+  "correct_selection": "constant for the constant truth, linear for the monotone truth, quadratic for every optimum truth",
+  "gains": [0.08, 0.15],
+  "reactor_log_sd": [0.03, 0.05, 0.07],
+  "simulations_per_scenario": 2000,
+  "seed": 20261117,
+  "primary_objective": "For each budget, gain and sd: the design with the highest minimum share correct over the six truths (maximin).",
+  "secondary": [
+    "Share correct for every truth and design",
+    "False curvature: share selecting quadratic under the constant or monotone truth",
+    "Smallest budget at which the maximin design reaches 0.80, per gain and sd, if any"
+  ],
+  "reporting": "All designs and scenarios are written to the results table. No design, truth, threshold or count is changed after the first run."
+}
