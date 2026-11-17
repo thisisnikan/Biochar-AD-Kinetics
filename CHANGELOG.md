@@ -5,6 +5,17 @@ release model while the public API remains experimental. Entries are listed newe
 
 ## Unreleased
 
+### 2026-11-17: Calibrated early stopping and dose-experiment design
+
+- Froze `data/validation/early_stopping_v1.json`, then applied it
+  (`scripts/run_early_stopping.py`, `results/early-stopping/`, `docs/EARLY_STOPPING.md`).
+  Criteria C2 and C3 pass; C1 fails as too conservative (the criterion was below the
+  method's own finite-sample level); C4 passes only formally.
+- Froze `data/validation/dose_design_v1.json`, then searched 396 designs
+  (`scripts/run_dose_design.py`, `results/dose-design/`, `docs/DOSE_DESIGN.md`).
+- Added `docs/GUIDE.md` and `scripts/make_research_figures.py`.
+- Removed the tools statement from the technical report.
+
 ### 2026-11-16: Independent reproduction audit and technical report
 
 - Reran every reference benchmark from a clean clone in three Python environments
