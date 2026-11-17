@@ -1,0 +1,37 @@
+{
+  "spec_id": "calibrated_early_stopping_v1",
+  "tolerance_log": 0.09531017980432493,
+  "cycles": 100,
+  "bottles": 27,
+  "pairs": 1523,
+  "holliger_fired_cycles": 17,
+  "criteria": {
+    "C1_calibration": {
+      "pass": false,
+      "pair_coverage_fixed": 0.9507370625017684,
+      "pair_coverage_normalised": 0.9591941827235944
+    },
+    "C2_coverage_at_stop": {
+      "pass": true,
+      "value": 0.9567901234567903
+    },
+    "C3_time_saving": {
+      "pass": true,
+      "adaptive_median_stop_day": 14.0,
+      "fixed_day_rule_stop_day_median_over_folds": 28.0,
+      "adaptive_share_of_cycles_stopped_before_end": 0.91
+    },
+    "C4_transfer": {
+      "pass": true,
+      "coverage_at_stop_by_test_lab": {
+        "test_BRL": 0.9167,
+        "test_LBE": 1.0
+      }
+    }
+  },
+  "input_sha256": {
+    "methane": "d25f36603fff774765f517459ff38dfdde7890d2dfe091f8f770070dfe723911",
+    "structure": "94cf29389e6334cc0e21e514cf01e05958e7e8c1b03cb0817005d2a49622a5a9",
+    "spec": "73703de9d72c382216715f095bebce54843cc73a75e805985c9a8be5c11aa851"
+  }
+}
