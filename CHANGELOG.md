@@ -5,6 +5,18 @@ release model while the public API remains experimental. Entries are listed newe
 
 ## Unreleased
 
+### 2026-11-16: Independent reproduction audit and technical report
+
+- Reran every reference benchmark from a clean clone in three Python environments
+  (`docs/REPRODUCTION_AUDIT_2026_11.md`). The three key findings reproduce.
+- Corrected the reactor count of the curve-family benchmark from 12 to 10 of 12 in the
+  README, release notes and summary figure. With the two source-excluded reactors
+  included, the ranking is unchanged.
+- Documented that the Sanglier prefix-fit audit is not bit-reproducible across machines
+  and that the forecasting conclusion does not depend on it. No result file changed.
+- Added the technical report (`docs/report/`) and `scripts/make_report_figures.py`,
+  which draws its figures from committed result tables.
+
 ### 2026-11-15: Blank-correction sensitivity, open-data screen and frozen Stage A test
 
 - Ran the blank-correction sensitivity analysis required by the validation plan for the

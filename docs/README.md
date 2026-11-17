@@ -10,6 +10,8 @@ The documents below are grouped by purpose. New readers should start with
 | [Architecture and glossary](ARCHITECTURE.md) | Plain-language map of the idea, repository layout, code path and terminology |
 | [Project status](PROJECT_STATUS.md) | Current readiness, what can and cannot be claimed, and the next validation gate |
 | [Roadmap](ROADMAP.md) | Staged long-term direction and the evidence each stage requires |
+| [Technical report](report/report.pdf) | Five-page research report on the three reference benchmarks ([LaTeX source](report/report.tex)); not peer reviewed |
+| [Reproduction audit, November 2026](REPRODUCTION_AUDIT_2026_11.md) | Independent rerun of every reference benchmark, with discrepancies and limits |
 
 ## Methods and evidence standards
 
