@@ -1,0 +1,18 @@
+{
+  "spec_id": "dose_design_map_v1",
+  "status": "SIMULATION_ONLY_NOT_EXPERIMENTAL_VALIDATION",
+  "designs_searched": 396,
+  "scenarios": 14256,
+  "smallest_budget_reaching_0_80_worst_case": {
+    "gain_0.08_sd_0.03": null,
+    "gain_0.08_sd_0.05": null,
+    "gain_0.08_sd_0.07": null,
+    "gain_0.15_sd_0.03": 24,
+    "gain_0.15_sd_0.05": null,
+    "gain_0.15_sd_0.07": null
+  },
+  "input_sha256": {
+    "spec": "f50a47b0d19834b45dc8a62e3c1198905463cb0349bc477e8d2a548843a4f511",
+    "trajectory_recovery": "fa41a8e2ef5fa4207e3de0d4b99cc02c865f7bfe889dcc0b27df2ad3c0abd788"
+  }
+}
