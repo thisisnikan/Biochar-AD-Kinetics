@@ -1,0 +1,54 @@
+{
+  "spec_id": "calibrated_early_stopping_v1",
+  "spec_version": "1.0.0",
+  "frozen_on": "2026-11-17",
+  "status": "FROZEN_BEFORE_ANALYSIS",
+  "question": "From the observed prefix of a batch methane curve, can an interval for the end-of-cycle cumulative yield be given whose coverage holds for unseen bottles, and does an interval-based stopping rule end tests earlier than a fixed-day rule and the 1%-for-3-days criterion at a stated error tolerance?",
+  "evidence_role": "Retrospective, within-study methodological benchmark on the Sanglier et al. (2022) long cycles. Not external validation, not calibration or transfer of any repository model to Sanglier, and not a treatment-effect analysis. The Sanglier admission decision (sanglier_2022_admission_v1) is unchanged.",
+  "disclosure": "The point forecaster (recent_rate) was the most accurate method at the 12.5-day cutoff in the existing forecasting benchmark on these same cycles. Its point accuracy is therefore not a new finding. Interval calibration, the normalised score and the stopping rules below have not been computed on these data before this spec was committed.",
+  "population": {
+    "cycles": "The 100 long cycles of results/requirements/sanglier_2022_structure_by_cycle.csv (27 bottles, labs BRL and LBE), identical to results/forecasting.",
+    "sensitivity": "Without bottles IV.2 and IV.3 (failing controls).",
+    "unit_of_exchangeability": "bottle"
+  },
+  "target": {
+    "quantity": "cumulative methane yield at the last recorded time of the cycle, T_end",
+    "assumption": "T_end is the planned batch length and is known when the forecast is made.",
+    "unit_handling": "All scores are log ratios; the unverified source unit cancels."
+  },
+  "cutoffs": "Every whole day c with 5 <= c <= T_end - 1; the prefix is all readings with time <= c.",
+  "forecasters": {
+    "primary": "recent_rate as implemented in biochar_ad_kinetics.forecast_benchmark.prefix_baselines",
+    "comparator": "persistence (last prefix reading)"
+  },
+  "scores": {
+    "fixed": "s = |ln(yhat / y)|, calibrated separately for each cutoff day c",
+    "normalised": "s = |ln(yhat / y)| / max(g, 0.01), with g = ln(yhat / y_last) the forecaster's own predicted relative remaining gain; one quantile pooled over all cutoffs"
+  },
+  "conformal_method": "Split conformal with CDF pooling over groups (Dunn, Wasserman and Ramdas, 2023): each calibration bottle has total weight 1, shared equally by its (cycle, cutoff) pairs; quantile level min(1, ceil((1 - alpha)(n + 1)) / n) where n is the number of calibration bottles.",
+  "alpha": 0.1,
+  "tolerance": "The interval yhat * exp(-h) to yhat * exp(h) with half-width h <= ln(1.10).",
+  "stopping_rules": {
+    "fixed_day": "Stop every cycle at the earliest whole day c at which the fixed-score quantile q_c <= ln(1.10); report yhat at that day.",
+    "adaptive": "Stop a cycle at its earliest cutoff c at which q * max(g_c, 0.01) <= ln(1.10); report yhat at that day.",
+    "holliger_1pct": "Stop at the first whole day d >= 3 such that, for each of days d-2, d-1 and d, the one-day increment of gross cumulative yield is < 1% of the cumulative yield on that day; report the yield at d (persistence). Adapted: Sanglier yields are gross, not blank-corrected.",
+    "no_stop": "A rule that does not fire before T_end is recorded as running to T_end with zero error."
+  },
+  "validation_schemes": {
+    "leave_one_bottle_out": "Calibrate on 26 bottles, evaluate the held-out bottle; 27 folds.",
+    "leave_one_lab_out": "Calibrate on one laboratory, evaluate the other; 2 folds."
+  },
+  "metrics": [
+    "Bottle-weighted coverage over all (cycle, cutoff) pairs",
+    "Bottle-weighted coverage at the stopping time (primary)",
+    "Bottle-weighted share of cycles with |yhat/y - 1| <= 10% at the stopping time",
+    "Median and quartiles of stopping day and of days saved (T_end - stop)"
+  ],
+  "decision_criteria": {
+    "C1_calibration": "Leave-one-bottle-out coverage over all pairs is within [0.85, 0.95] for both scores.",
+    "C2_coverage_at_stop": "Leave-one-bottle-out coverage at the adaptive stopping time is >= 0.85.",
+    "C3_time_saving": "Adaptive median stopping day is earlier than the fixed-day rule's stopping day, and the adaptive rule stops before T_end in more than half of the cycles.",
+    "C4_transfer": "Leave-one-lab-out coverage at the adaptive stopping time is >= 0.85 in both directions; otherwise report that the rule does not transfer between laboratories.",
+    "reporting": "All criteria, all rules and both populations are reported whether they pass or fail. No criterion, threshold, score or cutoff grid is changed after the first run."
+  }
+}
